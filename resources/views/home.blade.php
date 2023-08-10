@@ -58,7 +58,6 @@
                             In summary, Bootstrap 5's utility classes empower designers to establish consistent font styles,
                             responsive column layouts, and engaging sidebars. This framework's adaptability and ease of use
                             greatly contribute to efficient and visually appealing web development.</p>
-
                         <p>Creating a responsive and visually engaging layout is a fundamental aspect of modern web design.
                             Leveraging Bootstrap, a popular front-end framework, allows designers and developers to
                             streamline this process. Bootstrap's utility classes provide a versatile toolkit for crafting

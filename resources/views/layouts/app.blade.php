@@ -27,18 +27,18 @@
             z-index: 1000;
         }
 
-        .sidebar.controller {
+        .sidebar .controller {
             position: fixed;
         }
 
         /* Adjust the positioning on smaller screens */
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
             .sidebar {
                 top: auto;
                 bottom: 0;
             }
 
-            .sidebar.controller {
+            .sidebar .controller {
                 position: relative;
             }
         }
@@ -53,19 +53,78 @@
                 <!-- Sidebar -->
                 <div class="col-md-3 col-lg-2 sidebar position-relative">
                     <div class="controller">
-                        <ul class="nav flex-column">
+
+                        <ul class="nav flex-column ">
                             <!-- App Icon -->
                             <li class="nav-item">
-                                <a class="nav-link active fs-3 text-dark p-3" href="#">
+                                <a class="nav-link active fs-3 text-dark p-3 fw-bold" href="#">
                                     Nursery Garden<br> Admin Panel
                                 </a>
                             </li>
                             <!-- Function Button -->
+                            <!-- Dashboard -->
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="bi bi-gear"></i> Settings
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/home-icon.png') }}" alt="" width="30" height="30"
+                                        class="d-inline-block align-text-top mx-2">
+                                    Dashboard
                                 </a>
                             </li>
+                            <!-- Customers -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/find-job-icon.png') }}" alt="" width="30"
+                                        height="30" class="d-inline-block align-text-top mx-2">
+                                    Customers
+                                </a>
+                            </li>
+                            <!-- Plants -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/flower-plant-icon.png') }}" alt="" width="30"
+                                        height="30" class="d-inline-block align-text-top mx-2">
+                                    Plants
+                                </a>
+                            </li>
+                            <!-- Products -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/box-package-icon.png') }}" alt="" width="30"
+                                        height="30" class="d-inline-block align-text-top mx-2">
+                                    Products
+                                </a>
+                            </li>
+                            <!-- Categories -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/list-round-bullet-icon.png') }}" alt="" width="30"
+                                        height="30" class="d-inline-block align-text-top mx-2">
+                                    Categories
+                                </a>
+                            </li>
+                            <!-- Orders -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/text-document-check-icon.png') }}" alt="" width="30"
+                                        height="30" class="d-inline-block align-text-top mx-2">
+                                    Orders
+                                </a>
+                            </li>
+                            <!-- Biddings -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    <img src="{{ url('/icon/penalty-icon.png') }}" alt="" width="30"
+                                        height="30" class="d-inline-block align-text-top mx-2">
+                                    Biddings
+                                </a>
+                            </li>
+                            {{-- <!--  -->
+                            <li class="nav-item">
+                                <a class="nav-link fs-4 text-dark px-4 pb-2 pt-1" href="#">
+                                    Dashboard
+                                </a>
+                            </li> --}}
+
                         </ul>
                     </div>
                 </div>
@@ -74,7 +133,7 @@
 
             <!-- Main Content -->
             @guest
-                <div class="col-md-11 col-lg-12 px-0">
+                <div class="col-md-11 col-lg-12 px-0 ">
                 @else
                     <div class="col-md-9 col-lg-10 px-0">
                     @endguest
@@ -108,7 +167,8 @@
 
                                         @if (Route::has('register'))
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                                <a class="nav-link"
+                                                    href="{{ route('register') }}">{{ __('Register') }}</a>
                                             </li>
                                         @endif
                                     @else
