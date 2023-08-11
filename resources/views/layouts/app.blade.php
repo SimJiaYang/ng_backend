@@ -25,10 +25,12 @@
             color: white;
             /* Text color */
             z-index: 1000;
+            height: 100vh;
         }
 
         .sidebar .controller {
             position: fixed;
+            height: 0;
         }
 
         /* Adjust the positioning on smaller screens */
@@ -51,7 +53,7 @@
             @guest
             @else
                 <!-- Sidebar -->
-                <div class="col-md-3 col-lg-2 sidebar position-relative">
+                <div class="col-md-4 col-lg-2 sidebar position-relative">
                     <div class="controller">
 
                         <ul class="nav flex-column ">
@@ -135,7 +137,7 @@
             @guest
                 <div class="col-md-11 col-lg-12 px-0 ">
                 @else
-                    <div class="col-md-9 col-lg-10 px-0">
+                    <div class="col-md-8 col-lg-10 px-0">
                     @endguest
 
                     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm px-3">
