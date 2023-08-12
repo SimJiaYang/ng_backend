@@ -25,10 +25,6 @@ Auth::routes([
     'reset' => false,
 ]);
 
-Route::get('/register', function () {
-    return redirect()->route('home');
-});
-
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::group(['middleware' => 'isAdmin'], function () {
