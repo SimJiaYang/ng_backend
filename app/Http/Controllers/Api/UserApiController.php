@@ -47,6 +47,10 @@ class UserApiController extends Controller
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = User::where('email', $request->email)->first();
 
+            if ($user->type == "admin") {
+                return $this->fail('Invalid Credentials');
+            }
+
             $name = $request->userAgent();
 
             $token = $user->createToken($name)->plainTextToken;
@@ -62,5 +66,15 @@ class UserApiController extends Controller
         } else {
             return $this->fail('Invalid Credentials');
         }
+    }
+
+    // logout
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+
+        $user->currentAccessToken()->delete();
+
+        return $this->success();
     }
 }

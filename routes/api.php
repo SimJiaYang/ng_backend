@@ -20,5 +20,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
     Route::post('register', 'UserApiController@store');
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('logout', 'UserApiController@destroy');
     });
 });

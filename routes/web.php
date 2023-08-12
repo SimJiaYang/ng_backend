@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,12 +15,24 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+//Settings Login and Home Page
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->route('home');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+]);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/register', function () {
+    return redirect()->route('home');
+});
+
+Route::get('/home', [HomeController::class, 'home'])->name('home');
+
+Route::group(['middleware' => 'isAdmin'], function () {
+});
+
+Route::group(['middleware' => 'isUser'], function () {
 });
