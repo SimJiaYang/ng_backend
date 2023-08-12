@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function () {
+    // Unauthorized
+    Route::post('login', 'UserApiController@login');
+    Route::post('register', 'UserApiController@store');
+
+    Route::middleware('auth:sanctum')->group(function () {
+    });
 });
