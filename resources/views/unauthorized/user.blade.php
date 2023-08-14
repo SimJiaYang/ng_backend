@@ -22,8 +22,6 @@
 <body>
     <div id="app">
         <div class="row">
-
-
             <!-- Main Content -->
             <div class="col-md-11 col-lg-12 px-0 ">
                 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm px-3">

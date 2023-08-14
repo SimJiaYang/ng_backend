@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function () {
     // Unauthorized
-    Route::post('login', 'UserApiController@login');
-    Route::post('register', 'UserApiController@store');
+    Route::post('login', 'AuthApiController@login');
+    Route::post('register', 'AuthApiController@store');
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('logout', 'UserApiController@destroy');
+        /* User Log Out */
+        Route::get('logout', 'AuthApiController@destroy');
+        /* Get User Profile */
+        Route::get('profile', 'UserApiController@show');
     });
 });

@@ -23,18 +23,6 @@
                             font sizes, and text-* classes for font colors, enabling dynamic adjustments for various content
                             types. For font style, classes like fw-bold and fw-normal provide control over text weight.
 
-                            Additionally, Bootstrap facilitates responsive columns through its grid system. Utilizing
-                            classes like col-md-6 ensures proper column distribution across different screen sizes. To
-                            maximize column height, h-100 and d-flex classes can be combined to create a flexible container
-                            that adjusts to its content and viewport.
-
-                            Furthermore, Bootstrap enables seamless sidebar creation with its layout components.
-                            Incorporating bg-light for color and navigation icons from Bootstrap Icons enhances the
-                            aesthetic appeal. For more personalized styling, custom CSS can be added to complement
-                            Bootstrap's built-in classes.
-
-                            In summary, Bootstrap 5's utility classes empower designers to establish consistent font styles,
-                            responsive column layouts, and engaging sidebars. This framework's adaptability and ease of use
                         </p>
 
 
