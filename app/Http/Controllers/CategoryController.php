@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+use function Ramsey\Uuid\v1;
+
 class CategoryController extends Controller
 {
     public function index()
     {
-        return view('category.category');
+        $category = Category::paginate(10);
+        return view('category.category')
+            ->with('category', $category);;
     }
 
-    public function insertForm()
+    public function insert()
     {
         return view('category.sub_screen.insert_category');
     }
@@ -28,5 +32,32 @@ class CategoryController extends Controller
             return redirect()->route('category.index'); // step 5 back to last page
         }
         return null; // step 5 back to last page       
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->name;
+        $category = Category::where('name', 'like', "%$keyword%")
+            ->get();
+        return view('category.category')
+            ->with('category', $category);;
+    }
+
+    public function edit($id)
+    {
+        $category = Category::all()->where('id', $id);
+        return view('category.sub_screen.edit_category')
+            ->with('category', $category);
+    }
+
+    public function update(Request $request)
+    {
+        $category = Category::where('id', $request->id)->first();
+
+        //Name get from form
+        $category->name = $request->name;
+        $category->type = $request->type;
+        $category->save();
+        return redirect()->route('category.index');
     }
 }

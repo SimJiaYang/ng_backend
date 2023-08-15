@@ -39,8 +39,11 @@ Route::group(['middleware' => 'isAdmin'], function () {
 
     // Category
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
-    Route::get('/category/form/insert', [CategoryController::class, 'insertForm'])->name('category.insert');
+    Route::get('/category/insert', [CategoryController::class, 'insert'])->name('category.insert');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::post('/category/search', [CategoryController::class, 'search'])->name('category.search');
+    Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
 
     // Plant
     Route::get('/plant', [PlantController::class, 'index'])->name('plant.index');

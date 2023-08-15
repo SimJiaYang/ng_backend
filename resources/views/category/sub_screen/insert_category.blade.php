@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                                                                top: 13px;
-                                                                                                                                                                            } */
+                                                                                                                                                                                                        top: 13px;
+                                                                                                                                                                                                    } */
     </style>
     <script>
         function getSelectedOption() {
@@ -35,11 +35,11 @@
 
     <section class=" gradient-custom">
         <div class="container py-5 h-100">
-            <div class="row justify-content-center align-items-center h-100">
+            <div class="row  h-100">
                 <div class="col-12 col-lg-9 col-xl-7">
                     <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                         <div class="card-body p-4 p-md-5">
-                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Add Category</h3>
+                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 display-5">Add Category</h3>
                             <form method="POST" action="{{ route('category.store') }}"
                                 onsubmit="return getSelectedOption();">
                                 @csrf
@@ -68,6 +68,9 @@
                                 <div class="mt-1 pt-2">
                                     <input class="btn btn-lg" style="background-color: #00A36C; color: white;"
                                         type="submit" value="Submit" />
+                                    <a href="{{ route('category.index') }}" class="btn btn-lg"
+                                        style="background-color: #00A36C; color: white;" type="submit"
+                                        value="Back">Back</a>
                                 </div>
 
                             </form>
