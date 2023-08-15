@@ -36,6 +36,7 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::group(['middleware' => 'isAdmin'], function () {
     // Customer
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::any('/customer/search', [CustomerController::class, 'search'])->name('customer.search');
 
     // Category
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');

@@ -17,7 +17,8 @@
                 @csrf
                 <div class="input-group col-md-12 col-sm-12 mx-4 my-3">
                     <div class="form-outline col-md-8 col-sm-8">
-                        <input id="name" name="name" type="search" id="form1" class="form-control" />
+                        <input id="name" name="name" type="search" id="form1" class="form-control"
+                            placeholder="Name" />
                     </div>
                     <button id="search-button" type="submit" class="btn btn-primary col-md-4 col-sm-4 p-0"
                         style="background-color: #00A36C; color: white;">
