@@ -10,4 +10,9 @@ class CategoryController extends Controller
     {
         return view('category.category');
     }
+
+    public function insertForm()
+    {
+        return view('category.sub_screen.insert_category');
+    }
 }

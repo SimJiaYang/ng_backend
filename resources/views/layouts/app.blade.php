@@ -67,13 +67,26 @@
             overflow-y: auto;
             /* Scrollable contents if viewport is shorter than content. */
         }
+
+        #sidebarMenu {
+            background-color: #ECFFDC;
+        }
+
+        .list-group-item {
+            background-color: #ECFFDC;
+        }
+
+        #main-navbar {
+            background-color: #ECFFDC;
+            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+        }
     </style>
 
 
 <body>
     <header>
         <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse">
             <div class="position-sticky">
                 <div class="list-group list-group-flush mx-3 mt-4">
 
@@ -133,7 +146,7 @@
         <!-- Sidebar -->
 
         <!-- Navbar -->
-        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
             <!-- Container wrapper -->
             <div class="container-fluid">
                 <!-- Toggle button -->
