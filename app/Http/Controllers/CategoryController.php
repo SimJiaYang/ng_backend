@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $category = Category::paginate(10);
+        $category = Category::where('status', '1')->get();
         return view('category.category')
             ->with('category', $category);;
     }
@@ -38,6 +38,7 @@ class CategoryController extends Controller
     {
         $keyword = $request->name;
         $category = Category::where('name', 'like', "%$keyword%")
+            ->where('status', '1')
             ->get();
         return view('category.category')
             ->with('category', $category);;
@@ -57,6 +58,14 @@ class CategoryController extends Controller
         //Name get from form
         $category->name = $request->name;
         $category->type = $request->type;
+        $category->save();
+        return redirect()->route('category.index');
+    }
+
+    public function delete($id)
+    {
+        $category = Category::where('id', $id)->first();
+        $category->status = "0";
         $category->save();
         return redirect()->route('category.index');
     }

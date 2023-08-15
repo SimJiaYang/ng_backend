@@ -17,7 +17,7 @@
                 @csrf
                 <div class="input-group col-md-12 col-sm-12 mx-4 my-3">
                     <div class="form-outline col-md-8 col-sm-8">
-                        <input id="name" name="name" type="search" id="form1" class="form-control" required />
+                        <input id="name" name="name" type="search" id="form1" class="form-control" />
                     </div>
                     <button id="search-button" type="submit" class="btn btn-primary col-md-4 col-sm-4 p-0"
                         style="background-color: #00A36C; color: white;">
@@ -70,14 +70,12 @@
                             <p>{{ $categories->type }}</p>
                         </td>
                         <td>
-                            {{-- <button type="button" class="btn btn-link btn-sm btn-rounded">
-                                Edit
-                            </button> --}}
                             <a class="navbar-brand px-2" href="{{ route('category.edit', $categories->id) }}">
                                 <img src="{{ url('/icon/edit.png') }}" height="25" alt="" />
                             </a>
 
-                            <a class="navbar-brand px-2" href="">
+                            <a class="navbar-brand px-2" onclick="return confirm('Are you sure you want to delete?')"
+                                href="{{ route('category.delete', $categories->id) }}">
                                 <img src="{{ url('/icon/delete.png') }}" height="25" alt="" />
                             </a>
                         </td>

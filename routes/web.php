@@ -44,6 +44,7 @@ Route::group(['middleware' => 'isAdmin'], function () {
     Route::post('/category/search', [CategoryController::class, 'search'])->name('category.search');
     Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
     // Plant
     Route::get('/plant', [PlantController::class, 'index'])->name('plant.index');
