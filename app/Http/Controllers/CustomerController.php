@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PlantController extends Controller
+class CustomerController extends Controller
 {
-    /**Plant List */
+    /**Customer List */
     public function index()
     {
-        return view('plant.plant');
+        return view('customer.customer');
     }
 }

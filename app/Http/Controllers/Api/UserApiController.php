@@ -23,6 +23,7 @@ class UserApiController extends Controller
         return $this->success($ret);
     }
 
+    // Not add to route yet, need amend
     public function update(Request $request)
     {
         $data = $request->validate([

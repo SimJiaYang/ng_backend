@@ -76,37 +76,52 @@
         <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
             <div class="position-sticky">
                 <div class="list-group list-group-flush mx-3 mt-4">
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2" aria-current="true">
+
+                    {{-- Home --}}
+                    <a href="{{ route('home') }}" class="list-group-item list-group-item-action ripple py-2"
+                        aria-current="true">
                         <img src="{{ url('/icon/home-icon.png') }}" alt="" width="20" height="20"
                             class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Dashboard</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2">
+
+                    {{-- Customer --}}
+                    <a href="{{ route('customer.index') }}" class="list-group-item list-group-item-action ripple py-2">
                         <img src="{{ url('/icon/find-job-icon.png') }}" alt="" width="20" height="20"
                             class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Customer</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2">
+
+                    {{-- Plant --}}
+                    <a href="{{ route('plant.index') }}" class="list-group-item list-group-item-action ripple py-2">
                         <img src="{{ url('/icon/flower-plant-icon.png') }}" alt="" width="20" height="20"
                             class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Plant</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2">
+
+                    {{-- Product --}}
+                    <a href="{{ route('product.index') }}" class="list-group-item list-group-item-action ripple py-2">
                         <img src="{{ url('/icon/box-package-icon.png') }}" alt="" width="20" height="20"
                             class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Product</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2">
+
+                    {{-- Category --}}
+                    <a href="{{ route('category.index') }}" class="list-group-item list-group-item-action ripple py-2">
                         <img src="{{ url('/icon/list-round-bullet-icon.png') }}" alt="" width="20"
                             height="20" class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Categories</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2">
+
+                    {{-- Order --}}
+                    <a href="{{ route('order.index') }}" class="list-group-item list-group-item-action ripple py-2">
                         <img src="{{ url('/icon/text-document-check-icon.png') }}" alt="" width="20"
                             height="20" class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Orders</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action ripple py-2">
+
+                    {{-- Bidding --}}
+                    <a href="{{ route('bidding.index') }}" class="list-group-item list-group-item-action ripple py-2">
                         <img src="{{ url('/icon/penalty-icon.png') }}" alt="" width="20" height="20"
                             class="d-inline-block align-text-top mx-2">
                         <span class="mt-3">Biddings</span>
