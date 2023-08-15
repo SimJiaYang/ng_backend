@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                            top: 13px;
-                                                                                                                                        } */
+                                                                                                                                                                                top: 13px;
+                                                                                                                                                                            } */
     </style>
     <script>
         function getSelectedOption() {
@@ -40,7 +40,8 @@
                     <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                         <div class="card-body p-4 p-md-5">
                             <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Add Category</h3>
-                            <form onsubmit="return getSelectedOption();">
+                            <form method="POST" action="{{ route('category.store') }}"
+                                onsubmit="return getSelectedOption();">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 mb-4 d-flex align-items-center">
@@ -54,10 +55,10 @@
 
                                     </div>
                                     <div class="col-md-6 mb-4 ">
-                                        <select class="select form-control-lg px-3" id="selectOption" name="option">
+                                        <select class="select form-control-lg px-3" id="selectOption" name="type">
                                             <option value="1" disabled selected>Choose option</option>
-                                            <option value="2">Plant</option>
-                                            <option value="3">Product</option>
+                                            <option value="plant">Plant</option>
+                                            <option value="product">Product</option>
                                         </select>
                                         <div class="w-100"></div>
                                         <label class="form-label">Category Type</label>

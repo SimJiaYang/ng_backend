@@ -156,7 +156,7 @@
                 </button>
 
                 <!-- Brand -->
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ route('home') }}">
                     <img src="{{ url('/image/NurseryGarden.png') }}" height="25" alt="" />
                 </a>
 

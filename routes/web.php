@@ -40,6 +40,7 @@ Route::group(['middleware' => 'isAdmin'], function () {
     // Category
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/category/form/insert', [CategoryController::class, 'insertForm'])->name('category.insert');
+    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
 
     // Plant
     Route::get('/plant', [PlantController::class, 'index'])->name('plant.index');
