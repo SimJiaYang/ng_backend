@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top: 13px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        top: 13px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
     </style>
     <script>
         function preview() {
@@ -168,8 +168,7 @@
                                         <div class="col-md-6 mb-4 d-flex align-items-center">
                                             <div class="form-outline">
                                                 <input class="form-control" type="file" id="formFile" name="image"
-                                                    onchange="preview()" value="{{ $plants->image }}"
-                                                    placeholder="{{ $plants->image }}">
+                                                    onchange="preview()">
                                                 <label class="form-label" for="name">Plant Image</label>
                                             </div>
                                         </div>
@@ -179,8 +178,7 @@
                                         <div class="col-md-12 mb-4 d-flex align-items-center">
                                             <div class="form-outline">
                                                 <img id="frame" class="img-fluid m-1"
-                                                    style="height:200px; width:200px"
-                                                    src="{{ asset('plant_image') }}/{{ $plants->image }}" />
+                                                    style="height:200px; width:200px" src="/{{ $plants->image }}" />
                                                 <div class="w-100">
                                                 </div>
                                                 <label class="form-label" for="name">Plant Image Preview</label>
