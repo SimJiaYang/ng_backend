@@ -115,27 +115,27 @@
                             </div>
                         </td>
 
-                        {{-- Sunlight --}}
+                        {{-- Water --}}
                         <td>
                             <div class="d-flex align-items-center">
-                                <p class="mb-1">{{ $plants->sunglight_need }}</p>
+                                <p class="mb-1">{{ $plants->water_need }}</p>
                             </div>
                         </td>
 
-                        {{-- Sunlight --}}
+                        {{-- Height --}}
                         <td>
                             <div class="d-flex align-items-center">
-                                <p class="mb-1">{{ $plants->sunglight_need }}</p>
+                                <p class="mb-1">{{ $plants->mature_height }}</p>
                             </div>
                         </td>
 
                         <td>
-                            <a class="navbar-brand px-2" href="">
+                            <a class="navbar-brand px-2" href="{{ route('plant.edit', $plants->id) }}">
                                 <img src="{{ url('/icon/edit.png') }}" height="25" alt="" />
                             </a>
 
                             <a class="navbar-brand px-2" onclick="return confirm('Are you sure you want to delete?')"
-                                href="">
+                                href="{{ route('plant.delete', $plants->id) }}">
                                 <img src="{{ url('/icon/delete.png') }}" height="25" alt="" />
                             </a>
                         </td>

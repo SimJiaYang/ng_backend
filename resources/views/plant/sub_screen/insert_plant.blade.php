@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                top: 13px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        top: 13px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
     </style>
     <script>
         function getSelectedOption() {
@@ -96,7 +96,7 @@
                                             <select class="select form-control-lg px-3" id="selectSunlight" name="sunlight">
                                                 <option value="default" disabled selected>Choose option</option>
                                                 <option value="Full">Full</option>
-                                                <option value="Partialt">Partial</option>
+                                                <option value="Partial">Partial</option>
                                                 <option value="Shade">Shade</option>
                                             </select>
                                             <div class="w-100"></div>

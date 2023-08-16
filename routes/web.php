@@ -52,6 +52,9 @@ Route::group(['middleware' => 'isAdmin'], function () {
     Route::get('/plant/insert', [PlantController::class, 'insert'])->name('plant.insert');
     Route::post('/plant/store', [PlantController::class, 'store'])->name('plant.store');
     Route::any('/plant/search', [PlantController::class, 'search'])->name('plant.search');
+    Route::get('/plant/edit/{id}', [PlantController::class, 'edit'])->name('plant.edit');
+    Route::post('/plant/update', [PlantController::class, 'update'])->name('plant.update');
+    Route::get('/plant/delete/{id}', [PlantController::class, 'delete'])->name('plant.delete');
 
     // Product
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
