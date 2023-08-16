@@ -87,4 +87,8 @@
             </tbody>
         </table>
     </div>
+    <div class="m-4 d-flex justify-content-between">
+        {{-- {{ $customer->links('pagination.using-post') }} --}}
+        {!! $category->links('vendor.pagination.bootstrap-5') !!}
+    </div>
 @endsection

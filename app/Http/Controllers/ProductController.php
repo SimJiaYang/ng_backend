@@ -11,4 +11,9 @@ class ProductController extends Controller
     {
         return view('product.product');
     }
+
+    public function insert()
+    {
+        return view('product.sub_screen.insert_product');
+    }
 }

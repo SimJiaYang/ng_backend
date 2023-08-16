@@ -11,9 +11,9 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $category = Category::where('status', '1')->get();
+        $category = Category::where('status', '1')->paginate(5);
         return view('category.category')
-            ->with('category', $category);;
+            ->with('category', $category);
     }
 
     public function insert()
@@ -39,7 +39,7 @@ class CategoryController extends Controller
         $keyword = $request->name;
         $category = Category::where('name', 'like', "%$keyword%")
             ->where('status', '1')
-            ->get();
+            ->paginate(5);
         return view('category.category')
             ->with('category', $category);;
     }

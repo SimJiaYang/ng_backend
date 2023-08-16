@@ -42,13 +42,16 @@ Route::group(['middleware' => 'isAdmin'], function () {
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/category/insert', [CategoryController::class, 'insert'])->name('category.insert');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
-    Route::post('/category/search', [CategoryController::class, 'search'])->name('category.search');
+    Route::any('/category/search', [CategoryController::class, 'search'])->name('category.search');
     Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
     // Plant
     Route::get('/plant', [PlantController::class, 'index'])->name('plant.index');
+    Route::get('/plant/insert', [PlantController::class, 'insert'])->name('plant.insert');
+    Route::post('/plant/store', [PlantController::class, 'store'])->name('plant.store');
+    Route::any('/plant/search', [PlantController::class, 'search'])->name('plant.search');
 
     // Product
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');

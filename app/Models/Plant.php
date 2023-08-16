@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Plant extends Model
 {
     use HasFactory;
+
+    protected $table = "plant";
+
     public $primaryKey = 'id';
 
     public $fk = 'cat_id';
