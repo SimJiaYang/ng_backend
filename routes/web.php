@@ -58,6 +58,12 @@ Route::group(['middleware' => 'isAdmin'], function () {
 
     // Product
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/product/insert', [ProductController::class, 'insert'])->name('product.insert');
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::any('/product/search', [ProductController::class, 'search'])->name('product.search');
+    Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
+    Route::get('/product/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
     // Order
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');

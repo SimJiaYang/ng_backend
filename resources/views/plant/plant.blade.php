@@ -52,10 +52,11 @@
                     <th scope="col-1">Name</th>
                     <th scope="col-1">Category</th>
                     <th scope="col-1">Inventory</th>
+                    <th scope="col-1">Price</th>
                     <th scope="col-1">Origin</th>
-                    <th scope="col-1">Sunlight Need</th>
-                    <th scope="col-1">Water Need</th>
-                    <th scope="col-1">Mature Height</th>
+                    <th scope="col-1">Sunlight <br>Need</th>
+                    <th scope="col-1">Water <br>Need</th>
+                    <th scope="col-1">Mature <br>Height</th>
                     <th scope="col-1">Action</th>
                 </tr>
             </thead>
@@ -98,6 +99,13 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <p class="mb-1">{{ $plants->quantity }}</p>
+                            </div>
+                        </td>
+
+                        {{-- Price --}}
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <p class="mb-1">{{ $plants->price }}</p>
                             </div>
                         </td>
 
