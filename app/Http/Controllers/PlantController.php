@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Plant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use PDO;
 
 class PlantController extends Controller
@@ -38,8 +39,15 @@ class PlantController extends Controller
             $image = $request->file('image');
             $image->move('plant_image', $image->getClientOriginalName());   //images is the location                
             $imageName = $image->getClientOriginalName();
+
+            // Handle data URI scheme
+            $imageData = base64_decode($imageName);
+            // Store the image with the retrieved image name
+            Storage::disk('public')->put($imageName,  base64_decode($imageData));
+            // $imageUrl = asset('plant_image/' . $imageName);
+            $imageName = "plant_image/" . $imageName;
         } else {
-            $imageName = "no_plant.png";
+            $imageName = "plant_image/no_plant.png";
         }
 
         // Create product
@@ -106,9 +114,16 @@ class PlantController extends Controller
                 $image->move('plant_image', $image->getClientOriginalName());
                 $imageName = $image->getClientOriginalName();
                 $plant->image = $imageName;
+
+                // Handle data URI scheme
+                $imageData = base64_decode($imageName);
+                // Store the image with the retrieved image name
+                Storage::disk('public')->put($imageName,  base64_decode($imageData));
+                // $imageUrl = asset('plant_image/' . $imageName);
+                $imageName = "plant_image/" . $imageName;
             }
         } else {
-            $imageName = "no_plant.png";
+            $imageName = "plant_image/no_plant.png";
         }
 
         $plant->name = $request->name;

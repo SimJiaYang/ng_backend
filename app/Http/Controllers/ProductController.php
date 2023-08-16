@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -37,8 +38,15 @@ class ProductController extends Controller
             $image = $request->file('image');
             $image->move('product_image', $image->getClientOriginalName());   //images is the location                
             $imageName = $image->getClientOriginalName();
+
+            // Handle data URI scheme
+            $imageData = base64_decode($imageName);
+            // Store the image with the retrieved image name
+            Storage::disk('public')->put($imageName,  base64_decode($imageData));
+            // $imageUrl = asset('plant_image/' . $imageName);
+            $imageName = "product_image/" . $imageName;
         } else {
-            $imageName = "no_product.png";
+            $imageName = "product_image/no_product.png";
         }
 
         // Create product
@@ -100,9 +108,16 @@ class ProductController extends Controller
                 $image->move('product_image', $image->getClientOriginalName());
                 $imageName = $image->getClientOriginalName();
                 $product->image = $imageName;
+
+                // Handle data URI scheme
+                $imageData = base64_decode($imageName);
+                // Store the image with the retrieved image name
+                Storage::disk('public')->put($imageName,  base64_decode($imageData));
+                // $imageUrl = asset('plant_image/' . $imageName);
+                $imageName = "product_image/" . $imageName;
             }
         } else {
-            $imageName = "no_product.png";
+            $imageName = "product_image/no_product.png";
         }
 
         $product->name = $request->name;

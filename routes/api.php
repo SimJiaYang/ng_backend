@@ -24,5 +24,12 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('logout', 'AuthApiController@destroy');
         /* Get User Profile */
         Route::get('profile', 'UserApiController@show');
+
+        /* Get Plant Information */
+        Route::get('plant', 'PlantApiController@index');
+        // Route::get('image/{imageName}', function ($imageName) {
+        //     $imagePath = storage_path('app/public/' . $imageName);
+        //     return response()->file($imagePath);
+        // });
     });
 });

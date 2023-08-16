@@ -9,6 +9,7 @@ use function Ramsey\Uuid\v1;
 
 class CategoryController extends Controller
 {
+
     public function index()
     {
         $category = Category::where('status', '1')->paginate(5);
