@@ -71,12 +71,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Bidding
         Route::get('/bidding', [BiddingController::class, 'index'])->name('bidding.index');
-
-        // Image
-        Route::get('image/{imageName}', function ($imageName) {
-            $imagePath = storage_path('app/public/' . $imageName);
-            return response()->file($imagePath);
-        });
     });
 
     Route::group(['middleware' => 'isUser'], function () {

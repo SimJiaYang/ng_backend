@@ -39,12 +39,11 @@ class PlantController extends Controller
             $image = $request->file('image');
             $image->move('plant_image', $image->getClientOriginalName());   //images is the location                
             $imageName = $image->getClientOriginalName();
-
-            // Handle data URI scheme
-            $imageData = base64_decode($imageName);
-            // Store the image with the retrieved image name
-            Storage::disk('public')->put($imageName,  base64_decode($imageData));
-            // $imageUrl = asset('plant_image/' . $imageName);
+            // // Handle data URI scheme
+            // $imageData = base64_decode($imageName);
+            // // Store the image with the retrieved image name
+            // Storage::disk('public')->put($imageName,  base64_decode($imageData));
+            // // $imageUrl = asset('plant_image/' . $imageName);
             $imageName = "plant_image/" . $imageName;
         } else {
             $imageName = "plant_image/no_plant.png";
