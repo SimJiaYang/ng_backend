@@ -15,7 +15,7 @@ class PlantApiController extends Controller
         $ret['plant'] = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
             ->where('plant.status', '1')
             ->where('plant.quantity', '>', '0')
-            ->select('plant.*', 'category.name')
+            ->select('plant.*', 'category.name as category_name')
             ->get();
         return $this->success($ret);
     }
