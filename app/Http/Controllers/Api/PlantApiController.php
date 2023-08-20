@@ -31,4 +31,21 @@ class PlantApiController extends Controller
 
         return $this->success($ret);
     }
+
+    public function show(Request $request)
+    {
+        $plants = Plant::where('plant.id', $request->id)
+            ->where('plant.status', '1')
+            ->where('plant.quantity', '>', '0')
+            ->select('plant.*', 'plant.image as image')
+            ->first();
+
+        if ($plants != null) {
+            $ret['plant'] = $plants;
+            $plants['image'] = Plant::getImageUrlAttribute($plants['image']);
+            return $this->success($ret);
+        } else {
+            return $this->fail('Plant not found');
+        }
+    }
 }

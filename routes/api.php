@@ -29,5 +29,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
 
         /* Get Plant Information */
         Route::get('plant', 'PlantApiController@index');
+        Route::get('plant/detail', 'PlantApiController@show');
     });
 });
