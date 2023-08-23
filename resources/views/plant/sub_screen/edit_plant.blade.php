@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        top: 13px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            top: 13px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
     </style>
     <script>
         function preview() {
@@ -74,8 +74,9 @@
                                         <div class="col-md-4 mb-4 d-flex align-items-center">
 
                                             <div class="form-outline">
-                                                <input type="number" id="price" name="price" step=".01"
-                                                    onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                                <input type="number" id="price" name="price" step="0.01"
+                                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
+                                                    event.charCode == 46 || event.charCode == 0 "
                                                     min="0" class="form-control form-control-lg"
                                                     placeholder="Plant Price" required value="{{ $plants->price }}" />
                                                 <label class="form-label" for="price">Plant Price</label>
@@ -117,8 +118,9 @@
 
                                         <div class="col-md-4 mb-4 d-flex align-items-center">
                                             <div class="form-outline">
-                                                <input type="number" id="height" name="height" step=".01"
-                                                    onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                                <input type="number" id="height" name="height" step="0.01"
+                                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
+                                                        event.charCode == 46 || event.charCode == 0 "
                                                     min="0" class="form-control form-control-lg"
                                                     placeholder="Mature Height(M)" required
                                                     value="{{ $plants->mature_height }}" />

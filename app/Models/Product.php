@@ -29,4 +29,9 @@ class Product extends Model
         '0' => 'Disable',
         '1' => 'Enable',
     ];
+
+    public static function getImageUrlAttribute($value)
+    {
+        return env('APP_URL') . '/' . $value;
+    }
 }
