@@ -19,8 +19,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
     Route::post('login', 'AuthApiController@login');
     Route::post('register', 'AuthApiController@store');
 
-    // Route::get('images/{imageName}', 'ImageApiController@getImage');
-
     Route::middleware('auth:sanctum')->group(function () {
         /* User Log Out */
         Route::get('logout', 'AuthApiController@destroy');
