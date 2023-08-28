@@ -15,20 +15,29 @@ class UserApiController extends Controller
         $user = $request->user();
 
         $ret = [
-            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'address' => $user->address,
+            'gender' => $user->gender,
+            'contact_number' => $user->contact_number,
+            'image' => $user->image,
+            'birth_date' => $user->birth_date
         ];
 
         return $this->success($ret);
     }
 
-    // Not add to route yet, need amend
+    // Upddate profile
     public function update(Request $request)
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'gender' => ['nullable', 'string', 'max:255'],
+            'contact_number' => ['nullable', 'numeric'],
+            'image' => ['nullable', 'string', 'max:255'],
+            'birth_date' => ['nullable', 'date', 'before:today'],
         ]);
 
         $user = $request->user();

@@ -20,16 +20,16 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
     Route::post('register', 'AuthApiController@store');
 
     Route::middleware('auth:sanctum')->group(function () {
-        /* User Log Out */
+        /* User*/
         Route::get('logout', 'AuthApiController@destroy');
-        /* Get User Profile */
         Route::get('profile', 'UserApiController@show');
+        Route::post('profile/update', 'UserApiController@update');
 
-        /* Get Plant Information */
+        /* Plant*/
         Route::get('plant', 'PlantApiController@index');
         Route::get('plant/detail', 'PlantApiController@show');
 
-        /*** Get Product Information */
+        /* Product */
         Route::get('product', 'ProductApiController@index');
     });
 });
