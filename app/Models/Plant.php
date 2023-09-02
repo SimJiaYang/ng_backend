@@ -30,13 +30,17 @@ class Plant extends Model
         'cat_id'
     ];
 
+    public $appends = [
+        'image_url'
+    ];
+
     public const STATUS = [
         '0' => 'Disable',
         '1' => 'Enable',
     ];
 
-    public static function getImageUrlAttribute($value)
+    public function getImageUrlAttribute()
     {
-        return env('APP_URL') . '/' . $value;
+        return asset('/plant_image/' . $this->image);
     }
 }

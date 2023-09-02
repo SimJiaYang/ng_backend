@@ -36,17 +36,10 @@ class PlantController extends Controller
     {
         //Handle Photo
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->move('plant_image', $image->getClientOriginalName());   //images is the location                
-            $imageName = $image->getClientOriginalName();
-            // // Handle data URI scheme
-            // $imageData = base64_decode($imageName);
-            // // Store the image with the retrieved image name
-            // Storage::disk('public')->put($imageName,  base64_decode($imageData));
-            // // $imageUrl = asset('plant_image/' . $imageName);
-            $imageName = "plant_image/" . $imageName;
+            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('/plant_image'), $imageName);
         } else {
-            $imageName = "plant_image/no_plant.png";
+            $imageName = 'no_plant.png';
         }
 
         // Create product

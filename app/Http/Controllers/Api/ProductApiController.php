@@ -18,13 +18,6 @@ class ProductApiController extends Controller
 
         $ret['product'] = $products;
 
-        // Loop through the fetched plants and encode the image
-        foreach ($ret['product'] as &$product) {
-            if (!empty($product['image'])) {
-                $product['image'] = Product::getImageUrlAttribute($product['image']);
-            }
-        }
-
         return $this->success($ret);
     }
 }

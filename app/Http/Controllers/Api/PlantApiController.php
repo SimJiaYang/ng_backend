@@ -22,13 +22,6 @@ class PlantApiController extends Controller
 
         $ret['plant'] = $plants;
 
-        // Loop through the fetched plants and encode the image
-        foreach ($ret['plant'] as &$plant) {
-            if (!empty($plant['image'])) {
-                $plant['image'] = Plant::getImageUrlAttribute($plant['image']);
-            }
-        }
-
         return $this->success($ret);
     }
 
@@ -37,12 +30,11 @@ class PlantApiController extends Controller
         $plants = Plant::where('plant.id', $request->id)
             ->where('plant.status', '1')
             ->where('plant.quantity', '>', '0')
-            ->select('plant.*', 'plant.image as image')
+            ->select('plant.*')
             ->first();
 
         if ($plants != null) {
             $ret['plant'] = $plants;
-            $plants['image'] = Plant::getImageUrlAttribute($plants['image']);
             return $this->success($ret);
         } else {
             return $this->fail('Plant not found');

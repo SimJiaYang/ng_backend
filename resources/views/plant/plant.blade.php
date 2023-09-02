@@ -77,7 +77,8 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="ms-1">
-                                    <img src="/{{ $plants->image }}" class="img-fluid" style="height:100px; width:120px">
+                                    <img src="{{ asset('plant_image') }}/{{ $plants->image }}" class="img-fluid"
+                                        style="height:100px; width:120px">
                                 </div>
                             </div>
                         </td>
