@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -91,25 +92,16 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $request->id)->first();
 
-        //Check image file
-        if ($request->file('image') != '') {
-            if ($request->file('image') == $product->image) {
-                $imageName = $product->image;
-            } else {
-                $image = $request->file('image');
-                $image->move('product_image', $image->getClientOriginalName());
-                $imageName = $image->getClientOriginalName();
-                $product->image = $imageName;
-
-                // Handle data URI scheme
-                $imageData = base64_decode($imageName);
-                // Store the image with the retrieved image name
-                Storage::disk('public')->put($imageName,  base64_decode($imageData));
-                // $imageUrl = asset('plant_image/' . $imageName);
-                $imageName = "product_image/" . $imageName;
+        //Handle Photo
+        if ($request->hasFile('image')) {
+            $old_path = public_path('product_image/' . $product->image);
+            if (File::exists($old_path)) {
+                File::delete($old_path);
             }
+            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('/product_image'), $imageName);
         } else {
-            $imageName = "product_image/no_product.png";
+            $imageName = 'no_product.png';
         }
 
         $product->name = $request->name;

@@ -11,8 +11,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function jsonResponse($data = [], $error = '', $ext = [], $status = 200)
-    {
+    public function jsonResponse(
+        $data = [],
+        $error = '',
+        $ext = [],
+        $status = 200
+    ) {
         return response([
             'success' => empty($error),
             'data'    => $data,
@@ -20,13 +24,13 @@ class Controller extends BaseController
         ] + $ext, $status);
     }
 
-    public function success($data = [], $status = 200, $ext = [])
+    public function success($data = [], $status = 200, $err = [])
     {
-        return $this->jsonResponse($data, '', $ext, $status);
+        return $this->jsonResponse($data, '', $err, $status);
     }
 
-    public function fail(string $error, $status = 200, $ext = [])
+    public function fail(string $error, $status = 200, $err = [])
     {
-        return $this->jsonResponse([], $error, $ext, $status);
+        return $this->jsonResponse([], $error, $err, $status);
     }
 }

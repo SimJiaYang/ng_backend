@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\File;
 
 class UserApiController extends Controller
 {
@@ -30,19 +31,38 @@ class UserApiController extends Controller
     // Upddate profile
     public function update(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
             'gender' => ['nullable', 'string', 'max:255'],
             'contact_number' => ['nullable', 'numeric'],
-            'image' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,bmp,png,jpg,svg'],
             'birth_date' => ['nullable', 'date', 'before:today'],
         ]);
 
         $user = $request->user();
 
-        $user->update($data);
+        //Handle Photo
+        if ($request->hasFile('image')) {
+            $old_path = public_path('user_image/' . $user->image);
+            if (File::exists($old_path)) {
+                File::delete($old_path);
+            }
+            $imageName = time() . '.' . $request->file('image')->extension();
+            $request->image->move(public_path('/user_image'), $imageName);
+        } else {
+            $imageName = $user->image;
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->address = $request->address;
+        $user->gender = $request->gender;
+        $user->contact_number = $request->contact_number;
+        $user->image = $imageName;
+        $user->birth_date = $request->birth_date;
+        $user->save();
 
         return $this->success();
     }

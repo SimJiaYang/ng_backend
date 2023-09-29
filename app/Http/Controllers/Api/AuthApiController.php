@@ -31,7 +31,7 @@ class AuthApiController extends Controller
 
         event(new Registered($user));
 
-        $token = $user->createToken($user)->plainTextToken;
+        $token = $user->createToken("auth_token")->plainTextToken;
 
         return $this->success($token);
     }
@@ -51,9 +51,7 @@ class AuthApiController extends Controller
                 return $this->fail('Invalid Credentials');
             }
 
-            $name = $request->userAgent();
-
-            $token = $user->createToken($name)->plainTextToken;
+            $token = $user->createToken("auth_token")->plainTextToken;
 
             $ret = [
                 'id' => $user->id,

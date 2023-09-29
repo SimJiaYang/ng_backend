@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Plant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use PDO;
+use Illuminate\Support\Facades\File;
 
 class PlantController extends Controller
 {
@@ -97,25 +96,16 @@ class PlantController extends Controller
     {
         $plant = Plant::where('id', $request->id)->first();
 
-        //Check image file
-        if ($request->file('image') != '') {
-            if ($request->file('image') == $plant->image) {
-                $imageName = $plant->image;
-            } else {
-                $image = $request->file('image');
-                $image->move('plant_image', $image->getClientOriginalName());
-                $imageName = $image->getClientOriginalName();
-                $plant->image = $imageName;
-
-                // Handle data URI scheme
-                $imageData = base64_decode($imageName);
-                // Store the image with the retrieved image name
-                Storage::disk('public')->put($imageName,  base64_decode($imageData));
-                // $imageUrl = asset('plant_image/' . $imageName);
-                $imageName = "plant_image/" . $imageName;
+        //Handle Photo
+        if ($request->hasFile('image')) {
+            $old_path = public_path('plant_image/' . $plant->image);
+            if (File::exists($old_path)) {
+                File::delete($old_path);
             }
+            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('/plant_image'), $imageName);
         } else {
-            $imageName = "plant_image/no_plant.png";
+            $imageName = 'no_plant.png';
         }
 
         $plant->name = $request->name;
