@@ -28,6 +28,10 @@ class User extends Authenticatable
         'image',
     ];
 
+    public $appends = [
+        'image_url'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -47,4 +51,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('/user_image/' . $this->image);
+        } else {
+            return null;
+        }
+    }
 }

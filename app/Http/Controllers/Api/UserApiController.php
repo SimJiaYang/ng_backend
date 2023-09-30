@@ -15,17 +15,17 @@ class UserApiController extends Controller
     {
         $user = $request->user();
 
-        $ret = [
-            'name' => $user->name,
-            'email' => $user->email,
-            'address' => $user->address,
-            'gender' => $user->gender,
-            'contact_number' => $user->contact_number,
-            'image' => $user->image,
-            'birth_date' => $user->birth_date
-        ];
+        // $ret = [
+        //     'name' => $user->name,
+        //     'email' => $user->email,
+        //     'address' => $user->address,
+        //     'gender' => $user->gender,
+        //     'contact_number' => $user->contact_number,
+        //     'image' => $user->image,
+        //     'birth_date' => $user->birth_date,
+        // ];
 
-        return $this->success($ret);
+        return $this->success($user);
     }
 
     // Upddate profile
