@@ -28,6 +28,7 @@ class UserApiController extends Controller
             'contact_number' => ['nullable', 'numeric'],
             'image' => ['nullable', 'image', 'mimes:jpeg,bmp,png,jpg,svg'],
             'birth_date' => ['nullable', 'date', 'before:today'],
+            'image_name' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user = $request->user();
@@ -44,18 +45,38 @@ class UserApiController extends Controller
             $imageName = $user->image;
         }
 
+        $user->image = $imageName;
+
+        if ($request->image_name != null) {
+            $old_path = public_path('temp_image/' . $request->image_name);
+            if (File::exists($old_path)) {
+                // Check user path
+                $user_path = public_path('user_image/' . $user->image);
+                if (File::exists($user_path)) {
+                    File::delete($user_path);
+                }
+                // Change image name
+                $user->image = $request->image_name;
+                // Move image path
+                File::move(
+                    public_path('temp_image/' . $request->image_name),
+                    public_path('user_image/' . $user->image)
+                );
+            }
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->address = $request->address;
         $user->gender = $request->gender;
         $user->contact_number = $request->contact_number;
-        $user->image = $imageName;
         $user->birth_date = $request->birth_date;
         $user->save();
 
         return $this->success();
     }
 
+    // Temp
     public function handleUploadUserImage(Request $request)
     {
         $request->validate([
@@ -66,21 +87,15 @@ class UserApiController extends Controller
 
         //Handle Photo
         if ($request->hasFile('image')) {
-            $old_path = public_path('user_image/' . $user->image);
-            if (File::exists($old_path)) {
-                File::delete($old_path);
-            }
             $imageName = time() . '.' . $request->file('image')->extension();
-            $request->image->move(public_path('/user_image'), $imageName);
+            $request->image->move(public_path('/temp_image'), $imageName);
         } else {
             $imageName = $user->image;
             return $this->fail("Fail to Save the image");
         }
 
-        $user->image = $imageName;
-        $user->save();
-
-        $ret['image_link'] = asset('/user_image/' . $user->image);
+        $ret['image_link'] = asset('/temp_image/' . $imageName);
+        $ret['image_name'] = $imageName;
         return $this->success($ret);
     }
 
