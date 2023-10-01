@@ -24,6 +24,8 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('logout', 'AuthApiController@destroy');
         Route::get('profile', 'UserApiController@show');
         Route::post('profile/update', 'UserApiController@update');
+        // Route::post('profile/password/update', 'UserApiController@updatePassword');
+        Route::post('profile/avatar/update', 'UserApiController@handleUploadUserImage');
 
         /* Plant*/
         Route::get('plant', 'PlantApiController@index');
