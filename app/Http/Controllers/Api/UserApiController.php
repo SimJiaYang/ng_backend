@@ -102,12 +102,21 @@ class UserApiController extends Controller
     public function updatePassword(Request $request)
     {
         $request->validate([
-            'password' => ['required', Rules\Password::defaults()],
+            'old_password' => ['required', 'String', Rules\Password::defaults()],
+            'new_password' => ['required', Rules\Password::defaults()],
         ]);
 
         $user = $request->user();
 
-        $user->update(['password' => Hash::make($request->password)]);
+        // Match The Old Password
+        if (!Hash::check($request->old_password, $user->password)) {
+            return $this->fail("Error, Old Password doesn't match!");
+        }
+
+        // Update the new Password
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
 
         return $this->success();
     }
