@@ -13,7 +13,6 @@ class PlantApiController extends Controller
     // Show Plant Info
     public function index()
     {
-
         $plants = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
             ->where('plant.status', '1')
             ->where('plant.quantity', '>', '0')
