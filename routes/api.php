@@ -33,6 +33,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
 
 
         /* Product */
-        Route::get('product', 'ProductApiController@index');
+        Route::get('productlist', 'ProductApiController@productList');
     });
 });
