@@ -10,14 +10,26 @@ use Illuminate\Support\Facades\Storage;
 
 class PlantApiController extends Controller
 {
-    // Show Plant Info
-    public function index()
+    // Pagination for plant
+    public function plantList(Request $request)
     {
-        $plants = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+        $plants_query = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
             ->where('plant.status', '1')
             ->where('plant.quantity', '>', '0')
-            ->select('plant.*', 'category.name as category_name', 'plant.image as image')
-            ->get();
+            ->select('plant.*', 'category.name as category_name', 'plant.image as image');
+
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 8;
+        }
+
+        if ($request->noPagination) {
+            $plants = $plants_query->get();
+        } else {
+            $plants = $plants_query->paginate($limit);
+        }
+
 
         $ret['plant'] = $plants;
 

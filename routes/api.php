@@ -28,8 +28,9 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::post('profile/avatar/update', 'UserApiController@handleUploadUserImage');
 
         /* Plant*/
-        Route::get('plant', 'PlantApiController@index');
+        Route::get('plantlist', 'PlantApiController@plantList');
         Route::get('plant/detail', 'PlantApiController@show');
+
 
         /* Product */
         Route::get('product', 'ProductApiController@index');
