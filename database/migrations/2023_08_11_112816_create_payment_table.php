@@ -19,7 +19,11 @@ return new class extends Migration
             $table->string('method');
             $table->date('date');
             $table->foreignId('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('order');
             $table->foreignId('bidding_id')->nullable();
+            $table->foreign('bidding_id')->references('id')->on('bidding');
+            $table->foreignId('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

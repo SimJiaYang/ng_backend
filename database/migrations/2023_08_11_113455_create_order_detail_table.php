@@ -17,10 +17,15 @@ return new class extends Migration
             $table->double('price', 8, 2);
             $table->double('amount', 8, 2);
             $table->foreignId('order_id');
+            $table->foreign('order_id')->references('id')->on('order');
             $table->foreignId('cart_id')->nullable();
+            $table->foreign('cart_id')->references('id')->on('cart');
             $table->foreignId('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('product');
             $table->foreignId('plant_id')->nullable();
+            $table->foreign('plant_id')->references('id')->on('plant');
             $table->foreignId('bidding_id')->nullable();
+            $table->foreign('bidding_id')->references('id')->on('bidding');
             $table->timestamps();
         });
     }

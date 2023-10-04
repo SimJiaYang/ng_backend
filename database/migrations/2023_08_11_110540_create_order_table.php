@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('status');
             $table->date('date');
             $table->double('total_amount', 8, 2);
+            $table->foreignId('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('cart_id')->nullable();
+            $table->foreign('cart_id')->references('id')->on('cart');
             $table->timestamps();
         });
     }

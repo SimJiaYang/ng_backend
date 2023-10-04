@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('details');
             $table->date('expected_date')->nullable();
             $table->foreignId('order_id');
+            $table->foreign('order_id')->references('id')->on('order');
             $table->timestamps();
         });
     }

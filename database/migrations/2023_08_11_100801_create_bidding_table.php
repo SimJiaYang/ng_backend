@@ -17,11 +17,13 @@ return new class extends Migration
             $table->double('min_amount', 8, 2);
             $table->string('status');
             $table->string('message');
-            $table->foreignId('winner')->nullable();
+            $table->foreignId('win_id')->nullable();
+            $table->foreign('win_id')->references('id')->on('users');
             $table->double('win_amount', 8, 2)->nullable();
             $table->timestamp('start_time', $precision = 0);
             $table->timestamp('end_time', $precision = 0)->nullable();
             $table->foreignId('plant_id');
+            $table->foreign('plant_id')->references('id')->on('plant');
             $table->timestamps();
         });
     }
