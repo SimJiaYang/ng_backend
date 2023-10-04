@@ -3,8 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
-use function Database\Factories\getCategoryID as FactoriesGetCategoryID;
+use App\Models\Category;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -18,6 +17,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $randomProductCategoryId = Category::where('type', 'Product')->inRandomOrder()->value('id');
         return [
             'name' => fake()->name(),
             'price' => fake()->randomFloat(2, 1, 100),
@@ -25,18 +25,7 @@ class ProductFactory extends Factory
             'quantity' => fake()->numberBetween(0, 10),
             'status' => "1",
             'image' => "no_product.png",
-            'cat_id' => getCategoryID(),
+            'cat_id' => $randomProductCategoryId,
         ];
     }
-}
-
-function getCategoryID()
-{
-    $result = fake()->boolean(50);
-    if ($result) {
-        $number = 6;
-    } else {
-        $number = 7;
-    }
-    return $number;
 }

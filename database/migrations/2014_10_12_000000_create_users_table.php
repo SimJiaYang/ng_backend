@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->string('image')->nullable();
             $table->string('type')->default('user');
+            $table->string('status')->default('1');
             $table->rememberToken();
             $table->timestamps();
         });

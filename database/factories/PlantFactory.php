@@ -17,10 +17,11 @@ class PlantFactory extends Factory
      */
     public function definition(): array
     {
+        $randomPlantCategoryId = Category::where('type', 'Plant')->inRandomOrder()->value('id');
         return [
             'name' => fake()->name(),
             'quantity' => fake()->numberBetween(0, 10),
-            'cat_id' => fake()->randomElement(Category::pluck('id')->toArray()),
+            'cat_id' =>  $randomPlantCategoryId,
             'price' => fake()->randomFloat(2, 1, 100),
             'description' => fake()->paragraph(),
             'sunlight_need' => fake()->randomElement(['Full', 'Partial', 'Shade']),
