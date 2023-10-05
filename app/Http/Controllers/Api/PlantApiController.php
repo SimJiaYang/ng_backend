@@ -4,12 +4,30 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Plant;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
 class PlantApiController extends Controller
 {
+    public function plant()
+    {
+        $plants = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+            ->where('plant.status', '1')
+            ->where('plant.quantity', '>', '0')
+            ->select('plant.*', 'category.name as category_name', 'plant.image as image')
+            ->get();
+
+        if ($plants->count() == 0) {
+            return $this->fail('No plant data available');
+        }
+
+        $ret['plant'] = $plants;
+        return $this->success($ret);
+    }
+
+
     // Pagination for plant
     public function plantList(Request $request)
     {
@@ -76,6 +94,17 @@ class PlantApiController extends Controller
 
         $ret['plant'] = $plants;
 
+        return $this->success($ret);
+    }
+
+    public function getCategory()
+    {
+        $category =  Category::where('type', 'plant')
+            ->where('status', '1')->get();
+        if ($category->count() == 0) {
+            return $this->fail('No category data available');
+        }
+        $ret['category'] = $category;
         return $this->success($ret);
     }
 

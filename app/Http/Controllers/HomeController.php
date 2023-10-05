@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -26,6 +26,13 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function index2()
+    {
+        $category = Category::where('status', '1')->paginate(5);
+        return view('index')
+            ->with('category', $category);
     }
 
     public function home()

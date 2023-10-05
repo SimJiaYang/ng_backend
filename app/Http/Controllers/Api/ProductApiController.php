@@ -3,11 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
 {
+    public function product()
+    {
+        $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
+            ->where('product.status', '1')
+            ->where('product.quantity', '>', '0')
+            ->select('product.*', 'category.name as category_name', 'product.image as image')
+            ->get();
+
+        if ($product->count() == 0) {
+            return $this->fail('No product data available');
+        }
+
+        $ret['products'] = $product;
+        return $this->success($ret);
+    }
+
     // Show Product Info
     public function productList(Request $request)
     {
@@ -73,6 +90,17 @@ class ProductApiController extends Controller
 
         $ret['products'] = $products;
 
+        return $this->success($ret);
+    }
+
+    public function getCategory()
+    {
+        $category =  Category::where('type', 'product')
+            ->where('status', '1')->get();
+        if ($category->count() == 0) {
+            return $this->fail('No category data available');
+        }
+        $ret['category'] = $category;
         return $this->success($ret);
     }
 }

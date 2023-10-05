@@ -1,241 +1,313 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default"
+    data-assets-path="../assets/" data-template="vertical-menu-template-free">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Nursery Garden</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url('/icon/nursery_garden_icon.png') }}" />
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
+        rel="stylesheet" />
 
-    {{-- App Icon --}}
-    <link rel="icon" href="{{ url('/icon/nursery_garden_icon.png') }}" />
+    <link rel="stylesheet" href="../assets/vendor/fonts/materialdesignicons.css" />
 
-    <!-- Scripts -->
-    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+    <!-- Menu waves for no-customizer fix -->
+    <link rel="stylesheet" href="../assets/vendor/libs/node-waves/node-waves.css" />
 
-    <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
 
-    <!-- Include Bootstrap JS (optional) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
-    <style>
-        body {
-            background-color: #fbfbfb;
-        }
+    <!-- Page CSS -->
 
-        @media (min-width: 991.98px) {
-            main {
-                padding-left: 240px;
-            }
-        }
-
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            padding: 58px 0 0;
-            /* Height of navbar */
-            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-            width: 240px;
-            z-index: 600;
-        }
-
-        @media (max-width: 991.98px) {
-            .sidebar {
-                width: 100%;
-            }
-        }
-
-        .sidebar .active {
-            border-radius: 5px;
-            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-        }
-
-        .sidebar-sticky {
-            position: relative;
-            top: 0;
-            height: calc(100vh - 48px);
-            padding-top: 0.5rem;
-            overflow-x: hidden;
-            overflow-y: auto;
-            /* Scrollable contents if viewport is shorter than content. */
-        }
-
-        #sidebarMenu {
-            background-color: #ECFFDC;
-        }
-
-        .list-group-item {
-            background-color: #ECFFDC;
-        }
-
-        #main-navbar {
-            background-color: #ECFFDC;
-            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-        }
-    </style>
-
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="../assets/js/config.js"></script>
+</head>
 
 <body>
-    <header>
-        <!-- Sidebar -->
-        <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse">
-            <div class="position-sticky">
-                <div class="list-group list-group-flush mx-3 mt-4">
-
-                    {{-- Home --}}
-                    <a href="{{ route('home') }}" class="list-group-item list-group-item-action ripple py-2"
-                        aria-current="true">
-                        <img src="{{ url('/icon/home-icon.png') }}" alt="" width="20" height="20"
-                            class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Dashboard</span>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <div class="app-brand demo">
+                    <a href="index.html" class="app-brand-link">
+                        <span class="app-brand-logo demo me-1">
+                            <img src="{{ url('/icon/nursery_garden_icon.png') }}" height="25" width="25">
+                        </span>
+                        <span class="app-brand-text demo menu-text fw-semibold ms-2">Nursery Garden</span>
                     </a>
 
-                    {{-- Customer --}}
-                    <a href="{{ route('customer.index') }}" class="list-group-item list-group-item-action ripple py-2">
-                        <img src="{{ url('/icon/find-job-icon.png') }}" alt="" width="20" height="20"
-                            class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Customer</span>
+                    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+                        <i class="mdi menu-toggle-icon d-xl-block align-middle mdi-20px"></i>
                     </a>
-
-                    {{-- Plant --}}
-                    <a href="{{ route('plant.index') }}" class="list-group-item list-group-item-action ripple py-2">
-                        <img src="{{ url('/icon/flower-plant-icon.png') }}" alt="" width="20" height="20"
-                            class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Plant</span>
-                    </a>
-
-                    {{-- Product --}}
-                    <a href="{{ route('product.index') }}" class="list-group-item list-group-item-action ripple py-2">
-                        <img src="{{ url('/icon/box-package-icon.png') }}" alt="" width="20" height="20"
-                            class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Product</span>
-                    </a>
-
-                    {{-- Category --}}
-                    <a href="{{ route('category.index') }}" class="list-group-item list-group-item-action ripple py-2">
-                        <img src="{{ url('/icon/list-round-bullet-icon.png') }}" alt="" width="20"
-                            height="20" class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Categories</span>
-                    </a>
-
-                    {{-- Order --}}
-                    <a href="{{ route('order.index') }}" class="list-group-item list-group-item-action ripple py-2">
-                        <img src="{{ url('/icon/text-document-check-icon.png') }}" alt="" width="20"
-                            height="20" class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Orders</span>
-                    </a>
-
-                    {{-- Bidding --}}
-                    <a href="{{ route('bidding.index') }}" class="list-group-item list-group-item-action ripple py-2">
-                        <img src="{{ url('/icon/penalty-icon.png') }}" alt="" width="20" height="20"
-                            class="d-inline-block align-text-top mx-2">
-                        <span class="mt-3">Biddings</span>
-                    </a>
-
                 </div>
-            </div>
-        </nav>
-        <!-- Sidebar -->
 
-        <!-- Navbar -->
-        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
-            <!-- Container wrapper -->
-            <div class="container-fluid">
-                <!-- Toggle button -->
-                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu"
-                    aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <div class="menu-inner-shadow"></div>
 
-                <!-- Brand -->
-                <a class="navbar-brand" href="{{ route('home') }}">
-                    <img src="{{ url('/image/NurseryGarden.png') }}" height="25" alt="" />
-                </a>
-
-                <!-- Right links -->
-                <ul class="navbar-nav
-                            ms-auto d-flex flex-row">
-                    <!-- Notification dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link me-3 me-lg-0 dropdown-toggle hidden-arrow" href="#"
-                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ url('/icon/bell-icon.png') }}" alt="" width="20" height="20"
-                                class="d-inline-block align-text-top mx-2">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <li>
-                                <a class="dropdown-item" href="#">New orders</a>
-                            </li>
-                            {{-- <li>
-                                <a class="dropdown-item" href="#">Another news</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li> --}}
-                        </ul>
-                    </li>
-
-                    <!-- Icon -->
-                    <li class="nav-item">
-                        <a class="nav-link me-3 me-lg-0" href="#">
-                            <i class="fas fa-fill-drip"></i>
+                <ul class="menu-inner py-1">
+                    <!-- Dashboards -->
+                    <li class="menu-item">
+                        <a href="{{ route('home') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                            <div data-i18n="Dashboards">Dashboards</div>
                         </a>
                     </li>
 
-                    <!-- Avatar -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
-                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            {{ Auth::user()->name }}
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
-                                class="rounded-circle px-1" height="22" alt="Avatar" loading="lazy" />
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                            {{-- <li>
-                                <a class="dropdown-item" href="#">Settings</a>
-                            </li> --}}
-
-                        </ul>
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Category</span>
                     </li>
+
+                    <!-- Category -->
+                    <li class="menu-item">
+                        <a href="{{ route('category.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-format-list-bulleted"></i>
+                            <div data-i18n="Dashboards">Categories</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('category.insert') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
+                            <div data-i18n="Dashboards">Add Category</div>
+                        </a>
+                    </li>
+
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Plant</span>
+                    </li>
+
+                    <!-- Plant -->
+                    <li class="menu-item">
+                        <a href="{{ route('plant.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-flower-outline"></i>
+                            <div data-i18n="Dashboards">Plants</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('plant.insert') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
+                            <div data-i18n="Dashboards">Add Plant</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Product</span>
+                    </li>
+
+                    <!-- Product -->
+                    <li class="menu-item">
+                        <a href="{{ route('product.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
+                            <div data-i18n="Dashboards">Products</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('product.insert') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
+                            <div data-i18n="Dashboards">Add Product</div>
+                        </a>
+                    </li>
+
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Order</span>
+                    </li>
+
+                    <!-- Order -->
+                    <li class="menu-item">
+                        <a href="{{ route('order.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
+                            <div data-i18n="Dashboards">Orders</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Biddings</span>
+                    </li>
+
+                    <!-- Order -->
+                    <li class="menu-item">
+                        <a href="{{ route('bidding.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
+                            <div data-i18n="Dashboards">Biddings</div>
+                        </a>
+                    </li>
+
                 </ul>
-            </div>
-            <!-- Container wrapper -->
-        </nav>
-        <!-- Navbar -->
-    </header>
-    <!--Main Navigation-->
+            </aside>
+            <!-- / Menu -->
 
-    <!--Main layout-->
-    <main style="margin-top: 58px">
-        <div class="container pt-4">
-            @yield('content')
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                    id="layout-navbar">
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                            <i class="mdi mdi-menu mdi-24px"></i>
+                        </a>
+                    </div>
+
+                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <!-- Place this tag where you want the button to render. -->
+                            <li class="nav-item lh-1 me-3">
+                                {{ Auth::user()->name }}
+                            </li>
+
+                            <!-- User -->
+                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown">
+                                    <div class="avatar avatar-online">
+                                        <img src="../assets/img/avatars/1.png" alt
+                                            class="w-px-40 h-auto rounded-circle" />
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
+                                    <li>
+                                        <a class="dropdown-item pb-2 mb-1" href="#">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-2 pe-1">
+                                                    <div class="avatar avatar-online">
+                                                        <img src="../assets/img/avatars/1.png" alt
+                                                            class="w-px-40 h-auto rounded-circle" />
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0">John Doe</h6>
+                                                    <small class="text-muted">Admin</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider my-1"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="mdi mdi-account-outline me-1 mdi-20px"></i>
+                                            <span class="align-middle">My Profile</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="mdi mdi-cog-outline me-1 mdi-20px"></i>
+                                            <span class="align-middle">Settings</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider my-1"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+                                            <i class="mdi mdi-power me-1 mdi-20px"></i>
+                                            <span class="align-middle">Log Out</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--/ User -->
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- / Navbar -->
+
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        @yield('content')
+                    </div>
+                    <!-- / Content -->
+                </div>
+
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+                    <div class="container-xxl">
+                        <div
+                            class="footer-container d-flex align-items-center justify-content-between py-3 flex-md-row flex-column">
+                            <div class="text-body mb-2 mb-md-0">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script>
+                                - Nursery Garden <span class="text-danger"><i class="tf-icons mdi mdi-heart"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </footer>
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
         </div>
-    </main>
+        <!-- / Layout page -->
     </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <div class="buy-now">
+        <a href="" target="_blank" class="btn btn-danger btn-buy-now">Back to the Top</a>
+    </div>
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="../assets/js/dashboards-analytics.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>
