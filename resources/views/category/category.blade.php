@@ -31,48 +31,55 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($category as $categories)
+                        @if (count($category) < 1)
                             <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <p class="fw-bold mb-1">{{ $categories->id }}</p>
-                                    </div>
-                                </td>
                                 <td class="text-truncate">
-                                    <p class="fw-normal mb-1">{{ $categories->name }}</p>
+                                    <p class="fw-normal mb-1">Data no found.</p>
                                 </td>
-                                <td class="text-truncate">
-                                    <p class="fw-normal mb-1">{{ $categories->type }}</p>
-                                </td>
-                                <td class="text-truncate">
-                                    <a class="navbar-brand" href="{{ route('category.edit', $categories->id) }}">
-                                        <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
-                                    </a>
-
-                                    <a class="navbar-brand"
-                                        onclick="return confirm('Are you sure you want to change the status?')"
-                                        href="{{ route('category.delete', $categories->id) }}">
-                                        @if ($categories->status == 0)
-                                            <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
-                                        @else
-                                            <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
-                                        @endif
-
-                                    </a>
-                                </td>
-
-                                @if ($categories->status == 0)
-                                    <td>
-                                        <span class="badge bg-label-danger rounded-pill">Disabled</span>
-                                    </td>
-                                @else
-                                    <td>
-                                        <span class="badge bg-label-success rounded-pill">Active</span>
-                                    </td>
-                                @endif
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($category as $categories)
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <p class="fw-bold mb-1">{{ $categories->id }}</p>
+                                        </div>
+                                    </td>
+                                    <td class="text-truncate">
+                                        <p class="fw-normal mb-1">{{ $categories->name }}</p>
+                                    </td>
+                                    <td class="text-truncate">
+                                        <p class="fw-normal mb-1">{{ $categories->type }}</p>
+                                    </td>
+                                    <td class="text-truncate">
+                                        <a class="navbar-brand" href="{{ route('category.edit', $categories->id) }}">
+                                            <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
+                                        </a>
 
+                                        <a class="navbar-brand"
+                                            onclick="return confirm('Are you sure you want to change the status?')"
+                                            href="{{ route('category.delete', $categories->id) }}">
+                                            @if ($categories->status == 0)
+                                                <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
+                                            @else
+                                                <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
+                                            @endif
+
+                                        </a>
+                                    </td>
+
+                                    @if ($categories->status == 0)
+                                        <td>
+                                            <span class="badge bg-label-danger rounded-pill">Disabled</span>
+                                        </td>
+                                    @else
+                                        <td>
+                                            <span class="badge bg-label-success rounded-pill">Active</span>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

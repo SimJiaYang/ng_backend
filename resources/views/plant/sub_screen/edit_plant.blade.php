@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    top: 13px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            top: 13px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
     </style>
     <script>
         function preview() {
@@ -91,7 +91,7 @@
                                             <div class="form-outline">
                                                 <select class="select form-control-lg px-3" id="selectSunlight"
                                                     name="sunlight">
-                                                    <option hidden value="{{ $plants->sunglight_need }}">
+                                                    <option hidden value="{{ $plants->sunlight_need }}">
                                                         {{ $plants->sunlight_need }}</option>
                                                     <option value="Full">Full</option>
                                                     <option value="Partial">Partial</option>

@@ -16,9 +16,8 @@ class PlantController extends Controller
             "plant.*",
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.status', '1')
             ->where('plant.quantity', '>', '0')
-            ->paginate(3);
+            ->paginate(5);
         return view('plant.plant')
             ->with('plant', $plant);
     }
@@ -47,7 +46,7 @@ class PlantController extends Controller
             'price' => $request->price,
             'description' => $request->description,
             'quantity' => $request->quantity,
-            'sunglight_need' => $request->sunlight,
+            'sunlight_need' => $request->sunlight,
             'water_need' => $request->water,
             'mature_height' => $request->height,
             'origin' => $request->origin,
@@ -70,8 +69,7 @@ class PlantController extends Controller
         )->leftjoin('category', 'category.id', 'plant.cat_id')
             ->where('plant.name', 'like', "%$keyword%")
             ->where('plant.quantity', '>', '0')
-            ->where('plant.status', '1')
-            ->paginate(3);
+            ->paginate(5);
         return view('plant.plant')
             ->with('plant', $plant);;
     }
@@ -112,7 +110,7 @@ class PlantController extends Controller
         $plant->price = $request->price;
         $plant->description = $request->description;
         $plant->quantity = $request->quantity;
-        $plant->sunglight_need = $request->sunlight;
+        $plant->sunlight_need = $request->sunlight;
         $plant->water_need = $request->water;
         $plant->mature_height = $request->height;
         $plant->origin = $request->origin;
@@ -127,7 +125,12 @@ class PlantController extends Controller
     public function delete($id)
     {
         $plant = Plant::where('id', $id)->first();
-        $plant->status = "0";
+        if ($plant->status == "1") {
+            $plant->status = "0";
+        } else {
+            $plant->status = "1";
+        }
+
         $plant->save();
         return redirect()->route('plant.index');
     }
