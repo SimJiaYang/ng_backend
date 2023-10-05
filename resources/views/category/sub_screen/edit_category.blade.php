@@ -15,8 +15,8 @@
         }
 
         /* .card-registration .select-arrow {
-                                                                                                                                                                                                                                                                        top: 13px;
-                                                                                                                                                                                                                                                                    } */
+                                                                                                                                                                                                                                                                                top: 13px;
+                                                                                                                                                                                                                                                                            } */
     </style>
 
     <section class=" gradient-custom">

@@ -30,7 +30,8 @@ class HomeController extends Controller
 
     public function index2()
     {
-        $category = Category::where('status', '1')->paginate(5);
+        $category = Category::all();
+        $category = Category::paginate(5);
         return view('index')
             ->with('category', $category);
     }

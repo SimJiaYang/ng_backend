@@ -52,8 +52,16 @@
                                         <img src="{{ url('/icon/delete.png') }}" height="25" alt="" />
                                     </a>
                                 </td>
-                                <td><span class="badge bg-label-warning rounded-pill">Pending</span>
-                                </td>
+
+                                @if ($categories->status == 0)
+                                    <td>
+                                        <span class="badge bg-label-danger rounded-pill">Disabled</span>
+                                    </td>
+                                @else
+                                    <td>
+                                        <span class="badge bg-label-success rounded-pill">Active</span>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
 
