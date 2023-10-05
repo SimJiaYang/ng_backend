@@ -31,7 +31,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('plantlist', 'PlantApiController@plantList');
         Route::get('plant/detail', 'PlantApiController@show');
 
-
         /* Product */
         Route::get('productlist', 'ProductApiController@productList');
     });

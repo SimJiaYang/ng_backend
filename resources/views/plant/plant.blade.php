@@ -119,7 +119,7 @@
                         {{-- Sunlight --}}
                         <td>
                             <div class="d-flex align-items-center">
-                                <p class="mb-1">{{ $plants->sunglight_need }}</p>
+                                <p class="mb-1">{{ $plants->sunlight_need }}</p>
                             </div>
                         </td>
 

@@ -18,18 +18,61 @@ class PlantApiController extends Controller
             ->where('plant.quantity', '>', '0')
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
 
+        // Search by plant name
+        if ($request->keyword) {
+            $plants_query = $plants_query->where('plant.name', 'like', '%' . $request->keyword . '%');
+        }
+
+        // Search by category
+        if ($request->category) {
+            $plants_query = $plants_query->whereHas(
+                'category',
+                function ($query) use ($request) {
+                    $query->where('category.name', $request->category);
+                }
+            );
+        }
+
+        // If result is impty, return fail
+        if ($plants_query->count() == 0) {
+            return $this->fail('Plant no found');
+        }
+
+        // Pagination Limit
         if ($request->limit) {
             $limit = $request->limit;
         } else {
             $limit = 8;
         }
 
-        if ($request->noPagination) {
-            $plants = $plants_query->get();
+        // Sort By 
+        if ($request->sortBy && in_array(
+            $request->sortBy,
+            [
+                'id', 'created_at'
+            ]
+        )) {
+            $sortBy = $request->sortBy;
         } else {
-            $plants = $plants_query->paginate($limit);
+            $sortBy = 'id';
         }
 
+        if ($request->sortOrder && in_array(
+            $request->sortOrder,
+            [
+                'asc', 'desc'
+            ]
+        )) {
+            $sortOrder = $request->sortOrder;
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        // Pagination
+        $plants = $plants_query->orderBy(
+            $sortBy,
+            $sortOrder
+        )->paginate($limit);
 
         $ret['plant'] = $plants;
 
