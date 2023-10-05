@@ -41,7 +41,6 @@ class CategoryController extends Controller
     {
         $keyword = $request->name;
         $category = Category::where('name', 'like', "%$keyword%")
-            ->where('status', '1')
             ->paginate(5);
         return view('category.category')
             ->with('category', $category);;
@@ -68,7 +67,11 @@ class CategoryController extends Controller
     public function delete($id)
     {
         $category = Category::where('id', $id)->first();
-        $category->status = "0";
+        if ($category->status == "1") {
+            $category->status = "0";
+        } else {
+            $category->status = "1";
+        }
         $category->save();
         return redirect()->route('category.index');
     }

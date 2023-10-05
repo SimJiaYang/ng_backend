@@ -1,83 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        .card-registration .select-input.form-control[readonly]:not([disabled]) {
-            font-size: 1rem;
-            line-height: 2.15;
-            padding-left: .75em;
-            padding-right: .75em;
-        }
-
-        .card-registration {
-            background-color: #ECFFDC;
-            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-        }
-
-        /* .card-registration .select-arrow {
-                                                                                                                                                                                                            top: 13px;
-                                                                                                                                                                                                        } */
-    </style>
-    <script>
-        function getSelectedOption() {
-            var selectElement = document.getElementById("selectOption");
-            var selectedOptionValue = selectElement.value;
-
-            if (selectedOptionValue === "1") {
-                alert("Please select an option");
-                return false; // Prevent form submission
-            } else {
-                // You can now use the selectedOptionValue in your further processing
-                return true; // Allow form submission
-            }
-        }
-    </script>
-
-    <section class=" gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row  h-100">
-                <div class="col-12 col-lg-9 col-xl-7">
-                    <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                        <div class="card-body p-4 p-md-5">
-                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 display-5">Add Category</h3>
-                            <form method="POST" action="{{ route('category.store') }}"
-                                onsubmit="return getSelectedOption();">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-6 mb-4 d-flex align-items-center">
-
-                                        <div class="form-outline">
-                                            <input type="text" id="name" name="name"
-                                                class="form-control form-control-lg" placeholder="Category Name" required />
-                                            <label class="form-label" for="name">Category Name</label>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="col-md-6 mb-4 ">
-                                        <select class="select form-control-lg px-3" id="selectOption" name="type">
-                                            <option value="1" disabled selected>Choose option</option>
-                                            <option value="plant">Plant</option>
-                                            <option value="product">Product</option>
-                                        </select>
-                                        <div class="w-100"></div>
-                                        <label class="form-label">Category Type</label>
-                                    </div>
-                                </div>
-
-                                <div class="mt-1 pt-2">
-                                    <input class="btn btn-lg" style="background-color: #00A36C; color: white;"
-                                        type="submit" value="Submit" />
-                                    <a href="{{ route('category.index') }}" class="btn btn-lg"
-                                        style="background-color: #00A36C; color: white;" type="submit"
-                                        value="Back">Back</a>
-                                </div>
-
-                            </form>
+    <!-- Basic Layout -->
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Create new category</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('category.store') }}" onsubmit="return getSelectedOption();">
+                        @csrf
+                        <div class="form-floating form-floating-outline mb-4">
+                            <input type="text" id="name" name="name" class="form-control"
+                                id="basic-default-fullname" placeholder="Name" />
+                            <label for="basic-default-fullname">Name</label>
                         </div>
-                    </div>
+                        <div class="form-floating form-floating-outline mb-4">
+                            <select class="form-select" id="selectOption" aria-label="Default select example"
+                                name="type">
+                                <option value="" disabled selected>Choose option</option>
+                                <option value="Plant">Plant</option>
+                                <option value="Product">Product</option>
+                            </select>
+                            <label for="exampleFormControlSelect1">Type</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a href="{{ route('category.index') }}" class="btn btn-primary" value="Back">Back</a>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
-@endsection
+
+        <script>
+            function getSelectedOption() {
+                var selectElement = document.getElementById("selectOption");
+                var selectedOptionValue = selectElement.value;
+
+                if (selectedOptionValue === "") {
+                    alert("Please select an option");
+                    return false; // Prevent form submission
+                } else {
+                    // You can now use the selectedOptionValue in your further processing
+                    return true; // Allow form submission
+                }
+            }
+        </script>
+    @endsection
