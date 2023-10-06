@@ -44,7 +44,7 @@ class HomeController extends Controller
         if (Auth::user()->type == "admin") {
             return view('home');
         } else {
-            return view('unauthorized.user');
+            return view('404');
         }
 
 

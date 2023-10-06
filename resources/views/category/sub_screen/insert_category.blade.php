@@ -25,7 +25,7 @@
                             </select>
                             <label for="exampleFormControlSelect1">Type</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="{{ route('category.index') }}" class="btn btn-primary" value="Back">Back</a>
                     </form>
                 </div>

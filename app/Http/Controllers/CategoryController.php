@@ -39,9 +39,13 @@ class CategoryController extends Controller
 
     public function search(Request $request)
     {
+        $query = $request->name;
         $keyword = $request->name;
         $category = Category::where('name', 'like', "%$keyword%")
             ->paginate(5);
+        $category->appends(array(
+            'name' => $query
+        ));
         return view('category.category')
             ->with('category', $category);;
     }

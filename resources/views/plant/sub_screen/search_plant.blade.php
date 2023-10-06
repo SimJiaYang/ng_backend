@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <p class="display-5">Plants</p>
+    <p class="display-5">Search Result</p>
 
     <!-- Search -->
     <form action="{{ route('plant.search') }}" method="POST">

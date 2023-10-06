@@ -22,7 +22,7 @@ class Plant extends Model
         'price',
         'description',
         'quantity',
-        'sunglight_need',
+        'sunlight_need',
         'water_need',
         'mature_height',
         'origin',

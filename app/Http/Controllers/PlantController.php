@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Plant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 
 class PlantController extends Controller
 {
@@ -62,14 +63,18 @@ class PlantController extends Controller
 
     public function search(Request $request)
     {
+        $query = $request->name;
         $keyword = $request->name;
         $plant = Plant::select(
             "plant.*",
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.cat_id')
             ->where('plant.name', 'like', "%$keyword%")
-            ->where('plant.quantity', '>', '0')
-            ->paginate(5);
+            ->where('plant.quantity', '>', '0');
+        $plant = $plant->paginate(5)->setPath('');
+        $plant->appends(array(
+            'name' => $query
+        ));
         return view('plant.plant')
             ->with('plant', $plant);;
     }
@@ -98,7 +103,9 @@ class PlantController extends Controller
         if ($request->hasFile('image')) {
             $old_path = public_path('plant_image/' . $plant->image);
             if (File::exists($old_path)) {
-                File::delete($old_path);
+                if ($plant->image != 'no_plant.png') {
+                    File::delete($old_path);
+                }
             }
             $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('/plant_image'), $imageName);
