@@ -17,9 +17,8 @@ class ProductController extends Controller
             "product.*",
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'product.cat_id')
-            ->where('product.status', '1')
             ->where('product.quantity', '>', '0')
-            ->paginate(3);
+            ->paginate(5);
         return view('product.product')
             ->with('product', $product);
     }
@@ -60,6 +59,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
+        $query = $request->name;
         $keyword = $request->name;
         $product = Product::select(
             "product.*",
@@ -67,8 +67,10 @@ class ProductController extends Controller
         )->leftjoin('category', 'category.id', 'product.cat_id')
             ->where('product.name', 'like', "%$keyword%")
             ->where('product.quantity', '>', '0')
-            ->where('product.status', '1')
-            ->paginate(3);
+            ->paginate(5)->setPath('');
+        $product->appends(array(
+            'name' => $query
+        ));
         return view('product.product')
             ->with('product', $product);;
     }
@@ -96,7 +98,9 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $old_path = public_path('product_image/' . $product->image);
             if (File::exists($old_path)) {
-                File::delete($old_path);
+                if ($product->image != 'no_product.png') {
+                    File::delete($old_path);
+                }
             }
             $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('/product_image'), $imageName);
@@ -108,7 +112,6 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->description = $request->description;
         $product->quantity = $request->quantity;
-        $product->status = "1";
         $product->image = $imageName;
         $product->cat_id = $request->category_id;
         $product->save();
@@ -119,7 +122,11 @@ class ProductController extends Controller
     public function delete($id)
     {
         $product = Product::where('id', $id)->first();
-        $product->status = "0";
+        if ($product->status == "1") {
+            $product->status = "0";
+        } else {
+            $product->status = "1";
+        }
         $product->save();
         return redirect()->route('product.index');
     }

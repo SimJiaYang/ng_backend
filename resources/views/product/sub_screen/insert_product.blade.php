@@ -1,23 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        .card-registration .select-input.form-control[readonly]:not([disabled]) {
-            font-size: 1rem;
-            line-height: 2.15;
-            padding-left: .75em;
-            padding-right: .75em;
-        }
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-header">Create new product</h5>
+                <div class="card-body">
 
-        .card-registration {
-            background-color: #ECFFDC;
-            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-        }
+                    <form method="POST" action="{{ route('product.store') }}" onsubmit="return getSelectedOption();"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <!-- Personal Info -->
+                            <div class="col-12">
+                                <h6 class="mt-2">1. Basic Information</h6>
+                                <hr class="mt-0" />
+                            </div>
+                            <!-- Plant Details -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" class="form-control" placeholder="Soil" name="name" required />
+                                    <label for="name">Product Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="number" class="form-control" placeholder="9" name="quantity"
+                                        onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                        min="0" required />
+                                    <label for="inventory">Product Inventory</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="number" class="form-control" placeholder="99.99" name="price"
+                                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
+                                event.charCode == 46 || event.charCode == 0 "
+                                        min="1" step="0.01" required />
+                                    <label for="price">Product Price</label>
+                                </div>
+                            </div>
+                            <div class="form-floating form-floating-outline col-md-6 mb-3">
+                                <select class="form-select" id="selectCategory" aria-label="Default select example"
+                                    name="category_id">
+                                    <option value="default" disabled selected>Choose option</option>
+                                    @foreach ($category as $categories)
+                                        <option value="{{ $categories->id }}">{{ $categories->name }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="exampleFormControlSelect1">Category</label>
+                            </div>
 
-        /* .card-registration .select-arrow {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    top: 13px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                } */
-    </style>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    <textarea class="form-control h-px-100" name="description" maxlength="500"
+                                        placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmm ad minim veniam......"
+                                        rows="3" required></textarea>
+                                    <label for="description">Product description</label>
+                                </div>
+                            </div>
+
+
+                            <!-- Personal Info -->
+                            <div class="col-12 ">
+                                <h6 class="mt-2">2. Product Image &amp; Preview</h6>
+                                <hr class="mt-0" />
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    <img id="frame" class="img-fluid m-1" style="height:200px; width:200px" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="form-floating form-floating-outline">
+                                    <input class="form-control" type="file" id="formFile" name="image"
+                                        onchange="preview()">
+                                    <label for="formValidationFile">Product Image</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 ">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="{{ route('product.index') }}" class="btn btn-primary" value="Back">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function getSelectedOption() {
             // selectCategory
@@ -42,110 +117,4 @@
             frame.src = "";
         }
     </script>
-
-    <section class=" gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row  h-100">
-                <div class="col-12 col-lg-9 col-xl-7">
-                    <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                        <div class="card-body p-4 p-md-5">
-                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 display-5">Add Product</h3>
-                            <form method="POST" action="{{ route('product.store') }}" onsubmit="return getSelectedOption();"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-6 mb-4 d-flex align-items-center">
-                                        <div class="form-outline">
-                                            <input type="text" id="name" name="name"
-                                                class="form-control form-control-lg" placeholder="Product Name" required />
-                                            <label class="form-label" for="name">Product Name</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4 ">
-                                        <input type="number" id="quantity" name="quantity"
-                                            onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"
-                                            min="0" class="form-control form-control-lg"
-                                            placeholder="Product Inventory" required />
-                                        <div class="w-100"></div>
-                                        <label class="form-label">Product Quantity</label>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-4 d-flex align-items-center">
-
-                                        <div class="form-outline">
-                                            <input type="number" id="price" name="price" step=".01"
-                                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
-                                                event.charCode == 46 || event.charCode == 0 "
-                                                min="0" class="form-control form-control-lg"
-                                                placeholder="Product Price" required />
-                                            <label class="form-label" for="price">Product Price</label>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="col-md-6 mb-4 d-flex align-items-center">
-                                        <div class="form-outline">
-                                            <select class="select form-control-lg px-3 col-md-12" id="selectCategory"
-                                                name="category_id">
-                                                <option value="default" disabled selected>Choose option</option>
-                                                @foreach ($category as $categories)
-                                                    <option value="{{ $categories->id }}">{{ $categories->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="w-100"></div>
-                                            <label class="form-label">Product Category</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 mb-4 d-flex align-items-center">
-                                        <div class="form-outline col-md-12">
-                                            <textarea class="form-control col-md-12" id="description" rows="3" name="description" maxlength="500" required></textarea>
-                                            <label class="form-label" for="name">Product Description</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-4 d-flex align-items-center">
-                                        <div class="form-outline">
-                                            <input class="form-control" type="file" id="formFile" name="image"
-                                                onchange="preview()">
-                                            <label class="form-label" for="name">Product Image</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 mb-4 d-flex align-items-center">
-                                        <div class="form-outline">
-                                            <img id="frame" class="img-fluid m-1" style="height:200px; width:200px" />
-                                            <div class="w-100"></div>
-                                            <label class="form-label" for="name">Product Image Preview</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-1 pt-2">
-                                    <input class="btn btn-lg" style="background-color: #00A36C; color: white;"
-                                        type="submit" value="Submit" />
-                                    <a href="{{ route('product.index') }}" class="btn btn-lg"
-                                        style="background-color: #00A36C; color: white;" type="submit"
-                                        value="Back">Back</a>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection

@@ -28,14 +28,6 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function index2()
-    {
-        $category = Category::all();
-        $category = Category::paginate(5);
-        return view('index')
-            ->with('category', $category);
-    }
-
     public function home()
     {
         if (!Auth::check()) {

@@ -31,8 +31,6 @@ Auth::routes([
     'reset' => false,
 ]);
 
-Route::get('/home2', [HomeController::class, 'index2'])->name('home2');
-
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::middleware('auth:sanctum')->group(function () {

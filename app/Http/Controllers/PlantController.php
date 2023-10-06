@@ -121,7 +121,6 @@ class PlantController extends Controller
         $plant->water_need = $request->water;
         $plant->mature_height = $request->height;
         $plant->origin = $request->origin;
-        $plant->status = "1";
         $plant->image = $imageName;
         $plant->cat_id = $request->category_id;
         $plant->save();
