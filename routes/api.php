@@ -37,5 +37,8 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('product', 'ProductApiController@product');
         Route::get('productlist', 'ProductApiController@productList');
         Route::get('product/category', 'ProductApiController@getCategory');
+
+        /* Cart */
+        Route::post('cart/add', 'CartApiController@add');
     });
 });

@@ -9,6 +9,8 @@ class Cart extends Model
 {
     use HasFactory;
 
+    protected $table = 'cart';
+
     public $primaryKey = 'id';
 
     public $fk1 = 'product_id';
