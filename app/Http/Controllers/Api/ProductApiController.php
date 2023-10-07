@@ -33,6 +33,66 @@ class ProductApiController extends Controller
             ->where('product.quantity', '>', '0')
             ->select('product.*', 'category.name as category_name', 'product.image as image');
 
+        // If result is impty, return fail
+        if ($product_query->count() == 0) {
+            return $this->fail('Product no found');
+        }
+
+        // Sort By 
+        if ($request->sortBy && in_array(
+            $request->sortBy,
+            [
+                'id', 'created_at'
+            ]
+        )) {
+            $sortBy = $request->sortBy;
+        } else {
+            $sortBy = 'id';
+        }
+
+        if ($request->sortOrder && in_array(
+            $request->sortOrder,
+            [
+                'asc', 'desc'
+            ]
+        )) {
+            $sortOrder = $request->sortOrder;
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 8;
+        }
+
+
+        $products = $product_query->orderBy(
+            $sortBy,
+            $sortOrder
+        )->paginate($limit);
+
+        $ret['products'] = $products;
+
+        return $this->success($ret);
+    }
+
+    public function searchProduct(Request $request)
+    {
+        // If no keyword, return error message
+        if (
+            $request->keyword == null &&
+            $request->category == null
+        ) {
+            return $this->fail('Invalid request');
+        }
+
+        $product_query = Product::leftjoin('category', 'category.id', 'product.cat_id')
+            ->where('product.status', '1')
+            ->where('product.quantity', '>', '0')
+            ->select('product.*', 'category.name as category_name', 'product.image as image');
+
         // Search by product name
         if ($request->keyword) {
             $product_query = $product_query->where('product.name', 'like', '%' . $request->keyword . '%');
@@ -86,7 +146,17 @@ class ProductApiController extends Controller
         $products = $product_query->orderBy(
             $sortBy,
             $sortOrder
-        )->paginate($limit);
+        )->paginate($limit)->setPath('');
+
+        if ($request->keyword) {
+            $products->appends(array(
+                'keyword' => $request->keyword
+            ));
+        } else {
+            $products->appends(array(
+                'category' => $request->category
+            ));
+        }
 
         $ret['products'] = $products;
 

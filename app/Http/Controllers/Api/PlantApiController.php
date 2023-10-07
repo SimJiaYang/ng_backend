@@ -36,6 +36,67 @@ class PlantApiController extends Controller
             ->where('plant.quantity', '>', '0')
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
 
+        // If result is impty, return fail
+        if ($plants_query->count() == 0) {
+            return $this->fail('Plant no found');
+        }
+
+        // Pagination Limit
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 8;
+        }
+
+        // Sort By 
+        if ($request->sortBy && in_array(
+            $request->sortBy,
+            [
+                'id', 'created_at'
+            ]
+        )) {
+            $sortBy = $request->sortBy;
+        } else {
+            $sortBy = 'id';
+        }
+
+        if ($request->sortOrder && in_array(
+            $request->sortOrder,
+            [
+                'asc', 'desc'
+            ]
+        )) {
+            $sortOrder = $request->sortOrder;
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        // Pagination
+        $plants = $plants_query->orderBy(
+            $sortBy,
+            $sortOrder
+        )->paginate($limit);
+
+        $ret['plant'] = $plants;
+
+        return $this->success($ret);
+    }
+
+    public function searchPlant(Request $request)
+    {
+        // If no keyword, return error message
+        if (
+            $request->keyword == null &&
+            $request->category == null
+        ) {
+            return $this->fail('Invalid request');
+        }
+
+        $plants_query = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+            ->where('plant.status', '1')
+            ->where('plant.quantity', '>', '0')
+            ->select('plant.*', 'category.name as category_name', 'plant.image as image');
+
         // Search by plant name
         if ($request->keyword) {
             $plants_query = $plants_query->where('plant.name', 'like', '%' . $request->keyword . '%');
@@ -90,7 +151,17 @@ class PlantApiController extends Controller
         $plants = $plants_query->orderBy(
             $sortBy,
             $sortOrder
-        )->paginate($limit);
+        )->paginate($limit)->setPath('');
+
+        if ($request->keyword) {
+            $plants->appends(array(
+                'keyword' => $request->keyword
+            ));
+        } else {
+            $plants->appends(array(
+                'category' => $request->category
+            ));
+        }
 
         $ret['plant'] = $plants;
 
