@@ -15,6 +15,76 @@ use Carbon\Carbon;
 
 class CartApiController extends Controller
 {
+    public function show(Request $request)
+    {
+        $cart = Cart::where('user_id', Auth::id())
+            ->where('is_purchase', "false");
+        // $cart = Cart::where('user_id', $request->id)
+        //     ->where('is_purchase', "false");
+
+        // If result is impty, return fail
+        if ($cart->count() == 0) {
+            return $this->fail('Not item add to the cart yet.');
+        }
+
+        $ret = [];
+        $ret['plant'] = [];
+        $ret['product'] = [];
+
+        $cart_item = $cart->get();
+        foreach ($cart_item as $carts) {
+            // Get related information
+            if (!is_null($carts->plant_id)) {
+                $plant = Plant::find($carts->plant_id);
+                $ret['plant'][] = $plant;
+            } else if (!is_null($carts->product_id)) {
+                $product = Product::find($carts->product_id);
+                $ret['product'][] = $product;
+            }
+        }
+
+        // Sort By 
+        if ($request->sortBy && in_array(
+            $request->sortBy,
+            [
+                'id', 'created_at'
+            ]
+        )) {
+            $sortBy = $request->sortBy;
+        } else {
+            $sortBy = 'id';
+        }
+
+        if ($request->sortOrder && in_array(
+            $request->sortOrder,
+            [
+                'asc', 'desc'
+            ]
+        )) {
+            $sortOrder = $request->sortOrder;
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 5;
+        }
+
+        $cart = $cart->orderBy(
+            $sortBy,
+            $sortOrder
+        )->paginate($limit);
+
+        $ret['cart'] = $cart;
+
+        return $this->success(
+            $ret
+        );
+    }
+
+    // Add and update
     public function add(Request $request)
     {
         $user = Auth::user();
