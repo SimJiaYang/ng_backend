@@ -31,18 +31,6 @@ class CartApiController extends Controller
         $ret['plant'] = [];
         $ret['product'] = [];
 
-        $cart_item = $cart->get();
-        foreach ($cart_item as $carts) {
-            // Get related information
-            if (!is_null($carts->plant_id)) {
-                $plant = Plant::find($carts->plant_id);
-                $ret['plant'][] = $plant;
-            } else if (!is_null($carts->product_id)) {
-                $product = Product::find($carts->product_id);
-                $ret['product'][] = $product;
-            }
-        }
-
         // Sort By 
         if ($request->sortBy && in_array(
             $request->sortBy,
@@ -76,6 +64,18 @@ class CartApiController extends Controller
             $sortBy,
             $sortOrder
         )->paginate($limit);
+
+        $cart_item = $cart;
+        foreach ($cart_item as $carts) {
+            // Get related information
+            if (!is_null($carts->plant_id)) {
+                $plant = Plant::find($carts->plant_id);
+                $ret['plant'][] = $plant;
+            } else if (!is_null($carts->product_id)) {
+                $product = Product::find($carts->product_id);
+                $ret['product'][] = $product;
+            }
+        }
 
         $ret['cart'] = $cart;
 
@@ -177,5 +177,19 @@ class CartApiController extends Controller
         return $this->success(
             $ret
         );
+    }
+
+    public function delete(Request $request)
+    {
+        //Delete the cart
+        $deleteCart = Cart::where('user_id', Auth::id())
+            ->where('is_purchase', "false")
+            ->where('id', $request->id);
+        if ($deleteCart->exists()) {
+            $deleteCart->delete();
+        } else {
+            return $this->fail('Invalid request');
+        }
+        return $this->success();
     }
 }

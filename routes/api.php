@@ -43,5 +43,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         /* Cart */
         Route::get('cart', 'CartApiController@show');
         Route::post('cart/add', 'CartApiController@add');
+        Route::post('cart/delete', 'CartApiController@delete');
     });
 });
