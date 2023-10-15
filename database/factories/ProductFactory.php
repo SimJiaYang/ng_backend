@@ -18,13 +18,18 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $randomProductCategoryId = Category::where('type', 'Product')->inRandomOrder()->value('id');
+        $randomElement =  'Product' . fake()->randomElement(['a', 'b', 'c'] + range(1, 100));
+
+        $randomNumber = fake()->numberBetween(1, 12);
+        $imageFilename =  (string)$randomNumber . '.png';
+
         return [
-            'name' => fake()->name(),
+            'name' => $randomElement,
             'price' => fake()->randomFloat(2, 1, 100),
-            'description' => fake()->paragraph(),
-            'quantity' => fake()->numberBetween(0, 10),
+            'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+            'quantity' => fake()->numberBetween(1, 1000),
             'status' => "1",
-            'image' => "no_product.png",
+            'image' =>  $imageFilename,
             'cat_id' => $randomProductCategoryId,
         ];
     }

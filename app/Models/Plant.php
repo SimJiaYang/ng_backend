@@ -42,7 +42,7 @@ class Plant extends Model
 
     public function getImageUrlAttribute()
     {
-        return asset('/plant_image/' . $this->image);
+        return json_encode(asset('/plant_image/' . $this->image));
     }
 
     public function category(): BelongsTo

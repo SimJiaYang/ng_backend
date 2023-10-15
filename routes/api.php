@@ -30,9 +30,11 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         /* Plant*/
         Route::get('plant', 'PlantApiController@plant');
         Route::get('plantlist', 'PlantApiController@plantList');
+        Route::get('plant/search/keyword', 'PlantApiController@searchKeyword');
         Route::any('plant/search', 'PlantApiController@searchPlant');
         Route::get('plant/category', 'PlantApiController@getCategory');
         Route::get('plant/detail', 'PlantApiController@show');
+
 
         /* Product */
         Route::get('product', 'ProductApiController@product');

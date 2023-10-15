@@ -82,6 +82,15 @@ class PlantApiController extends Controller
         return $this->success($ret);
     }
 
+    public function searchKeyword()
+    {
+        $plants_query = Plant::where('plant.status', '1')
+            ->where('plant.quantity', '>', '0')
+            ->get(['name']);
+        $ret['plant_name'] = $plants_query;
+        return $this->success($ret);
+    }
+
     public function searchPlant(Request $request)
     {
         // If no keyword, return error message
