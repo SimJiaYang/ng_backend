@@ -91,14 +91,14 @@ class CartApiController extends Controller
 
         // If null, return
         if (
-            $request->plantID == null &&
-            $request->productID == null
+            ($request->plantID == null &&
+                $request->productID == null)
         ) {
             return $this->fail('Invalid request');
         }
 
         // Check plant
-        if ($request->plantID) {
+        if ($request->plantID != "null") {
             $plant = Plant::find($request->plantID);
             if ($plant->quantity == 0) {
                 return $this->fail('Plant out of stock');
@@ -111,8 +111,7 @@ class CartApiController extends Controller
             $ret['plant'] = $plant;
         }
 
-        // Check product
-        if ($request->productID) {
+        if ($request->productID != "null") {
             $product = Product::find($request->productID);
             if ($product->quantity == 0) {
                 return $this->fail('Product out of stock');
@@ -126,7 +125,7 @@ class CartApiController extends Controller
         }
 
         // Add to the cart for plant
-        if ($request->plantID) {
+        if ($request->plantID != "null") {
             $cartPlant = Cart::firstOrNew(['plant_id' => $request->plantID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
             // If cart exists, update quantity
             if ($cartPlant->exists) {
@@ -150,7 +149,7 @@ class CartApiController extends Controller
         }
 
         // Add to the cart for product
-        if ($request->productID) {
+        if ($request->productID != "null") {
             $cart = Cart::firstOrNew(['product_id' => $request->productID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
 
             // If cart exists, update quantity
