@@ -129,8 +129,11 @@ class CartApiController extends Controller
             $cartPlant = Cart::firstOrNew(['plant_id' => $request->plantID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
             // If cart exists, update quantity
             if ($cartPlant->exists) {
-                $cartPlant->quantity = $request->quantity;
-                $cartPlant->price = $request->price ? $request->price : $plant->price * $request->quantity;
+                // Add quantity based on the old quantity
+                $cartPlant->quantity += $request->quantity;
+                $cartPlant->price =
+                    // $request->price ? $request->price : 
+                    $plant->price * $cartPlant->quantity;
                 $cartPlant->save();
                 // Debug Print
                 $ret['plant_cart_old'] = $cartPlant;
@@ -154,8 +157,8 @@ class CartApiController extends Controller
 
             // If cart exists, update quantity
             if ($cart->exists) {
-                $cart->quantity = $request->quantity;
-                $cart->price =  $request->price ? $request->price : $product->price * $request->quantity;
+                $cart->quantity += $request->quantity;
+                $cart->price = $product->price * $cartPlant->quantity;;
                 $cart->save();
                 // Debug Print
                 $ret['product_cart_old'] = $cart;
