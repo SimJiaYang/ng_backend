@@ -35,12 +35,12 @@ class CartApiController extends Controller
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
-                'id', 'created_at'
+                'id', 'created_at', 'updated_at'
             ]
         )) {
             $sortBy = $request->sortBy;
         } else {
-            $sortBy = 'id';
+            $sortBy = 'updated_at';
         }
 
         if ($request->sortOrder && in_array(
@@ -51,7 +51,7 @@ class CartApiController extends Controller
         )) {
             $sortOrder = $request->sortOrder;
         } else {
-            $sortOrder = 'asc';
+            $sortOrder = 'desc';
         }
 
         if ($request->limit) {
@@ -192,6 +192,32 @@ class CartApiController extends Controller
         } else {
             return $this->fail('Invalid request');
         }
+        return $this->success();
+    }
+
+    public function update(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'id' => ['required', 'string', 'max:255'],
+            'quantity' => ['required', 'numeric', 'min:1']
+        ]);
+
+        // Update the cart
+        $updateCart =
+            Cart::where('id', $request->id)
+            ->where('user_id', Auth::id())
+            ->where('is_purchase', "false")
+            ->first();
+
+        if ($updateCart) {
+            $updateCart->update([
+                'quantity' => $request->quantity
+            ]);
+        } else {
+            return $this->fail('Invalid request');
+        }
+
         return $this->success();
     }
 }
