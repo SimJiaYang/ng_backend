@@ -131,7 +131,7 @@ class CartApiController extends Controller
             if ($cartPlant->exists) {
                 // Add quantity based on the old quantity
                 $cartPlant->quantity += $request->quantity;
-                $cartPlant->price = $plant->price * $cartPlant->quantity;
+                $cartPlant->price = $plant->price;
                 $cartPlant->save();
                 // Debug Print
                 $ret['plant_cart_old'] = $cartPlant;
@@ -142,7 +142,7 @@ class CartApiController extends Controller
                     'user_id' => Auth::id(),
                     'date_added' => Carbon::today(),
                     'is_purchase' => "false",
-                    'price' => $plant->price * $request->quantity,
+                    'price' => $plant->price,
                 ]);
                 // Debug Print
                 $ret['plant_cart_new'] = $newCart;
@@ -156,7 +156,7 @@ class CartApiController extends Controller
             // If cart exists, update quantity
             if ($cart->exists) {
                 $cart->quantity += $request->quantity;
-                $cart->price = $product->price * $cartPlant->quantity;;
+                $cart->price = $product->price;
                 $cart->save();
                 // Debug Print
                 $ret['product_cart_old'] = $cart;
@@ -167,7 +167,7 @@ class CartApiController extends Controller
                     'user_id' => Auth::id(),
                     'date_added' => Carbon::today(),
                     'is_purchase' => "false",
-                    'price' => $product->price * $request->quantity,
+                    'price' => $product->price,
                 ]);
                 // Debug Print
                 $ret['product_cart_new'] = $newCart;
@@ -212,14 +212,14 @@ class CartApiController extends Controller
             // Get related information
             if (!is_null($updateCart->plant_id)) {
                 $plant = Plant::find($updateCart->plant_id);
-                $total_price = $plant->price * $request->quantity;
+                $price = $plant->price;
             } else if (!is_null($updateCart->product_id)) {
                 $product = Product::find($updateCart->product_id);
-                $total_price = $product->price * $request->quantity;
+                $price = $product->price;
             }
             $updateCart->update([
                 'quantity' => $request->quantity,
-                'price' => $total_price
+                'price' => $price
             ]);
         } else {
             return $this->fail('Invalid request');

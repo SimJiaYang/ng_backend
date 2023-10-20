@@ -11,6 +11,8 @@ class Order extends Model
 
     public $primaryKey = 'id';
 
+    public $table = 'order';
+
     protected $fillable = [
         'status',
         'date',
