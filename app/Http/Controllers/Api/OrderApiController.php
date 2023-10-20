@@ -79,6 +79,6 @@ class OrderApiController extends Controller
             'total_amount' => $total_order_price
         ]);
 
-        return $this->success();
+        return $this->success('Order created');
     }
 }

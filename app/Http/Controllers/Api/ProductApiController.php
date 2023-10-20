@@ -25,7 +25,7 @@ class ProductApiController extends Controller
         return $this->success($ret);
     }
 
-    // Show Product Info
+    // Product Pagination
     public function productList(Request $request)
     {
         $product_query = Product::leftjoin('category', 'category.id', 'product.cat_id')
@@ -36,6 +36,13 @@ class ProductApiController extends Controller
         // If result is impty, return fail
         if ($product_query->count() == 0) {
             return $this->fail('Product no found');
+        }
+
+        // Pagination Limit
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 8;
         }
 
         // Sort By 
@@ -61,13 +68,6 @@ class ProductApiController extends Controller
             $sortOrder = 'asc';
         }
 
-        if ($request->limit) {
-            $limit = $request->limit;
-        } else {
-            $limit = 8;
-        }
-
-
         $products = $product_query->orderBy(
             $sortBy,
             $sortOrder
@@ -77,6 +77,16 @@ class ProductApiController extends Controller
 
         return $this->success($ret);
     }
+
+    public function searchKeyword()
+    {
+        $products_query = Product::where('product.status', '1')
+            ->where('product.quantity', '>', '0')
+            ->get(['name']);
+        $ret['product_name'] = $products_query;
+        return $this->success($ret);
+    }
+
 
     public function searchProduct(Request $request)
     {
@@ -113,11 +123,18 @@ class ProductApiController extends Controller
             return $this->fail('Product no found');
         }
 
+        // Pagination Limit
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 8;
+        }
+
         // Sort By 
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
-                'id', 'created_at'
+                'id', 'created_at', 'price'
             ]
         )) {
             $sortBy = $request->sortBy;
@@ -136,13 +153,7 @@ class ProductApiController extends Controller
             $sortOrder = 'asc';
         }
 
-        if ($request->limit) {
-            $limit = $request->limit;
-        } else {
-            $limit = 8;
-        }
-
-
+        // Paginations
         $products = $product_query->orderBy(
             $sortBy,
             $sortOrder
@@ -172,5 +183,21 @@ class ProductApiController extends Controller
         }
         $ret['category'] = $category;
         return $this->success($ret);
+    }
+
+    public function show(Request $request)
+    {
+        $products = Product::where('product.id', $request->id)
+            ->where('product.status', '1')
+            ->where('product.quantity', '>', '0')
+            ->select('product.*')
+            ->first();
+
+        if ($products != null) {
+            $ret['productt'] = $products;
+            return $this->success($ret);
+        } else {
+            return $this->fail('Product not found');
+        }
     }
 }

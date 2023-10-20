@@ -35,12 +35,13 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('plant/category', 'PlantApiController@getCategory');
         Route::get('plant/detail', 'PlantApiController@show');
 
-
         /* Product */
         Route::get('product', 'ProductApiController@product');
         Route::get('productlist', 'ProductApiController@productList');
+        Route::get('product/search/keyword', 'ProductApiController@searchKeyword');
         Route::any('product/search', 'ProductApiController@searchProduct');
         Route::get('product/category', 'ProductApiController@getCategory');
+        Route::get('product/detail', 'ProductApiController@show');
 
         /* Cart */
         Route::get('cart', 'CartApiController@show');
