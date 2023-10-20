@@ -69,10 +69,20 @@ class CartApiController extends Controller
         foreach ($cart_item as $carts) {
             // Get related information
             if (!is_null($carts->plant_id)) {
-                $plant = Plant::find($carts->plant_id);
+                $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+                    ->where('plant.id', $carts->plant_id)
+                    ->where('plant.status', '1')
+                    ->where('plant.quantity', '>', '0')
+                    ->select('plant.*', 'category.name as category_name', 'plant.image as image')
+                    ->first();
                 $ret['plant'][] = $plant;
             } else if (!is_null($carts->product_id)) {
-                $product = Product::find($carts->product_id);
+                $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
+                    ->where('product.id', $carts->product_id)
+                    ->where('product.status', '1')
+                    ->where('product.quantity', '>', '0')
+                    ->select('product.*', 'category.name as category_name', 'product.image as image')
+                    ->first();
                 $ret['product'][] = $product;
             }
         }
