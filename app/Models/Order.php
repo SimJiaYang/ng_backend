@@ -14,7 +14,8 @@ class Order extends Model
     protected $fillable = [
         'status',
         'date',
-        'total_amount'
+        'total_amount',
+        'user_id',
     ];
 
     public const STATUS = [
