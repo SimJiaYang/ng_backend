@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Plant;
+use App\Models\Product;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +68,22 @@ class OrderApiController extends Controller
                 'plant_id' => $item['plant_id'] == null ? null : $item['plant_id'],
                 'bidding_id' => $item['bidding_id'] == null ? null : $item['bidding_id'],
             ]);
+
+            // Minus the inventory of the product
+            if (!is_null($item['plant_id'])) {
+                $plant = Plant::where('id', $item['plant_id'])->first();
+                $quantity = $item['quantity'];
+                $plant->update([
+                    'quantity' => $plant->quantity - $quantity
+                ]);
+            } else if (!is_null($item['product_id'])) {
+                $product = Product::where('id', $item['product_id'])->first();
+                $quantity = $item['quantity'];
+                $product->update([
+                    'quantity' => $product->quantity - $quantity
+                ]);
+            }
+
             // Get the order price
             $total_order_price += $item['price'] * $item['quantity'];
             // Update the cart item to false
