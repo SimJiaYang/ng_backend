@@ -51,6 +51,7 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
 
         /* Order */
         Route::get('order', 'OrderApiController@show');
+        Route::get('order/detail', 'OrderApiController@order_detail');
         Route::post('order/create', 'OrderApiController@create');
     });
 });

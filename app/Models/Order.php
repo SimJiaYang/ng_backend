@@ -18,6 +18,8 @@ class Order extends Model
         'date',
         'total_amount',
         'user_id',
+        'created_at',
+        'updated_at',
     ];
 
     public const STATUS = [

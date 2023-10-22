@@ -17,8 +17,73 @@ use Carbon\Carbon;
 
 class OrderApiController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
+        $query = Order::where('user_id', Auth::id())
+            ->where('status', 1);
+
+        // If there are no matching orders, return fail
+        if ($query->count() == 0) {
+            return $this->fail('No orders yet.');
+        }
+
+        // Sort By 
+        $sortBy = in_array($request->sortBy, ['id', 'created_at', 'updated_at'])
+            ? $request->sortBy : 'created_at';
+        $sortOrder = in_array($request->sortOrder, ['asc', 'desc'])
+            ? $request->sortOrder : 'desc';
+        $limit = $request->limit
+            ? $request->limit : 3;
+
+        $orders = $query->orderBy($sortBy, $sortOrder)
+            ->paginate($limit);
+
+        $ret['orders'] = $orders;
+
+        return $this->success($ret);
+    }
+
+    public function order_detail(Request $request)
+    {
+        $query = OrderDetailModel::where('order_id', $request->id);
+
+        // Sort By 
+        $sortBy = in_array($request->sortBy, ['id', 'created_at', 'updated_at'])
+            ? $request->sortBy : 'created_at';
+        $sortOrder = in_array($request->sortOrder, ['asc', 'desc'])
+            ? $request->sortOrder : 'asc';
+
+        $ret = [];
+
+        $order_item = $query->orderBy($sortBy, $sortOrder)->get();
+
+        if ($order_item->count() == 0) {
+            return $this->fail('Some error occur, Please try again later.');
+        }
+
+        foreach ($order_item as $item) {
+            if (!is_null($item->plant_id)) {
+                $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+                    ->where('plant.id',  $item->plant_id)
+                    ->where('plant.status', '1')
+                    ->where('plant.quantity', '>', '0')
+                    ->select('plant.*', 'category.name as category_name', 'plant.image as image')
+                    ->first();
+                $ret['plant'][] = $plant;
+            } else if (!is_null($item->product_id)) {
+                $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
+                    ->where('product.id', $item->product_id)
+                    ->where('product.status', '1')
+                    ->where('product.quantity', '>', '0')
+                    ->select('product.*', 'category.name as category_name', 'product.image as image')
+                    ->first();
+                $ret['product'][] = $product;
+            }
+        }
+
+        $ret['order_item'] = $order_item;
+
+        return $this->success($ret);
     }
 
     public function create(Request $request)
