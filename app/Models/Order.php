@@ -23,7 +23,10 @@ class Order extends Model
     ];
 
     public const STATUS = [
-        '0' => 'Disable',
-        '1' => 'Enable',
+        '0' => "cancel",
+        '1' => "To Pay",
+        '2' => "Completed",
+        '3' => "To Ship",
+        '4' => "Cancel"
     ];
 }

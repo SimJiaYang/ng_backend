@@ -19,12 +19,26 @@ class OrderApiController extends Controller
 {
     public function show(Request $request)
     {
-        $query = Order::where('user_id', Auth::id())
-            ->where('status', 1);
+        $query = Order::where('user_id', Auth::id());
 
         // If there are no matching orders, return fail
         if ($query->count() == 0) {
             return $this->fail('No orders yet.');
+        }
+
+        // pay
+        // ship
+        // receive
+        // completed
+        // cancelled
+        if ($request->status != null) {
+            $query = $query->where('status', $request->status);
+            // If there are no matching orders, return fail
+            if ($query->count() == 0) {
+                return $this->fail('No ' . $request->status . ' orders yet.');
+            }
+        } else {
+            return $this->fail('Some error occured.');
         }
 
         // Sort By 
