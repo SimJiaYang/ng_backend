@@ -130,7 +130,7 @@ class OrderApiController extends Controller
 
         // Create the order
         $order = Order::create([
-            'status' => '1',
+            'status' =>  $request->status ? $request->status : 'Completed',
             'date' => Carbon::now(),
             'total_amount' => $total_order_price,
             'user_id' => Auth::id(),
