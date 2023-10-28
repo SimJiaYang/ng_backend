@@ -17,7 +17,23 @@
                                         @foreach ($orders as $order)
                                             Order ID: {{ $order->id }} <br>
                                             Order Date: {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }} <br>
-                                            Order Status: {{ ucfirst($order->status) }}<br>
+                                            Order Status:
+                                            @if ($order->status == 'pay')
+                                                <span
+                                                    class="badge bg-label-secondary rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            @elseif ($order->status == 'ship')
+                                                <span
+                                                    class="badge bg-label-warning rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            @elseif ($order->status == 'receive')
+                                                <span
+                                                    class="badge bg-label-primary rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            @elseif (strtolower($order->status) == 'completed')
+                                                <span
+                                                    class="badge bg-label-success rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            @else
+                                                <span
+                                                    class="badge bg-label-danger rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            @endif
                                         @endforeach
 
                                     </p>

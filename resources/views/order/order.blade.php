@@ -70,19 +70,23 @@
                                         <p class="fw-normal mb-1">RM {{ number_format($order->total_amount, 2) }}</p>
                                     </td>
                                     <td class="text-truncate">
-
-                                        <p class="fw-normal mb-1">{{ ucfirst($order->status) }}</p>
+                                        @if ($order->status == 'pay')
+                                            <span
+                                                class="badge bg-label-secondary rounded-pill">{{ ucfirst($order->status) }}</span>
+                                        @elseif ($order->status == 'ship')
+                                            <span
+                                                class="badge bg-label-warning rounded-pill">{{ ucfirst($order->status) }}</span>
+                                        @elseif ($order->status == 'receive')
+                                            <span
+                                                class="badge bg-label-primary rounded-pill">{{ ucfirst($order->status) }}</span>
+                                        @elseif (strtolower($order->status) == 'completed')
+                                            <span
+                                                class="badge bg-label-success rounded-pill">{{ ucfirst($order->status) }}</span>
+                                        @else
+                                            <span
+                                                class="badge bg-label-danger rounded-pill">{{ ucfirst($order->status) }}</span>
+                                        @endif
                                     </td>
-                                    {{-- 
-                                    @if ($products->status == 0)
-                                        <td>
-                                            <span class="badge bg-label-danger rounded-pill">Disabled</span>
-                                        </td>
-                                    @else
-                                        <td>
-                                            <span class="badge bg-label-success rounded-pill">Active</span>
-                                        </td>
-                                    @endif --}}
                                 </tr>
                             @endforeach
                         @endif
@@ -96,5 +100,4 @@
     <div class="m-4 d-flex justify-left">
         {!! $orders->render() !!}
     </div>
-
 @endsection
