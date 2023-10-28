@@ -52,7 +52,8 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <p class="fw-bold mb-1">{{ $order->id }}</p>
+                                            <a href="{{ route('order.detail', $order->id) }}"
+                                                class="fw-bold mb-1">{{ $order->id }}</a>
                                         </div>
                                     </td>
 
@@ -66,9 +67,10 @@
                                         <p class="fw-normal mb-1">{{ $order->user_id }}</p>
                                     </td>
                                     <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ number_format($order->total_amount, 2) }}</p>
+                                        <p class="fw-normal mb-1">RM {{ number_format($order->total_amount, 2) }}</p>
                                     </td>
                                     <td class="text-truncate">
+
                                         <p class="fw-normal mb-1">{{ ucfirst($order->status) }}</p>
                                     </td>
                                     {{-- 
