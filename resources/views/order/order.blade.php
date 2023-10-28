@@ -71,14 +71,14 @@
                                     </td>
                                     <td class="text-truncate">
                                         @if ($order->status == 'pay')
-                                            <span
-                                                class="badge bg-label-secondary rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            <span class="badge bg-label-secondary rounded-pill">To
+                                                {{ ucfirst($order->status) }}</span>
                                         @elseif ($order->status == 'ship')
-                                            <span
-                                                class="badge bg-label-warning rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            <span class="badge bg-label-warning rounded-pill">To
+                                                {{ ucfirst($order->status) }}</span>
                                         @elseif ($order->status == 'receive')
-                                            <span
-                                                class="badge bg-label-primary rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            <span class="badge bg-label-primary rounded-pill">To
+                                                {{ ucfirst($order->status) }}</span>
                                         @elseif (strtolower($order->status) == 'completed')
                                             <span
                                                 class="badge bg-label-success rounded-pill">{{ ucfirst($order->status) }}</span>
