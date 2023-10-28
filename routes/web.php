@@ -68,6 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Order
         Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+        Route::any('/order/search', [OrderController::class, 'search'])->name('order.search');
+        Route::any('/order/filter/{status}', [OrderController::class, 'filter'])->name('order.filter');
 
         // Bidding
         Route::get('/bidding', [BiddingController::class, 'index'])->name('bidding.index');
