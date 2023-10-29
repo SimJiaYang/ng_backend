@@ -10,16 +10,18 @@ class CustomerController extends Controller
     /**Customer List */
     public function index()
     {
-        $customer = User::where('type', 'user')->paginate(5);
-        // $customer = User::where('type', 'user')->get();
-        return view('customer.customer')->with("customer", $customer);
+        $customer = User::where('type', 'user')->paginate(10);
+        return view('customer.customer')->with("customers", $customer);
     }
 
     public function search(Request $request)
     {
         $keyword = $request->name;
         $customer = User::where('type', 'user')
-            ->where('name', 'like', "%$keyword%")->paginate(5);
-        return view('customer.customer')->with("customer", $customer);
+            ->where('name', 'like', "%$keyword%")->paginate(10)->setPath('');
+        $customer->appends(array(
+            'name' => $keyword
+        ));
+        return view('customer.customer')->with("customers", $customer);
     }
 }

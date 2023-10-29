@@ -67,11 +67,24 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
+
                     <!-- Dashboards -->
                     <li class="menu-item">
                         <a href="{{ route('home') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                            <div data-i18n="Dashboards">Dashboards</div>
+                            <div data-i18n="Dashboards">Dashboard</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Customers</span>
+                    </li>
+
+                    <!-- Dashboards -->
+                    <li class="menu-item">
+                        <a href="{{ route('customer.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
+                            <div data-i18n="Dashboards">Customers</div>
                         </a>
                     </li>
 
