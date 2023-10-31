@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('plant', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('sales_amount')->nullable();
             $table->double('price', 8, 2);
             $table->longText('description');
             $table->integer('quantity');

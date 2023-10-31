@@ -153,12 +153,14 @@ class OrderApiController extends Controller
                 $plant = Plant::where('id', $item['plant_id'])->first();
                 $quantity = $item['quantity'];
                 $plant->update([
+                    'sales_amount' => $plant->sales_amount + $quantity,
                     'quantity' => $plant->quantity - $quantity
                 ]);
             } else if (!is_null($item['product_id'])) {
                 $product = Product::where('id', $item['product_id'])->first();
                 $quantity = $item['quantity'];
                 $product->update([
+                    'sales_amount' => $product->sales_amount + $quantity,
                     'quantity' => $product->quantity - $quantity
                 ]);
             }

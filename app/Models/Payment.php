@@ -9,6 +9,8 @@ class Payment extends Model
 {
     use HasFactory;
 
+    public $table = 'payment';
+
     public $primaryKey = 'id';
 
     public $fk1 = 'order_id';
@@ -22,6 +24,7 @@ class Payment extends Model
         'method',
         'date',
         'order_id',
+        'user_id',
         'bidding_id'
     ];
 }
