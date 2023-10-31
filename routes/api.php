@@ -56,5 +56,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
 
         /* Payment */
         Route::post('order/payment/intent', 'PaymentApiController@paymentIntent');
+        Route::post('order/payment/succeed', 'PaymentApiController@handlePaymentSucceed');
     });
 });

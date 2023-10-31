@@ -44,7 +44,7 @@ class PaymentApiController extends Controller
 
             // Create a PaymentIntent with amount and currency
             $paymentIntent = $stripeClient->paymentIntents->create([
-                'amount' => $order->amount * 100,
+                'amount' => $order->total_amount * 100,
                 'currency' => 'myr',
                 'automatic_payment_methods' => [
                     'enabled' => true
@@ -52,12 +52,12 @@ class PaymentApiController extends Controller
             ]);
 
 
-            $payment = Payment::create([
+            Payment::create([
                 'status' => 'pending',
                 'order_id' => $order->id,
                 'details' => $paymentIntent->client_secret,
                 'method' => 'Card',
-                'amount' =>  $order->amount,
+                'amount' =>  $order->total_amount,
                 'date' => Carbon::today(),
                 'user_id' => Auth::id()
             ]);
@@ -65,9 +65,30 @@ class PaymentApiController extends Controller
             $ret['Client_Secret'] = $paymentIntent->client_secret;
             $ret['response'] = $paymentIntent;
         } else {
+            if ($payment_intent->status == "success") {
+                return $this->fail('Payment already done');
+            }
+
             $ret['Client_Secret'] = $payment_intent->details;
         }
 
         return $this->success($ret);
+    }
+
+    public function handlePaymentSucceed(Request $request)
+    {
+        $request->validate([
+            'client_secret' => ['required'],
+        ]);;
+
+        $payment = Payment::where('details', $request->client_secret)->first();
+        $payment->status = 'success';
+        $payment->save();
+
+        $order = Order::where('id', $payment->order_id)->first();
+        $order->status = 'ship';
+        $order->save();
+
+        return $this->success($payment);
     }
 }
