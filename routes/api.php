@@ -57,5 +57,11 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         /* Payment */
         Route::post('order/payment/intent', 'PaymentApiController@paymentIntent');
         Route::post('order/payment/succeed', 'PaymentApiController@handlePaymentSucceed');
+
+        /* Address */
+        Route::get('address', 'AddressApiController@addressList');
+        Route::post('address/add', 'AddressApiController@addAddress');
+        Route::post('address/update', 'AddressApiController@updateAddress');
+        Route::post('address/delete', 'AddressApiController@deleteAddress');
     });
 });

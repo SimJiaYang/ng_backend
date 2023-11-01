@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('address', function (Blueprint $table) {
             $table->id();
             $table->string('address');
+            $table->string('status')->default('1');
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
