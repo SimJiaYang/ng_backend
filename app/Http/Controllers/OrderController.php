@@ -93,4 +93,16 @@ class OrderController extends Controller
             ->with('item_detail', $item_detail)
             ->with('user', $user);
     }
+
+    public function showShipOrder($id)
+    {
+        $order = Order::where('id', $id)->get();
+        $user = User::where('id', $order[0]->user_id)->get();
+        $order_item = OrderDetailModel::where('order_id', $id)
+            ->orderBy('created_at', 'desc')->get();
+        return view('order.sub_screen.order_ship')
+            ->with('orders', $order)
+            ->with('order_item', $order_item)
+            ->with('user', $user);;
+    }
 }

@@ -36,7 +36,9 @@
                             <th class="text-truncate">Date</th>
                             <th class="text-truncate">User ID</th>
                             <th class="text-truncate">Total amount</th>
-                            <th class="text-truncate">Status</th>
+
+                            <th class="text-truncate">Action</th>
+                            {{-- <th class="text-truncate">Status</th> --}}
                         </tr>
 
                     </thead>
@@ -69,7 +71,22 @@
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">RM {{ number_format($order->total_amount, 2) }}</p>
                                     </td>
+
                                     <td class="text-truncate">
+                                        @if ($order->status == 'pay')
+                                            <a href="" class="btn-sm btn btn-secondary m-1">Await Payment...</a>
+                                        @elseif ($order->status == 'ship')
+                                            <a href="{{ route('order.ship', $order->id) }}"
+                                                class="btn-sm btn btn-warning m-1">Packaging...</a>
+                                        @elseif ($order->status == 'receive')
+                                            <a href="" class="btn-sm btn btn-primary m-1">Shipping...</a>
+                                        @elseif (strtolower($order->status) == 'completed')
+                                            <a href="}" class="btn-sm btn btn-success m-1">Receipt</a>
+                                        @else
+                                            <a href="}" class="btn-sm btn btn-danger m-1">Cancel</a>
+                                        @endif
+                                    </td>
+                                    {{-- <td class="text-truncate">
                                         @if ($order->status == 'pay')
                                             <span class="badge bg-label-secondary rounded-pill">To
                                                 {{ ucfirst($order->status) }}</span>
@@ -86,7 +103,7 @@
                                             <span
                                                 class="badge bg-label-danger rounded-pill">{{ ucfirst($order->status) }}</span>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         @endif
