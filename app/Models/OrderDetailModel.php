@@ -23,4 +23,9 @@ class OrderDetailModel extends Model
         'plant_id',
         'bidding_id',
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 }

@@ -9,6 +9,7 @@ use App\Models\Plant;
 use App\Models\Product;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
+use App\Models\Address;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -19,20 +20,21 @@ class OrderApiController extends Controller
 {
     public function show(Request $request)
     {
-        $query = Order::where('user_id', Auth::id());
+        $query = Order::leftjoin('address', 'address.id', 'order.address_id')
+            ->where('order.user_id', Auth::id())
+            ->select('address.*', 'order.*', 'address.address as order_address');
 
         // If there are no matching orders, return fail
         if ($query->count() == 0) {
             return $this->fail('No orders yet.');
         }
-
         // pay
         // ship
         // receive
         // completed
         // cancelled
         if ($request->status != null) {
-            $query = $query->where('status', $request->status);
+            $query = $query->where('order.status', $request->status);
             // If there are no matching orders, return fail
             if ($query->count() == 0) {
                 return $this->fail('No ' . $request->status . ' orders yet.');
@@ -42,8 +44,8 @@ class OrderApiController extends Controller
         }
 
         // Sort By 
-        $sortBy = in_array($request->sortBy, ['id', 'created_at', 'updated_at'])
-            ? $request->sortBy : 'created_at';
+        $sortBy = in_array($request->sortBy, ['order.id', 'order.created_at', 'order.updated_at'])
+            ? $request->sortBy : 'order.created_at';
         $sortOrder = in_array($request->sortOrder, ['asc', 'desc'])
             ? $request->sortOrder : 'desc';
         $limit = $request->limit
@@ -61,13 +63,24 @@ class OrderApiController extends Controller
     {
         $query = OrderDetailModel::where('order_id', $request->id);
 
+        // If there are no matching orders, return fail
+        if ($query->count() == 0) {
+            return $this->fail('No orders yet.');
+        }
+
+        // Array to store
+        $ret = [];
+
+        $order = Order::where('id', $request->id)->first();
+        $order_address = Address::where('id', $order->address_id)->first()->address;
+
+        $ret['order_address'] = $order_address;
+
         // Sort By 
         $sortBy = in_array($request->sortBy, ['id', 'created_at', 'updated_at'])
             ? $request->sortBy : 'created_at';
         $sortOrder = in_array($request->sortOrder, ['asc', 'desc'])
             ? $request->sortOrder : 'asc';
-
-        $ret = [];
 
         $order_item = $query->orderBy($sortBy, $sortOrder)->get();
 
@@ -95,6 +108,8 @@ class OrderApiController extends Controller
             }
         }
 
+
+
         $ret['order_item'] = $order_item;
 
         return $this->success($ret);
@@ -107,6 +122,7 @@ class OrderApiController extends Controller
             'cart_list' => ['required', 'array'],
             'cart_list.*.id' => ['required', 'integer'],
             'cart_list.*.quantity' => ['required', 'integer'],
+            'address_id' => ['required', 'integer'],
         ]);
 
         // Get the cart_list
@@ -128,12 +144,21 @@ class OrderApiController extends Controller
 
         $total_order_price = 0;
 
+        $address = Address::where('id', $request->address_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if (!$address) {
+            return $this->fail('Address not found');
+        }
+
         // Create the order
         $order = Order::create([
             'status' =>  $request->status ? $request->status : 'pay',
             'date' => Carbon::now(),
             'total_amount' => $total_order_price,
             'user_id' => Auth::id(),
+            'address_id' => $address->id
         ]);
 
         // Create the order detail

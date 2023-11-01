@@ -11,6 +11,8 @@ class Delivery extends Model
 
     public $primaryKey = 'id';
 
+    protected $table = 'delivery';
+
     public $fk = 'order_id';
 
     protected $fillable = [

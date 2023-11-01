@@ -18,6 +18,8 @@ return new class extends Migration
             $table->double('total_amount', 8, 2);
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('address_id');
+            $table->foreign('address_id')->references('id')->on('address');
             $table->timestamps();
         });
     }
