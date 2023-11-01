@@ -20,9 +20,7 @@ class OrderApiController extends Controller
 {
     public function show(Request $request)
     {
-        $query = Order::leftjoin('address', 'address.id', 'order.address_id')
-            ->where('order.user_id', Auth::id())
-            ->select('address.*', 'order.*', 'address.address as order_address');
+        $query = Order::where('order.user_id', Auth::id());
 
         // If there are no matching orders, return fail
         if ($query->count() == 0) {
@@ -71,11 +69,6 @@ class OrderApiController extends Controller
         // Array to store
         $ret = [];
 
-        $order = Order::where('id', $request->id)->first();
-        $order_address = Address::where('id', $order->address_id)->first()->address;
-
-        $ret['order_address'] = $order_address;
-
         // Sort By 
         $sortBy = in_array($request->sortBy, ['id', 'created_at', 'updated_at'])
             ? $request->sortBy : 'created_at';
@@ -122,7 +115,7 @@ class OrderApiController extends Controller
             'cart_list' => ['required', 'array'],
             'cart_list.*.id' => ['required', 'integer'],
             'cart_list.*.quantity' => ['required', 'integer'],
-            'address_id' => ['required', 'integer'],
+            'address' => ['required', 'string', 'max:255'],
         ]);
 
         // Get the cart_list
@@ -133,7 +126,7 @@ class OrderApiController extends Controller
         // Validate either the cart exist or not
         foreach ($cartValidation as $item) {
             $cartItem = Cart::where('id', $item['id'])
-                ->where('is_purchase', false)
+                ->where('is_purchase', "false")
                 ->first();
             if (!$cartItem) {
                 return $this->fail('Cart ID: ' .  $item['id'] . ' not found');
@@ -144,13 +137,7 @@ class OrderApiController extends Controller
 
         $total_order_price = 0;
 
-        $address = Address::where('id', $request->address_id)
-            ->where('user_id', Auth::id())
-            ->first();
-
-        if (!$address) {
-            return $this->fail('Address not found');
-        }
+        $address = $request->address;
 
         // Create the order
         $order = Order::create([
@@ -158,7 +145,7 @@ class OrderApiController extends Controller
             'date' => Carbon::now(),
             'total_amount' => $total_order_price,
             'user_id' => Auth::id(),
-            'address_id' => $address->id
+            'address' => $address
         ]);
 
         // Create the order detail

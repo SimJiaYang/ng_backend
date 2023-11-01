@@ -17,7 +17,7 @@ class Order extends Model
         'status',
         'date',
         'total_amount',
-        'address_id',
+        'address',
         'user_id',
         'created_at',
         'updated_at',
@@ -30,11 +30,6 @@ class Order extends Model
         '3' => "To Ship",
         '4' => "Cancel"
     ];
-
-    public function address()
-    {
-        return $this->belongsTo(Address::class, 'address_id');
-    }
 
     public function user()
     {
