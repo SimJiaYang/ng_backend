@@ -47,7 +47,7 @@ class AuthApiController extends Controller
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = User::where('email', $request->email)->first();
 
-            if ($user->type == "admin") {
+            if ($user->type == "admin" || $user->type == "sadmin") {
                 return $this->fail('Invalid Credentials');
             }
 

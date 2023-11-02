@@ -39,6 +39,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
         Route::any('/customer/search', [CustomerController::class, 'search'])->name('customer.search');
 
+        Route::group(['middleware' => 'isSadmin'], function () {
+            Route::get('/customer/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+            Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
+        });
+
         // Category
         Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
         Route::get('/category/insert', [CategoryController::class, 'insert'])->name('category.insert');

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class ensureIsAdmin
+class ensureIsSadmin
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,7 @@ class ensureIsAdmin
             return redirect()->back();
         }
 
-        if (Auth::user()->type == "admin" || Auth::user()->type == "sadmin") {
+        if (Auth::user()->type == "sadmin") {
             return $next($request);
         }
 

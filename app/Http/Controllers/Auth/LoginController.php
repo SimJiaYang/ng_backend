@@ -46,9 +46,21 @@ class LoginController extends Controller
         $this->validateLogin($request);
 
         // Check for 'type' equal to 'admin'
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'type' => 'admin'])) {
+        if (Auth::attempt([
+            'email' => $request->email, 'password' => $request->password,
+            'type' => 'admin'
+        ])) {
             return $this->sendLoginResponse($request);
         }
+
+        // Check for 'type' equal to 'admin'
+        if (Auth::attempt([
+            'email' => $request->email, 'password' => $request->password,
+            'type' => 'sadmin'
+        ])) {
+            return $this->sendLoginResponse($request);
+        }
+
 
         return $this->sendFailedLoginResponse($request);
     }

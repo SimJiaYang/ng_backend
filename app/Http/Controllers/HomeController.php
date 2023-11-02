@@ -33,7 +33,7 @@ class HomeController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        if (Auth::user()->type == "admin") {
+        if (Auth::user()->type == "admin" || Auth::user()->type == "sadmin") {
             return view('home');
         } else {
             return view('404');

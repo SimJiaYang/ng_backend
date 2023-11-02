@@ -17,6 +17,12 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insertOrIgnore([
             [
+                'name' => "sadmin",
+                'email' => "sadmin@gmail.com",
+                'password' => Hash::make("12121212"),
+                'type' => "sadmin",
+            ],
+            [
                 'name' => "admin",
                 'email' => "admin@gmail.com",
                 'password' => Hash::make("12121212"),
@@ -28,6 +34,12 @@ class UserSeeder extends Seeder
                 'password' => Hash::make("12121212"),
                 'type' => "user",
             ],
+            [
+                'name' => "d_01",
+                'email' => "delivery@gmail.com",
+                'password' => Hash::make("12121212"),
+                'type' => "delivery",
+            ]
         ]);
         User::factory()->count(50)->create();
     }

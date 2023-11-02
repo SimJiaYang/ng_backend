@@ -26,6 +26,9 @@
                             <th class="text-truncate">ID</th>
                             <th class="text-truncate">Name</th>
                             <th class="text-truncate">Email</th>
+                            @if (Auth::user()->type == 'sadmin')
+                                <th class="text-truncate">Role</th>
+                            @endif
                             <th class="text-truncate">Status</th>
                         </tr>
                     </thead>
@@ -43,6 +46,19 @@
                                 <td class="text-truncate">
                                     <p class="fw-normal mb-1">{{ $customer->email }}</p>
                                 </td>
+                                @if (Auth::user()->type == 'sadmin')
+                                    <td class="text-truncate">
+                                        <p class="fw-normal mb-1">
+                                            @if ($customer->type == 'sadmin')
+                                                {{ $customer->type }}
+                                            @else
+                                                <a href="{{ route('customer.edit', $customer->id) }}">{{ $customer->type }}
+                                            @endif
+
+                                        </p></a>
+
+                                    </td>
+                                @endif
                                 <td>
                                     <span class="badge bg-label-success rounded-pill">Active</span>
                                 </td>
