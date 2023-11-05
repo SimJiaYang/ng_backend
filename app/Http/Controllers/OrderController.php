@@ -98,10 +98,14 @@ class OrderController extends Controller
     public function showShipOrder($id)
     {
         $order = Order::where('id', $id)->get();
+
         $user = User::where('id', $order[0]->user_id)->get();
+
         $order_item = OrderDetailModel::where('order_id', $id)
             ->orderBy('created_at', 'desc')->get();
+
         $delivery = Delivery::where('order_id', $id)->get();
+
         foreach ($order_item as $item) {
             if (!is_null($item->plant_id)) {
                 $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
