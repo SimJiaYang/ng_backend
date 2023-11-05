@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BiddingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlantController;
@@ -77,6 +78,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::any('/order/search', [OrderController::class, 'search'])->name('order.search');
         Route::any('/order/filter/{status}', [OrderController::class, 'filter'])->name('order.filter');
         Route::get('/order/ship/{id}', [OrderController::class, 'showShipOrder'])->name('order.ship');
+
+        // Delivery
+        Route::post('/order/delivery', [DeliveryController::class, 'updateDelivery'])->name('delivery.update');
 
         // Bidding
         Route::get('/bidding', [BiddingController::class, 'index'])->name('bidding.index');

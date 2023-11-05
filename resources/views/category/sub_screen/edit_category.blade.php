@@ -19,7 +19,8 @@
                             </div>
                             <div class="form-floating form-floating-outline mb-4">
                                 <input type="text" id="name" name="name" class="form-control"
-                                    id="basic-default-fullname" placeholder="Name" value="{{ $categories->name }}" />
+                                    id="basic-default-fullname" placeholder="Name" value="{{ $categories->name }}"
+                                    required />
                                 <label for="basic-default-fullname">Name</label>
                             </div>
                             <div class="form-floating form-floating-outline mb-4">

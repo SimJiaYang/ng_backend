@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Delivery;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
@@ -100,9 +101,32 @@ class OrderController extends Controller
         $user = User::where('id', $order[0]->user_id)->get();
         $order_item = OrderDetailModel::where('order_id', $id)
             ->orderBy('created_at', 'desc')->get();
+        $delivery = Delivery::where('order_id', $id)->get();
+        foreach ($order_item as $item) {
+            if (!is_null($item->plant_id)) {
+                $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+                    ->where('plant.id',  $item->plant_id)
+                    ->where('plant.status', '1')
+                    ->where('plant.quantity', '>', '0')
+                    ->select('plant.*', 'category.name as category_name', 'plant.image as image')
+                    ->first();
+                $item_detail['plant'][] = $plant;
+            } else if (!is_null($item->product_id)) {
+                $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
+                    ->where('product.id', $item->product_id)
+                    ->where('product.status', '1')
+                    ->where('product.quantity', '>', '0')
+                    ->select('product.*', 'category.name as category_name', 'product.image as image')
+                    ->first();
+                $item_detail['product'][] = $product;
+            }
+        }
+
         return view('order.sub_screen.order_ship')
             ->with('orders', $order)
             ->with('order_item', $order_item)
-            ->with('user', $user);;
+            ->with('deliver', $delivery)
+            ->with('item_detail', $item_detail)
+            ->with('user', $user);
     }
 }
