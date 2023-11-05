@@ -22,12 +22,14 @@ class CartApiController extends Controller
         // $cart = Cart::where('user_id', $request->id)
         //     ->where('is_purchase', "false");
 
-        // If result is impty, return fail
-        if ($cart->count() == 0) {
-            return $this->fail('Not item add to the cart yet.');
-        }
-
         $ret = [];
+
+        // If result is impty, return fail
+        // if ($cart->count() == 0) {
+        //     return $this->success($ret);
+        // }
+
+        $ret['cart'] = [];
         $ret['plant'] = [];
         $ret['product'] = [];
 

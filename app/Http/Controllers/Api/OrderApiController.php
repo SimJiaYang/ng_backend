@@ -23,9 +23,10 @@ class OrderApiController extends Controller
         $query = Order::where('order.user_id', Auth::id());
 
         // If there are no matching orders, return fail
-        if ($query->count() == 0) {
-            return $this->fail('No orders yet.');
-        }
+        // if ($query->count() == 0) {
+        //     return $this->fail('No orders yet.');
+        // }
+
         // pay
         // ship
         // receive
@@ -34,9 +35,9 @@ class OrderApiController extends Controller
         if ($request->status != null) {
             $query = $query->where('order.status', $request->status);
             // If there are no matching orders, return fail
-            if ($query->count() == 0) {
-                return $this->fail('No ' . $request->status . ' orders yet.');
-            }
+            // if ($query->count() == 0) {
+            //     return $this->fail('No ' . $request->status . ' orders yet.');
+            // }
         } else {
             return $this->fail('Some error occured.');
         }

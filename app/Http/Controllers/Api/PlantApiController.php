@@ -19,9 +19,9 @@ class PlantApiController extends Controller
             ->select('plant.*', 'category.name as category_name', 'plant.image as image')
             ->get();
 
-        if ($plants->count() == 0) {
-            return $this->fail('No plant data available');
-        }
+        // if ($plants->count() == 0) {
+        //     return $this->fail('No plant data available');
+        // }
 
         $ret['plant'] = $plants;
         return $this->success($ret);
@@ -37,9 +37,9 @@ class PlantApiController extends Controller
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
 
         // If result is impty, return fail
-        if ($plants_query->count() == 0) {
-            return $this->fail('Plant no found');
-        }
+        // if ($plants_query->count() == 0) {
+        //     return $this->fail('Plant no found');
+        // }
 
         // Pagination Limit
         if ($request->limit) {
@@ -122,9 +122,9 @@ class PlantApiController extends Controller
         }
 
         // If result is impty, return fail
-        if ($plants_query->count() == 0) {
-            return $this->fail('Plant no found');
-        }
+        // if ($plants_query->count() == 0) {
+        //     return $this->fail('Plant no found');
+        // }
 
         // Pagination Limit
         if ($request->limit) {
