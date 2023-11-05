@@ -8,47 +8,74 @@
                     <h5 class="mb-0">Order Status</h5>
                 </div>
                 <div class="card-body">
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                    <p>
-                                        @foreach ($orders as $order)
-                                            <b>Order ID:</b> {{ $order->id }} <br>
-                                            <b>Order Date:</b> {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }}
-                                            <br>
-                                            <b>Order Address:</b><br> {{ $order->address }}<br><br>
-                                            <b>Order Status:</b>
-                                            @if ($order->status == 'pay')
-                                                <span class="badge bg-label-secondary rounded-pill">To
-                                                    {{ ucfirst($order->status) }}</span>
-                                            @elseif ($order->status == 'ship')
-                                                <span class="badge bg-label-warning rounded-pill">To
-                                                    {{ ucfirst($order->status) }}</span>
-                                            @elseif ($order->status == 'receive')
-                                                <span class="badge bg-label-primary rounded-pill">To
-                                                    {{ ucfirst($order->status) }}</span>
-                                            @elseif (strtolower($order->status) == 'completed')
-                                                <span
-                                                    class="badge bg-label-success rounded-pill">{{ ucfirst($order->status) }}</span>
-                                            @else
-                                                <span
-                                                    class="badge bg-label-danger rounded-pill">{{ ucfirst($order->status) }}</span>
-                                            @endif
-                                        @endforeach
+                    <div class="card-body row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                        <p>
+                                            @foreach ($orders as $order)
+                                                <b>Order ID:</b> {{ $order->id }} <br>
+                                                <b>Order Date:</b> {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }}
+                                                <br>
+                                                <b>Order Address:</b><br> {{ $order->address }}<br><br>
+                                                <b>Order Status:</b>
+                                                @if ($order->status == 'pay')
+                                                    <span class="badge bg-label-secondary rounded-pill">To
+                                                        {{ ucfirst($order->status) }}</span>
+                                                @elseif ($order->status == 'ship')
+                                                    <span class="badge bg-label-warning rounded-pill">To
+                                                        {{ ucfirst($order->status) }}</span>
+                                                @elseif ($order->status == 'receive')
+                                                    <span class="badge bg-label-primary rounded-pill">To
+                                                        {{ ucfirst($order->status) }}</span>
+                                                @elseif (strtolower($order->status) == 'completed')
+                                                    <span
+                                                        class="badge bg-label-success rounded-pill">{{ ucfirst($order->status) }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge bg-label-danger rounded-pill">{{ ucfirst($order->status) }}</span>
+                                                @endif
+                                            @endforeach
 
-                                    </p>
-                                    <footer class="blockquote-footer  mt-1">
-                                        @foreach ($user as $users)
-                                            <cite title="Order Owner">{{ $users->name }}</cite>
-                                        @endforeach
-                                    </footer>
-                                </blockquote>
+                                        </p>
+                                        <footer class="blockquote-footer  mt-1">
+                                            @foreach ($user as $users)
+                                                <cite title="Order Owner">{{ $users->name }}</cite>
+                                            @endforeach
+                                        </footer>
+                                    </blockquote>
+                                </div>
                             </div>
                         </div>
 
+                        @if (strtolower($order->status) == 'completed')
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <blockquote class="blockquote mb-0">
+                                            <p>
+                                                @foreach ($deliver as $delivery)
+                                                    <b>Tracking Number:</b> {{ $delivery->tracking_number }} <br>
+                                                    <b>Delivery Company: </b> {{ $delivery->method }} <br>
+                                                    <b>Delivery Proof</b>
+                                                    <div class="form-floating form-floating-outline">
+                                                        <img id="frame" class="img-fluid m-1"
+                                                            style="height:200px; width:200px"
+                                                            src="{{ asset('delivery_prove') }}/{{ $delivery->prv_img }}" />
+                                                    </div>
+                                                @endforeach
+                                            </p>
+                                        </blockquote>
+                                    </div>
+                                </div>
 
+                            </div>
+                        @endif
                     </div>
+
+
+
                     <div class="card-header d-flex justify-content-between align-items-center px-0">
                         <h5 class="mb-0">Order Item</h5>
                     </div>
@@ -258,6 +285,7 @@
                                 <button type="submit" class="btn btn-primary">Save</button>
                             @endforeach
                         </form>
+                    @elseif (strtolower($order->status) == 'completed')
                     @endif
 
 
