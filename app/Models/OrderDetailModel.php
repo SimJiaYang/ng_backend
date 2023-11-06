@@ -18,7 +18,7 @@ class OrderDetailModel extends Model
         'price',
         'amount',
         'order_id',
-        'cart_id',
+        'remark',
         'product_id',
         'plant_id',
         'bidding_id',

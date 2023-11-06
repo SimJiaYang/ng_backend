@@ -18,8 +18,7 @@ return new class extends Migration
             $table->double('amount', 8, 2);
             $table->foreignId('order_id');
             $table->foreign('order_id')->references('id')->on('order');
-            $table->foreignId('cart_id')->nullable();
-            $table->foreign('cart_id')->references('id')->on('cart');
+            $table->String('remark')->nullable();
             $table->foreignId('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('product');
             $table->foreignId('plant_id')->nullable();

@@ -90,6 +90,9 @@
                                     <table class="table">
                                         <thead class="table-light">
                                             <tr>
+                                                @if (strtolower($order->status) == 'ship')
+                                                    <th class="text-truncate col-1">Checkout</th>
+                                                @endif
                                                 <th class="text-truncate col-1">No</th>
                                                 <th class="text-truncate col-1">Item Picture</th>
                                                 <th class="text-truncate col-1">Item Name</th>
@@ -102,6 +105,17 @@
                                         <tbody>
                                             @for ($i = 0; $i < count($order_item); $i++)
                                                 <tr>
+                                                    @if (strtolower($order->status) == 'ship')
+                                                        <td>
+                                                            <span class="form-check mb-0">
+                                                                <input class="form-check-input me-1" type="checkbox"
+                                                                    name="cid[]" id="cid[]"
+                                                                    value="{{ $order_item[$i]->id }}" onclick="cal()" />
+                                                                <input type="hidden" name="items[]" id="items[]"
+                                                                    value="">
+                                                            </span>
+                                                        </td>
+                                                    @endif
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <p class="fw-normal mb-1">{{ $i + 1 }}</p>
@@ -158,11 +172,21 @@
                                                 </tr>
                                             @endfor
                                             <tr>
-                                                <td colspan="5">
-                                                    <p class="fw-normal my-3 d-flex align-items-center justify-content-end">
-                                                        <b>Total Amount</b>
-                                                    </p>
-                                                </td>
+                                                @if (strtolower($order->status) == 'ship')
+                                                    <td colspan="5">
+                                                        <p
+                                                            class="fw-normal my-3 d-flex align-items-center justify-content-end">
+                                                            <b>Total Amount</b>
+                                                        </p>
+                                                    </td>
+                                                @else
+                                                    <td colspan="5">
+                                                        <p
+                                                            class="fw-normal my-3 d-flex align-items-center justify-content-end">
+                                                            <b>Total Amount</b>
+                                                        </p>
+                                                    </td>
+                                                @endif
                                                 <td colspan="1">
                                                     <p class="fw-normal my-3"> <b>RM
                                                             {{ number_format($order->total_amount, 2) }}</b>
@@ -294,7 +318,30 @@
             </div>
         </div>
         <script>
+            //Calculate the total price
+            function cal() {
+                var items = document.getElementsByName('items[]');
+                var cboxes = document.getElementsByName('cid[]');
+
+                var id = [];
+                var len = cboxes.length;
+
+                for (var i = 0; i < len; i++) {
+                    if (cboxes[i].checked) {
+                        id += cboxes[i].value;
+                    }
+                }
+                document.getElementById('items[]').value = id;
+            }
+
             function getSelectedOption() {
+                var selectedItem = document.getElementById('items[]').value;
+                console.log(selectedItem);
+                if (selectedItem === "") {
+                    alert("Please tick the item you want to deliever at first");
+                    return false; // Prevent form submission
+                }
+
                 var selectElement = document.getElementById("selectOption");
                 var selectedOptionValue = selectElement.value;
 

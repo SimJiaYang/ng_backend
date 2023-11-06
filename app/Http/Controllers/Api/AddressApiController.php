@@ -17,9 +17,9 @@ class AddressApiController extends Controller
         )->where('status', 1);
 
         // If result is impty, return fail
-        if ($address_list->count() == 0) {
-            return $this->fail('Address no found');
-        }
+        // if ($address_list->count() == 0) {
+        //     return $this->fail('Address no found');
+        // }
 
         // Pagination Limit
         if ($request->limit) {
