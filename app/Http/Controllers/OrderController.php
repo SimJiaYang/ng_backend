@@ -97,20 +97,14 @@ class OrderController extends Controller
 
     public function showShipOrder($id)
     {
-        $order = Order::where('id', $id)->first();
+        $orders = Order::where('id', $id)->first();
 
-        $user = User::where('id', $order->user_id)->get();
+        $user = User::where('id',  $orders->user_id)->get();
 
         $order_item = OrderDetailModel::where('order_id', $id)
             ->orderBy('created_at', 'desc')->get();
 
-
-        $delivery = [];
-
-        if ($order->status == "receive") {
-            $delivery = Delivery::where('order_id', $id)->get();
-        }
-
+        $delivery = Delivery::where('order_id', $id)->get();
 
         foreach ($order_item as $item) {
             if (!is_null($item->plant_id)) {
@@ -132,11 +126,13 @@ class OrderController extends Controller
             }
         }
 
+        $order = Order::where('id', $id)->get();
+
         return view('order.sub_screen.order_ship')
             ->with('orders', $order)
             ->with('order_item', $order_item)
             ->with('item_detail', $item_detail)
-            ->with('delivery', $delivery)
+            ->with('deliver', $delivery)
             ->with('user', $user);
     }
 }

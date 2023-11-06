@@ -96,7 +96,8 @@ class DeliveryController extends Controller
             }
 
             Delivery::where('order_id', $request->id)->update([
-                'prv_img' => $imageName
+                'prv_img' => $imageName,
+                'status' => $request->status
             ]);
 
             $order = Order::where('id', $request->id)->update([

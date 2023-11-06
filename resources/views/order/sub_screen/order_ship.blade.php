@@ -15,7 +15,6 @@
                                     <blockquote class="blockquote mb-0">
                                         <p>
                                             @foreach ($orders as $order)
-                                                {{ dd($orders) }}
                                                 <b>Order ID:</b> {{ $order->id }} <br>
                                                 <b>Order Date:</b> {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }}
                                                 <br>
@@ -112,7 +111,7 @@
                                         <tbody>
                                             @for ($i = 0; $i < count($order_item); $i++)
                                                 <tr>
-                                                    @if ($order_item[$i]->remark == true)
+                                                    @if ($order_item[$i]->remark == true && strtolower($order->status) == 'ship')
                                                     @else
                                                         @if (strtolower($order->status) == 'ship')
                                                             <td>
