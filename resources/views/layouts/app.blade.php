@@ -89,6 +89,26 @@
                     </li>
 
                     <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Order</span>
+                    </li>
+
+                    <!-- Order -->
+                    <li class="menu-item">
+                        <a href="{{ route('order.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
+                            <div data-i18n="Dashboards">Orders</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-truck-delivery"></i>
+                            <div data-i18n="Dashboards">Order's Delivery</div>
+                        </a>
+                    </li>
+
+
+                    <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Category</span>
                     </li>
 
@@ -143,18 +163,6 @@
                         </a>
                     </li>
 
-
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Order</span>
-                    </li>
-
-                    <!-- Order -->
-                    <li class="menu-item">
-                        <a href="{{ route('order.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
-                            <div data-i18n="Dashboards">Orders</div>
-                        </a>
-                    </li>
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Biddings</span>

@@ -46,9 +46,11 @@ class DeliveryController extends Controller
             }
 
             foreach ($order_items as $order_item) {
-                foreach ($selectedItem as $selected) {
+                // dd($order_item->id);
+                for ($val = 0; $val < count($selectedItem[0]); $val++) {
+                    $selected = $selectedItem[0][$val];
                     // Compare the id from $order_item and $selected
-                    if ($order_item->id == $selected[0]) {
+                    if ($selected == $order_item->id) {
                         OrderDetailModel::where('id', $order_item->id)->update([
                             'remark' => true,
                             'delivery_id' => $delivery->id
@@ -58,18 +60,18 @@ class DeliveryController extends Controller
             }
         }
 
-
-
         // Delivery status
         if ($request->status == 'ship') {
             $isfull = true;
+
             $order_item = OrderDetailModel::where('order_id', $request->id)->get();
             foreach ($order_item as $item) {
-                if ($item->ramark != null || $item->ramark == true) {
+                if ($item->ramark == null) {
                     $isfull = false;
                     break;
                 }
             }
+
             if ($isfull) {
                 $order = Order::where('id', $request->id)->update([
                     'status' => 'receive',
@@ -97,7 +99,7 @@ class DeliveryController extends Controller
 
             Delivery::where('order_id', $request->id)->update([
                 'prv_img' => $imageName,
-                'status' => $request->status
+                'status' => 'delivered'
             ]);
 
             $order = Order::where('id', $request->id)->update([

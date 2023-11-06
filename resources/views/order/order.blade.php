@@ -74,6 +74,22 @@
 
                                     <td class="text-truncate">
                                         @if ($order->status == 'pay')
+                                            <a href="" class="btn-sm btn btn-secondary badge m-1">Await
+                                                Payment</a>
+                                        @elseif ($order->status == 'ship')
+                                            <a href="{{ route('order.ship', $order->id) }}"
+                                                class="btn-sm btn btn-warning badge m-1">Packaging*</a>
+                                        @elseif ($order->status == 'receive')
+                                            <a href="" class="btn-sm btn btn-primary badge m-1">Shipping</a>
+                                        @elseif ($order->status == 'completed')
+                                            <a href="" class="btn-sm btn btn-success badge m-1">Completed</a>
+                                        @else
+                                            <a href="" class="btn-sm btn btn-danger badge m-1">Cancel</a>
+                                        @endif
+
+                                    </td>
+                                    {{-- <td class="text-truncate">
+                                        @if ($order->status == 'pay')
                                             <a href="{{ route('order.ship', $order->id) }}"
                                                 class="btn-sm btn btn-secondary badge m-1">Await Payment...</a>
                                         @elseif ($order->status == 'ship')
@@ -89,7 +105,9 @@
                                             <a href="{{ route('order.ship', $order->id) }}"
                                                 class="btn-sm btn btn-danger badge m-1">Cancel</a>
                                         @endif
-                                    </td>
+                                    </td> --}}
+
+
                                     {{-- <td class="text-truncate">
                                         @if ($order->status == 'pay')
                                             <span class="badge bg-label-secondary rounded-pill">To

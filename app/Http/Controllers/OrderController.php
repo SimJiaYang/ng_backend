@@ -11,6 +11,7 @@ use App\Models\OrderDetailModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use SebastianBergmann\Type\TrueType;
 
 class OrderController extends Controller
 {
@@ -27,11 +28,13 @@ class OrderController extends Controller
     /**Filter order status*/
     public function filter(Request $request)
     {
+
         $order = Order::select(
             "order.*",
         )->where('status', $request->status)
             ->orderBy('created_at', 'desc')
             ->paginate(5)->setPath('');
+
         $order->appends(array(
             'name' => $request->status
         ));
@@ -58,6 +61,7 @@ class OrderController extends Controller
         )->where('id', $request->id)->get();
 
         $user = User::where('id', $order[0]->user_id)->get();
+
 
         $order_item = OrderDetailModel::where('order_id', $request->id)
             ->orderBy('created_at', 'desc')->get();
