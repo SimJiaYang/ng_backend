@@ -22,6 +22,7 @@ class OrderDetailModel extends Model
         'product_id',
         'plant_id',
         'bidding_id',
+        'delivery_id'
     ];
 
     public function order()

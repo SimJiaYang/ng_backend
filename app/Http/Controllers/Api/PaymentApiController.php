@@ -91,12 +91,6 @@ class PaymentApiController extends Controller
         $order->status = 'ship';
         $order->save();
 
-        $delivery = Delivery::create([
-            'order_id' => $order->id,
-            'user_id' => Auth::id(),
-            'status' => 'pack',
-        ]);
-
         return $this->success($payment);
     }
 }
