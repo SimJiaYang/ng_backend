@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+    <p class="display-5">Delivery List</p>
+
     <!-- Search -->
     <form action="{{ route('delivery.search') }}" method="POST">
         @csrf
@@ -7,7 +9,7 @@
             <div class="nav-item d-flex align-items-left">
                 <i class="mdi mdi-magnify mdi-24px lh-0"></i>
                 <input type="search" class="form-control border-0 shadow-none bg-body" id="name" name="name"
-                    placeholder="Search..." aria-label="Search..." />
+                    placeholder="Search the delivery by order ID..." aria-label="Search..." />
             </div>
         </div>
     </form>

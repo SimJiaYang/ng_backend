@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 use function PHPUnit\Framework\isNull;
 
@@ -22,10 +23,10 @@ class DeliveryController extends Controller
     {
         $query = $request->name;
         $keyword = $request->name;
-        $delivery = Delivery::where("tracking_number", 'like', "%$keyword%")
+        $delivery = Delivery::where("order_id", 'like', "%$keyword%")
             ->paginate(5);
         $delivery->appends(array(
-            'keyword' => $query
+            'keyword' => Hash::make($query)
         ));
         return view('delivery.delivery')
             ->with('delivery', $delivery);
