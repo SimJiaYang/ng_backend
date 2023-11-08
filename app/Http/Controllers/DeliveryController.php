@@ -98,12 +98,13 @@ class DeliveryController extends Controller
 
         // Update the Shipping Detail but not set it to delivered
         if ($request->status == 'ship' && $request->id != null) {
-            $delivery = Delivery::where('id', $request->id);
+            $delivery = Delivery::where('id', $request->id)->first();
             $delivery->status = 'ship';
             $delivery->tracking_number = $request->track_num;
             $delivery->method = $request->method;
             $delivery->expected_date = $request->expected_date;
             $delivery->save();
+            return redirect()->route('delivery.index');
         }
 
         // Delivery arrived
@@ -127,7 +128,19 @@ class DeliveryController extends Controller
             $delivery->save();
 
             // Update order
+            $deliveryList = Delivery::where('order_id', $delivery->order_id)->get();
+            // dd($deliveryList);
+            foreach ($deliveryList as $deliverys) {
+                if ($deliverys->status != 'delivered') {
+                    // dd($deliverys->status);
+                    return redirect()->route('delivery.index');
+                }
+            }
+
+
             $order->status = 'completed';
+            $order->save();
+            return redirect()->route('delivery.index');
         }
 
         return redirect()->route('order.index');

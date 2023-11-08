@@ -6,8 +6,8 @@
     </div>
     @foreach ($deliver as $delivery)
         <form method="POST"
-            action="{{ route('delivery.update', ['id' => $delivery->id, 'order_id' => $delivery->order_ids]) }}"
-            enctype="multipart/form-data">
+            action="{{ route('delivery.update', ['id' => $delivery->id, 'order_id' => $delivery->order_id]) }}"
+            enctype="multipart/form-data" onsubmit="return validateCompleted()">
             @csrf
             <div class="form-floating form-floating-outline mb-4">
                 <select class="form-select" id="selectOption" aria-label="Default select example" name="status">
