@@ -81,6 +81,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Delivery
         Route::post('/order/delivery', [DeliveryController::class, 'updateDelivery'])->name('delivery.update');
+        Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
+        Route::any('/delivery/search', [DeliveryController::class, 'search'])->name('delivery.search');
+        Route::get('/delivery/detail/{id}', [DeliveryController::class, 'detail'])->name('delivery.detail');
 
         // Bidding
         Route::get('/bidding', [BiddingController::class, 'index'])->name('bidding.index');

@@ -101,7 +101,7 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="" class="menu-link">
+                        <a href="{{ route('delivery.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-truck-delivery"></i>
                             <div data-i18n="Dashboards">Order's Delivery</div>
                         </a>

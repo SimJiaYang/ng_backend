@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         // $category = Category::where('status', '1')->paginate(5);
-        $category = Category::all();
+        // $category = Category::all();
         $category = Category::paginate(5);
         return view('category.category')
             ->with('category', $category);
@@ -47,7 +47,7 @@ class CategoryController extends Controller
             'name' => $query
         ));
         return view('category.category')
-            ->with('category', $category);;
+            ->with('category', $category);
     }
 
     public function edit($id)
