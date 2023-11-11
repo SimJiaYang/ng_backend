@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Delivery;
 use App\Models\Order;
+use App\Models\Plant;
+use App\Models\User;
+use App\Models\Product;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -35,8 +38,45 @@ class DeliveryController extends Controller
     public function detail($id)
     {
         $delivery = Delivery::where('id', $id)->get();
-        // dd($delivery);
+        $orders = Order::where('id', $delivery[0]->order_id)->first();
+        $order = Order::where('id', $delivery[0]->order_id)->get();
+        $order_item = OrderDetailModel::
+            where('order_id', $orders->id)
+            ->where('delivery_id', $delivery[0]->id)
+        ->get();
+        // dd($order_item);
+        $delivery_total_price = 0;
+        foreach ($order_item as $item) {
+            $delivery_total_price += $item->amount;
+        }
+        $user = User::where('id',  $orders->user_id)->get();
+
+        foreach ($order_item as $item) {
+            if (!is_null($item->plant_id)) {
+                $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+                    ->where('plant.id',  $item->plant_id)
+                    ->where('plant.status', '1')
+                    ->where('plant.quantity', '>', '0')
+                    ->select('plant.*', 'category.name as category_name', 'plant.image as image')
+                    ->first();
+                $item_detail['plant'][] = $plant;
+            } else if (!is_null($item->product_id)) {
+                $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
+                    ->where('product.id', $item->product_id)
+                    ->where('product.status', '1')
+                    ->where('product.quantity', '>', '0')
+                    ->select('product.*', 'category.name as category_name', 'product.image as image')
+                    ->first();
+                $item_detail['product'][] = $product;
+            }
+        }
+
         return view('delivery.sub_screen.edit_delivery_screen')
+            ->with('order_item', $order_item)
+            ->with('orders', $order)
+            ->with('user', $user)
+            ->with('item_detail', $item_detail)
+            ->with('delivery_total_price', $delivery_total_price)
             ->with('deliver', $delivery);
     }
 
@@ -92,6 +132,7 @@ class DeliveryController extends Controller
                 $order->status = 'receive';
                 $order->save();
             } else {
+                $order->status = 'partial';
                 $order->is_separate = true;
                 $order->save();
             }
@@ -130,14 +171,11 @@ class DeliveryController extends Controller
 
             // Update order
             $deliveryList = Delivery::where('order_id', $delivery->order_id)->get();
-            // dd($deliveryList);
             foreach ($deliveryList as $deliverys) {
                 if ($deliverys->status != 'delivered') {
-                    // dd($deliverys->status);
                     return redirect()->route('delivery.index');
                 }
             }
-
 
             $order->status = 'completed';
             $order->save();

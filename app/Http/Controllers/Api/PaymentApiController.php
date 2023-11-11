@@ -87,6 +87,7 @@ class PaymentApiController extends Controller
         $payment->status = 'success';
         $payment->save();
 
+        // If payment succees, update the order status
         $order = Order::where('id', $payment->order_id)->first();
         $order->status = 'ship';
         $order->save();

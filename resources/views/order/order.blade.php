@@ -16,9 +16,10 @@
 
     <!--Label to Search -->
     <div class="col-12 mt-2 mb-2">
-        <a href = "{{ route('order.index') }}" class="btn-sm btn btn-info m-1">All</a>
+        <a href = "{{ route('order.index') }}" class="btn-sm btn btn-light m-1">All</a>
         <a href = "{{ route('order.filter', ['status' => 'pay']) }}" class="btn-sm btn btn-secondary m-1">To Pay</a>
         <a href = "{{ route('order.filter', ['status' => 'ship']) }}" class="btn-sm btn btn-warning m-1">To Ship</a>
+        <a href = "{{ route('order.filter', ['status' => 'partial']) }}" class="btn-sm btn btn-info m-1">Partial Receive</a>
         <a href = "{{ route('order.filter', ['status' => 'receive']) }}" class="btn-sm btn btn-primary m-1">To Receive</a>
         <a href = "{{ route('order.filter', ['status' => 'completed']) }}" class="btn-sm btn btn-success m-1">Completed</a>
         <a href = "{{ route('order.filter', ['status' => 'cancel']) }}" class="btn-sm btn btn-danger m-1">Cancel</a>
@@ -83,6 +84,8 @@
                                             <a href="" class="btn-sm btn btn-primary badge m-1">Shipping</a>
                                         @elseif ($order->status == 'completed')
                                             <a href="" class="btn-sm btn btn-success badge m-1">Completed</a>
+                                        @elseif($order->status == 'partial')
+                                            <a href="" class="btn-sm btn btn-info badge m-1">Partial</a>
                                         @else
                                             <a href="" class="btn-sm btn btn-danger badge m-1">Cancel</a>
                                         @endif

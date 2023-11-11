@@ -19,8 +19,6 @@ class CartApiController extends Controller
     {
         $cart = Cart::where('user_id', Auth::id())
             ->where('is_purchase', "false");
-        // $cart = Cart::where('user_id', $request->id)
-        //     ->where('is_purchase', "false");
 
         $ret = [];
 
@@ -99,8 +97,6 @@ class CartApiController extends Controller
     // Add and update
     public function add(Request $request)
     {
-        $user = Auth::user();
-
         // If null, return
         if (
             ($request->plantID == null &&
