@@ -143,17 +143,20 @@ class OrderController extends Controller
 
         $user = User::where('id',  $orders->user_id)->get();
 
-        // Incomplete order item
-        $order_item = OrderDetailModel::where('order_id', $id)
-            ->orderBy('created_at', 'desc')
-            // ->where('delivery_id', null)
-            // ->where('remark', null)
-            ->get();
-
         // Use to get all the item within a order
         $all_item = OrderDetailModel::where('order_id', $id)
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $isfull = true;
+
+        foreach ($all_item as $item) {
+            if ($item->remark != true) {
+                $isfull = false;
+                break;
+            }
+        }
+
 
         foreach ($all_item as $item) {
             if (!is_null($item->plant_id)) {
@@ -196,8 +199,9 @@ class OrderController extends Controller
 
         return view('order.sub_screen.order_partial')
             ->with('orders', $order)
-            ->with('order_item', $order_item)
+            ->with('order_item', $all_item)
             ->with('item_detail', $item_detail)
+            ->with('isfull', $isfull)
             // ->with('delivery_detail', $delivery_detail)
             // ->with('deliver', $delivery)
             // ->with('deliver', $delivery)

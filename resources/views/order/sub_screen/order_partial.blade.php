@@ -141,32 +141,37 @@
                         </div>
 
                         <div class="card mb-4 mt-5 p-4 mx-2">
-                            <div class="card-header d-flex justify-content-between align-items-center my-3 px-0">
-                                <h5 class="mb-0">Create a new delivery</h5>
-                            </div>
-                            <form method="POST" action="{{ route('delivery.update', ['order_id' => $order->id]) }}"
-                                onsubmit="return getSelectedOption() ">
-                                @csrf
-                                <input type="hidden" name="items[]" id="items[]" value="">
-                                <input type="hidden" name="status" id="status" value="ship">
+                            @if ($isfull == true)
+                                <p>Please go to the <a href="{{ route('delivery.index') }}">delivery page</a> to update the
+                                    delivery status</p></a>
+                            @else
+                                <div class="card-header d-flex justify-content-between align-items-center my-3 px-0">
+                                    <h5 class="mb-0">Create a new delivery</h5>
+                                </div>
+                                <form method="POST" action="{{ route('delivery.update', ['order_id' => $order->id]) }}"
+                                    onsubmit="return getSelectedOption() ">
+                                    @csrf
+                                    <input type="hidden" name="items[]" id="items[]" value="">
+                                    <input type="hidden" name="status" id="status" value="ship">
 
-                                <div class="form-floating form-floating-outline mb-4">
-                                    <input type="text" id="method" name="method" class="form-control"
-                                        id="basic-default-fullname" placeholder="Delivery Company" required />
-                                    <label for="basic-default-fullname">Delivery company</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-4">
-                                    <input type="text" id="track_num" name="track_num" class="form-control"
-                                        id="basic-default-fullname" placeholder="Tracking Number" required />
-                                    <label for="basic-default-fullname">Tracking Number</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-4">
-                                    <input class="form-control" type="date" id="html5-date-input" required
-                                        name="expected_date" />
-                                    <label for="html5-date-input">Expected date</label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </form>
+                                    <div class="form-floating form-floating-outline mb-4">
+                                        <input type="text" id="method" name="method" class="form-control"
+                                            id="basic-default-fullname" placeholder="Delivery Company" required />
+                                        <label for="basic-default-fullname">Delivery company</label>
+                                    </div>
+                                    <div class="form-floating form-floating-outline mb-4">
+                                        <input type="text" id="track_num" name="track_num" class="form-control"
+                                            id="basic-default-fullname" placeholder="Tracking Number" required />
+                                        <label for="basic-default-fullname">Tracking Number</label>
+                                    </div>
+                                    <div class="form-floating form-floating-outline mb-4">
+                                        <input class="form-control" type="date" id="html5-date-input" required
+                                            name="expected_date" />
+                                        <label for="html5-date-input">Expected date</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            @endif
                         </div>
 
 
