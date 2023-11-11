@@ -40,10 +40,9 @@ class DeliveryController extends Controller
         $delivery = Delivery::where('id', $id)->get();
         $orders = Order::where('id', $delivery[0]->order_id)->first();
         $order = Order::where('id', $delivery[0]->order_id)->get();
-        $order_item = OrderDetailModel::
-            where('order_id', $orders->id)
+        $order_item = OrderDetailModel::where('order_id', $orders->id)
             ->where('delivery_id', $delivery[0]->id)
-        ->get();
+            ->get();
         // dd($order_item);
         $delivery_total_price = 0;
         foreach ($order_item as $item) {
@@ -177,8 +176,22 @@ class DeliveryController extends Controller
                 }
             }
 
-            $order->status = 'completed';
-            $order->save();
+            // Update Order Status 
+            $isfull = true;
+            $order_item = OrderDetailModel::where('order_id', $request->order_id)->get();
+
+            foreach ($order_item as $item) {
+                if ($item->remark != true) {
+                    $isfull = false;
+                    break;
+                }
+            }
+
+            if ($isfull == true) {
+                $order->status = 'completed';
+                $order->save();
+            }
+
             return redirect()->route('delivery.index');
         }
 
