@@ -143,7 +143,7 @@
                         <div class="card mb-4 mt-5 p-4 mx-2">
                             @if ($isfull == true)
                                 <p>Please go to the <a href="{{ route('delivery.index') }}">delivery page</a> to update the
-                                    delivery status</p></a>
+                                    delivery status</p>
                             @else
                                 <div class="card-header d-flex justify-content-between align-items-center my-3 px-0">
                                     <h5 class="mb-0">Create a new delivery</h5>

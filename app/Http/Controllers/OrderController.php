@@ -154,13 +154,13 @@ class OrderController extends Controller
             if (!is_null($item->plant_id)) {
                 $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
                     ->where('plant.id',  $item->plant_id)
-                    ->where('plant.status', '1')
+                    ->select('plant.*', 'category.name as category_name', 'plant.image as image')
                     ->first();
                 $item_detail['plant'][] = $plant;
             } else if (!is_null($item->product_id)) {
                 $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
                     ->where('product.id', $item->product_id)
-                    ->where('product.status', '1')
+                    ->select('product.*', 'category.name as category_name', 'product.image as image')
                     ->first();
                 $item_detail['product'][] = $product;
             }
