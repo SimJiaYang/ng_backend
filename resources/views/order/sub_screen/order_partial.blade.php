@@ -3,7 +3,7 @@
     <!-- Basic Layout -->
     <div class="row">
         <div class="col-xl">
-            <div class="card mb-4">
+            <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Order Status</h5>
                 </div>
@@ -20,8 +20,8 @@
                                                 <br>
                                                 <b>Order Address:</b><br> {{ $order->address }}<br><br>
                                                 <b>Order Status:</b>
-                                                <span class="badge bg-label-warning rounded-pill">To
-                                                    {{ ucfirst($order->status) }}</span>
+                                                <span class="badge bg-label-info rounded-pill">
+                                                    {{ ucfirst($order->status) }} for delivery</span>
                                             @endforeach
 
                                         </p>
@@ -35,12 +35,12 @@
                             </div>
                         </div>
 
-
                         <div class="card-header d-flex justify-content-between align-items-center px-0">
-                            <h5 class="mb-0">Select the Item to pack</h5>
+                            <h5 class="mb-0 mt-2">Select the Item to pack</h5>
                         </div>
 
-                        {{-- Not Delivery Out --}}
+
+                        {{-- Delivery Out --}}
                         <!-- Data Tables -->
                         <div class="col-12 mt-3">
                             <div class="card">
@@ -49,7 +49,6 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="text-truncate col-1">Checkout</th>
-
                                                 <th class="text-truncate col-1">No</th>
                                                 <th class="text-truncate col-1">Item Picture</th>
                                                 <th class="text-truncate col-1">Item Name</th>
@@ -62,13 +61,20 @@
                                         <tbody>
                                             @for ($i = 0; $i < count($order_item); $i++)
                                                 <tr>
-                                                    <td>
-                                                        <span class="form-check mb-0">
-                                                            <input class="form-check-input me-1" type="checkbox"
-                                                                name="cid[]" id="cid[]"
-                                                                value="{{ $order_item[$i]->id }}" onclick="cal()" />
-                                                        </span>
-                                                    </td>
+                                                    @if ($order_item[$i]->remark == true)
+                                                        <td>
+                                                            <i class="mdi mdi-check mdi-24px"></i>
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            <span class="form-check mb-0">
+                                                                <input class="form-check-input me-1" type="checkbox"
+                                                                    name="cid[]" id="cid[]"
+                                                                    value="{{ $order_item[$i]->id }}" onclick="cal()" />
+
+                                                            </span>
+                                                        </td>
+                                                    @endif
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <p class="fw-normal mb-1">{{ $i + 1 }}</p>
@@ -135,13 +141,11 @@
                         </div>
 
                         <div class="card mb-4 mt-5 p-4 mx-2">
-
                             <div class="card-header d-flex justify-content-between align-items-center my-3 px-0">
                                 <h5 class="mb-0">Create a new delivery</h5>
                             </div>
-
                             <form method="POST" action="{{ route('delivery.update', ['order_id' => $order->id]) }}"
-                                onsubmit="return getSelectedOption()">
+                                onsubmit="return getSelectedOption() ">
                                 @csrf
                                 <input type="hidden" name="items[]" id="items[]" value="">
                                 <input type="hidden" name="status" id="status" value="ship">
@@ -168,68 +172,68 @@
 
 
                     </div>
-                </div>
-            </div>
-            <script>
-                //Calculate the total price
-                function cal() {
-                    var items = document.getElementsByName('items[]');
-                    var cboxes = document.getElementsByName('cid[]');
-                    console.log(items);
-                    var id = [];
-                    var len = cboxes.length;
 
-                    for (var i = 0; i < len; i++) {
-                        if (cboxes[i].checked) {
-                            id.push(cboxes[i].value);
+
+                    <script>
+                        //Calculate the total price
+                        function cal() {
+                            var items = document.getElementsByName('items[]');
+                            var cboxes = document.getElementsByName('cid[]');
+
+                            var id = [];
+                            var len = cboxes.length;
+
+                            for (var i = 0; i < len; i++) {
+                                if (cboxes[i].checked) {
+                                    id.push(cboxes[i].value);
+                                }
+                            }
+                            document.getElementById('items[]').value = id;
                         }
-                    }
-                    document.getElementById('items[]').value = id;
-                }
 
-                function getSelectedOption() {
-                    var selectedItem = document.getElementById('items[]').value;
-                    console.log(selectedItem);
-                    if (selectedItem === "" || selectedItem === null) {
-                        alert("Please tick the item you want to deliever at first");
-                        return false; // Prevent form submission
-                    }
+                        function getSelectedOption() {
+                            var selectedItem = document.getElementById('items[]').value;
+                            console.log(selectedItem);
+                            if (selectedItem === "") {
+                                alert("Please tick the item you want to deliever at first");
+                                return false; // Prevent form submission
+                            }
 
-                    var selectElement = document.getElementById("selectOption");
-                    var selectedOptionValue = selectElement.value;
+                            var selectElement = document.getElementById("selectOption");
+                            var selectedOptionValue = selectElement.value;
 
-                    if (selectedOptionValue === "pack") {
-                        alert("Please update the delivery status of the order");
-                        return false; // Prevent form submission
-                    } else {
-                        // You can now use the selectedOptionValue in your further processing
-                        return true; // Allow form submission
-                    }
-                }
+                            if (selectedOptionValue === "pack") {
+                                alert("Please update the delivery status of the order");
+                                return false; // Prevent form submission
+                            } else {
+                                // You can now use the selectedOptionValue in your further processing
+                                return true; // Allow form submission
+                            }
+                        }
 
-                function validateCompleted() {
-                    var selectElement = document.getElementById("selectOption");
-                    var selectedOptionValue = selectElement.value;
+                        function validateCompleted() {
+                            var selectElement = document.getElementById("selectOption");
+                            var selectedOptionValue = selectElement.value;
 
-                    if ((selectedOptionValue === "delivered" && frame.src === "") ||
-                        (selectedOptionValue === "ship" && frame.src !== "")
-                    ) {
-                        alert("Please update the delivery status of the order and ensure the prove of delivery is updated");
-                        return false; // Prevent form submission
-                    } else {
-                        // You can now use the selectedOptionValue in your further processing
-                        return true; // Allow form submission
-                    }
-                }
+                            if ((selectedOptionValue === "delivered" && frame.src === "") ||
+                                (selectedOptionValue === "ship" && frame.src !== "")
+                            ) {
+                                alert("Please update the delivery status of the order and ensure the prove of delivery is updated");
+                                return false; // Prevent form submission
+                            } else {
+                                // You can now use the selectedOptionValue in your further processing
+                                return true; // Allow form submission
+                            }
+                        }
 
-                function preview() {
-                    frame.src = URL.createObjectURL(event.target.files[0]);
-                }
+                        function preview() {
+                            frame.src = URL.createObjectURL(event.target.files[0]);
+                        }
 
-                function clearImage() {
-                    document.getElementById('formFile').value = null;
-                    frame.src = "";
-                }
-            </script>
+                        function clearImage() {
+                            document.getElementById('formFile').value = null;
+                            frame.src = "";
+                        }
+                    </script>
 
-        @endsection
+                @endsection

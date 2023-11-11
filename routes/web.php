@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::any('/order/search', [OrderController::class, 'search'])->name('order.search');
         Route::any('/order/filter/{status}', [OrderController::class, 'filter'])->name('order.filter');
         Route::get('/order/ship/{id}', [OrderController::class, 'showShipOrder'])->name('order.ship');
+        Route::get('/order/partial/{id}', [OrderController::class, 'showPartialOrder'])->name('order.partial');
 
         // Delivery
         Route::post('/order/delivery', [DeliveryController::class, 'updateDelivery'])->name('delivery.update');

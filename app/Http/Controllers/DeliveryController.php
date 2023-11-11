@@ -127,7 +127,7 @@ class DeliveryController extends Controller
                 }
             }
 
-            if ($isfull == true) {
+            if ($isfull == true && $order->is_separate == null) {
                 $order->status = 'receive';
                 $order->save();
             } else {

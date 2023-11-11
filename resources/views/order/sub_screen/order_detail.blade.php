@@ -30,6 +30,9 @@
                                             @elseif (strtolower($order->status) == 'completed')
                                                 <span
                                                     class="badge bg-label-success rounded-pill">{{ ucfirst($order->status) }}</span>
+                                            @elseif (strtolower($order->status) == 'partial')
+                                                <span
+                                                    class="badge bg-label-info rounded-pill">{{ ucfirst($order->status) }}</span>
                                             @else
                                                 <span
                                                     class="badge bg-label-danger rounded-pill">{{ ucfirst($order->status) }}</span>

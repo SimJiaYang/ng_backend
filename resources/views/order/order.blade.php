@@ -79,13 +79,14 @@
                                                 Payment</a>
                                         @elseif ($order->status == 'ship')
                                             <a href="{{ route('order.ship', $order->id) }}"
-                                                class="btn-sm btn btn-warning badge m-1">Packaging*</a>
+                                                class="btn-sm btn btn-warning badge m-1">Packaging</a>
                                         @elseif ($order->status == 'receive')
                                             <a href="" class="btn-sm btn btn-primary badge m-1">Shipping</a>
                                         @elseif ($order->status == 'completed')
                                             <a href="" class="btn-sm btn btn-success badge m-1">Completed</a>
                                         @elseif($order->status == 'partial')
-                                            <a href="" class="btn-sm btn btn-info badge m-1">Partial</a>
+                                            <a href="{{ route('order.partial', $order->id) }}"
+                                                class="btn-sm btn btn-info badge m-1">Partial</a>
                                         @else
                                             <a href="" class="btn-sm btn btn-danger badge m-1">Cancel</a>
                                         @endif

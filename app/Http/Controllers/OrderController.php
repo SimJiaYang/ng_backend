@@ -21,7 +21,7 @@ class OrderController extends Controller
         $order = Order::select(
             "order.*",
         )->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(10);
         return view('order.order')->with('orders', $order);
     }
 
@@ -33,7 +33,7 @@ class OrderController extends Controller
             "order.*",
         )->where('status', $request->status)
             ->orderBy('created_at', 'desc')
-            ->paginate(5)->setPath('');
+            ->paginate(10)->setPath('');
 
         $order->appends(array(
             'name' => $request->status
@@ -108,8 +108,6 @@ class OrderController extends Controller
         $order_item = OrderDetailModel::where('order_id', $id)
             ->orderBy('created_at', 'desc')->get();
 
-        $delivery = Delivery::where('order_id', $id)->get();
-
         foreach ($order_item as $item) {
             if (!is_null($item->plant_id)) {
                 $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
@@ -136,7 +134,73 @@ class OrderController extends Controller
             ->with('orders', $order)
             ->with('order_item', $order_item)
             ->with('item_detail', $item_detail)
-            ->with('deliver', $delivery)
+            ->with('user', $user);
+    }
+
+    public function showPartialOrder($id)
+    {
+        $orders = Order::where('id', $id)->first();
+
+        $user = User::where('id',  $orders->user_id)->get();
+
+        // Incomplete order item
+        $order_item = OrderDetailModel::where('order_id', $id)
+            ->orderBy('created_at', 'desc')
+            // ->where('delivery_id', null)
+            // ->where('remark', null)
+            ->get();
+
+        // Use to get all the item within a order
+        $all_item = OrderDetailModel::where('order_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($all_item as $item) {
+            if (!is_null($item->plant_id)) {
+                $plant = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+                    ->where('plant.id',  $item->plant_id)
+                    ->where('plant.status', '1')
+                    ->where('plant.quantity', '>', '0')
+                    ->select('plant.*', 'category.name as category_name', 'plant.image as image')
+                    ->first();
+                $item_detail['plant'][] = $plant;
+            } else if (!is_null($item->product_id)) {
+                $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
+                    ->where('product.id', $item->product_id)
+                    ->where('product.status', '1')
+                    ->where('product.quantity', '>', '0')
+                    ->select('product.*', 'category.name as category_name', 'product.image as image')
+                    ->first();
+                $item_detail['product'][] = $product;
+            }
+        }
+
+        $order = Order::where('id', $id)->get();
+
+        // Completed order item
+        // // Delivery List
+        // $delivery = Delivery::where('order_id', $id)->get();
+        // $delivery_detail = [];
+
+        // Get the order item accoding list
+        // foreach ($delivery as $item) {
+        //     $order_detail = OrderDetailModel::where('order_id', $id)
+        //         ->orderBy('created_at', 'desc')
+        //         ->where('delivery_id', $item->id)
+        //         ->where('remark', true)
+        //         ->get();
+        //     $delivery_detail['order_detail'][] = $order_detail;
+        // }
+
+        // dd($delivery_detail);
+
+        return view('order.sub_screen.order_partial')
+            ->with('orders', $order)
+            ->with('order_item', $order_item)
+            ->with('item_detail', $item_detail)
+            // ->with('delivery_detail', $delivery_detail)
+            // ->with('deliver', $delivery)
+            // ->with('deliver', $delivery)
             ->with('user', $user);
     }
 }
