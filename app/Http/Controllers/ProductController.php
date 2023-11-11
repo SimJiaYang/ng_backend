@@ -17,7 +17,6 @@ class ProductController extends Controller
             "product.*",
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'product.cat_id')
-            ->where('product.quantity', '>', '0')
             ->paginate(5);
         return view('product.product')
             ->with('product', $product);
@@ -66,7 +65,6 @@ class ProductController extends Controller
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'product.cat_id')
             ->where('product.name', 'like', "%$keyword%")
-            ->where('product.quantity', '>', '0')
             ->paginate(5)->setPath('');
         $product->appends(array(
             'name' => $query

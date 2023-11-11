@@ -17,7 +17,6 @@ class PlantController extends Controller
             "plant.*",
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.quantity', '>', '0')
             ->paginate(5);
         return view('plant.plant')
             ->with('plant', $plant);
@@ -69,8 +68,7 @@ class PlantController extends Controller
             "plant.*",
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.name', 'like', "%$keyword%")
-            ->where('plant.quantity', '>', '0');
+            ->where('plant.name', 'like', "%$keyword%");
         $plant = $plant->paginate(5)->setPath('');
         $plant->appends(array(
             'name' => $query
