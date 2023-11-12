@@ -24,6 +24,8 @@ class Delivery extends Model
         'order_id',
         'user_id',
         'prv_img',
+        'created_at',
+        'updated_at',
     ];
 
     public const STATUS = [

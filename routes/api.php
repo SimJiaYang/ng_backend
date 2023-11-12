@@ -63,5 +63,8 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::post('address/add', 'AddressApiController@addAddress');
         Route::post('address/update', 'AddressApiController@updateAddress');
         Route::post('address/delete', 'AddressApiController@deleteAddress');
+
+        /* Delivery */
+        Route::get('delivery', 'DeliveryApiController@index');
     });
 });

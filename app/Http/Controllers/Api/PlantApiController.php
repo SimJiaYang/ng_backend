@@ -137,7 +137,7 @@ class PlantApiController extends Controller
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
-                'id', 'created_at', 'price'
+                'id', 'created_at', 'price', 'sales_amount'
             ]
         )) {
             $sortBy = $request->sortBy;

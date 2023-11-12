@@ -88,8 +88,7 @@
                                             <a href="{{ route('delivery.detail', \App\Models\Delivery::where('order_id', $order->id)->first()->id) }}"
                                                 class="btn-sm btn btn-primary badge m-1">Shipping</a>
                                         @elseif ($order->status == 'completed')
-                                            <a href="{{ route('delivery.detail', \App\Models\Delivery::where('order_id', $order->id)->first()->id) }}"
-                                                class="btn-sm btn btn-success badge m-1">Completed</a>
+                                            <a href="" class="btn-sm btn btn-success badge m-1">Completed</a>
                                         @elseif($order->status == 'partial')
                                             <a href="{{ route('order.partial', $order->id) }}"
                                                 class="btn-sm btn btn-info badge m-1">Partial</a>
