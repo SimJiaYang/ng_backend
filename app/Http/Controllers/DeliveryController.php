@@ -25,11 +25,10 @@ class DeliveryController extends Controller
     public function search(Request $request)
     {
         $query = $request->name;
-        $keyword = $request->name;
-        $delivery = Delivery::where("order_id", 'like', "%$keyword%")
-            ->paginate(5);
+        $delivery = Delivery::where("order_id", '=', "$query")
+            ->paginate(10);
         $delivery->appends(array(
-            'keyword' => Hash::make($query)
+            'keyword' => $query
         ));
         return view('delivery.delivery')
             ->with('delivery', $delivery);

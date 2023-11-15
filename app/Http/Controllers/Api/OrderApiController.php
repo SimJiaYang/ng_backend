@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Plant;
 use App\Models\Product;
+use App\Models\Delivery;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
 use App\Models\Address;
@@ -90,9 +91,10 @@ class OrderApiController extends Controller
             }
         }
 
-
-
         $ret['order_item'] = $order_item;
+
+        $delivery = Delivery::where('order_id', $request->id)->get();
+        $ret['delivery_list'] = $delivery;
 
         return $this->success($ret);
     }
