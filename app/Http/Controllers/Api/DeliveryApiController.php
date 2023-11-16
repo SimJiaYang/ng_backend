@@ -19,7 +19,9 @@ class DeliveryApiController extends Controller
 {
     public function index(Request $request)
     {
-        $deliveries = Delivery::where("user_id", Auth::id());
+        $deliveries = Delivery::leftjoin('order', 'order.id', 'delivery.order_id')
+            ->where("delivery.user_id", Auth::id())
+            ->select('delivery.*', 'order.created_at as order_date');
 
         // Sort By 
         if ($request->sortBy && in_array(

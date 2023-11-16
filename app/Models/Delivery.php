@@ -32,4 +32,13 @@ class Delivery extends Model
         '0' => 'Disable',
         '1' => 'Enable',
     ];
+
+    public $appends = [
+        'image_url'
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        return json_encode(asset('/delivery_prove/' . $this->prv_img));
+    }
 }
