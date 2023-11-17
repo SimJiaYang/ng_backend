@@ -21,7 +21,12 @@ class DeliveryApiController extends Controller
     {
         $deliveries = Delivery::leftjoin('order', 'order.id', 'delivery.order_id')
             ->where("delivery.user_id", Auth::id())
-            ->select('delivery.*', 'order.created_at as order_date');
+            ->select(
+                'delivery.*',
+                'order.created_at as order_date',
+                'order.address as order_address',
+                'order.total_amount as order_total_amount',
+            );
 
         // Sort By 
         if ($request->sortBy && in_array(

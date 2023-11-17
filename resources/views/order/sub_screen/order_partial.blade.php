@@ -140,11 +140,9 @@
                             </div>
                         </div>
 
-                        <div class="card mb-4 mt-5 p-4 mx-2">
-                            @if ($isfull == true)
-                                <p>Please go to the <a href="{{ route('delivery.index') }}">delivery page</a> to update the
-                                    delivery status</p>
-                            @else
+                        @if ($isfull != true)
+                            <div class="card mb-4 mt-5 p-4 mx-2">
+
                                 <div class="card-header d-flex justify-content-between align-items-center my-3 px-0">
                                     <h5 class="mb-0">Create a new delivery</h5>
                                 </div>
@@ -171,7 +169,14 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </form>
-                            @endif
+                            </div>
+                        @endif
+
+                        <div class="card mb-4 mt-5 p-4 mx-2">
+                            <p>Please go to the <a href="{{ route('delivery.search', ['name' => $order->id]) }}">delivery
+                                    page</a>
+                                to update the
+                                delivery status</p>
                         </div>
 
 
