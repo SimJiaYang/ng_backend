@@ -28,7 +28,7 @@ class DeliveryApiController extends Controller
                 'order.total_amount as order_total_amount',
             );
 
-        // Search by category
+        // Search by order_id
         if ($request->order_id) {
             $deliveries = $deliveries->whereHas(
                 'order',
@@ -37,6 +37,8 @@ class DeliveryApiController extends Controller
                 }
             );
         }
+
+
 
         // Sort By 
         if ($request->sortBy && in_array(
@@ -70,5 +72,24 @@ class DeliveryApiController extends Controller
         $deliveries = $deliveries->orderBy($sortBy, $sortOrder)->paginate($limit);
 
         return $this->success($deliveries);
+    }
+
+    public function show(Request $request)
+    {
+        $delivery = Delivery::leftjoin('order', 'order.id', 'delivery.order_id')
+            ->where("delivery.user_id", Auth::id())
+            ->where('delivery.id', $request->id)
+            ->select(
+                'delivery.*',
+                'order.created_at as order_date',
+                'order.address as order_address',
+                'order.total_amount as order_total_amount',
+            )->first();
+
+        if ($delivery == null) {
+            return $this->fail('No delivery found.');
+        }
+
+        return $this->success($delivery);
     }
 }
