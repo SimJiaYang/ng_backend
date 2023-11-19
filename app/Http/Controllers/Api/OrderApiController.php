@@ -47,7 +47,6 @@ class OrderApiController extends Controller
             ->paginate($limit);
 
         $ret['orders'] = $orders;
-
         return $this->success($ret);
     }
 

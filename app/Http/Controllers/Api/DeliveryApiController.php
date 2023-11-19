@@ -28,6 +28,16 @@ class DeliveryApiController extends Controller
                 'order.total_amount as order_total_amount',
             );
 
+        // Search by category
+        if ($request->order_id) {
+            $deliveries = $deliveries->whereHas(
+                'order',
+                function ($query) use ($request) {
+                    $query->where('order.id', $request->order_id);
+                }
+            );
+        }
+
         // Sort By 
         if ($request->sortBy && in_array(
             $request->sortBy,

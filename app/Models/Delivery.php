@@ -41,4 +41,9 @@ class Delivery extends Model
     {
         return json_encode(asset('/delivery_prove/' . $this->prv_img));
     }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 }
