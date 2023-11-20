@@ -92,4 +92,58 @@ class DeliveryApiController extends Controller
 
         return $this->success($delivery);
     }
+
+    public function receipt(Request $request)
+    {
+        $id = $request->id;
+
+        $request->validate([
+            'id' => 'required|integer|exists:delivery,id',
+        ]);
+        // Delivery receipt on certain delivery
+        $order_detail =
+            Delivery::leftjoin('order_detail', 'order_detail.delivery_id', 'delivery.id')
+            // ->leftjoin('order', 'order.id', 'order_detail.order_id')
+            ->leftjoin('plant', 'plant.id', 'order_detail.plant_id')
+            ->leftjoin('product', 'product.id', 'order_detail.product_id')
+            ->where('delivery.user_id', Auth::id())
+            ->where('delivery.id', $id)
+            ->select(
+                // 'order.id as order_id',
+                // 'order.created_at as order_date',
+                // 'order.address as order_address',
+                // 'order.status as order_status',
+                // 'order.total_amount as order_total_amount',
+                'order_detail.*',
+                'plant.name as plant_name',
+                'plant.price as plant_price',
+                'plant.image as plant_image',
+                'product.name as product_name',
+                'product.price as product_price',
+                'product.image as product_image',
+            )
+            ->get();
+
+        $order = Delivery::leftjoin('order', 'order.id', 'delivery.order_id')
+            ->where("delivery.user_id", Auth::id())
+            ->where('delivery.id', $id)
+            ->select(
+                'order.*',
+            )->first();
+
+        $sender = [
+            "Sender" => "Nursery Garden SDN Berhad",
+            "Address" => "Nursery Garden, Pontian Besar, 82000, Pontian, Johor"
+        ];
+
+        $delivery = Delivery::where('id', $id)->first();
+
+        $ret['user'] = Auth::user();
+        $ret['delivery_order_detail'] = $order_detail;
+        $ret['order'] = $order;
+        $ret['sender'] = $sender;
+        $ret['delivery'] = $delivery;
+
+        return $this->success($ret);
+    }
 }

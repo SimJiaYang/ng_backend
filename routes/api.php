@@ -67,5 +67,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         /* Delivery */
         Route::get('delivery', 'DeliveryApiController@index');
         Route::get('delivery/detail', 'DeliveryApiController@show');
+        Route::get('delivery/receipt', 'DeliveryApiController@receipt');
     });
 });
