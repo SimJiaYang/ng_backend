@@ -11,6 +11,7 @@ use App\Models\Delivery;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
 use App\Models\Address;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -188,13 +189,15 @@ class OrderApiController extends Controller
     public function receipt(Request $request)
     {
         $id = $request->id;
+
         $request->validate([
             'id' => 'required|integer|exists:order,id',
         ]);
 
+        $order = Order::where('id', $id)->first();
+
         $order_detail =
             Order::leftjoin('order_detail', 'order_detail.order_id', 'order.id')
-            // ->leftjoin('order', 'order.id', 'order_detail.order_id')
             ->leftjoin('plant', 'plant.id', 'order_detail.plant_id')
             ->leftjoin('product', 'product.id', 'order_detail.product_id')
             ->where('order.user_id', Auth::id())
@@ -207,7 +210,24 @@ class OrderApiController extends Controller
                 'product.price as product_price',
             )
             ->get();
+
+        $payment = Payment::select(
+            'payment.id',
+            'payment.method',
+            'payment.status',
+            'payment.updated_at',
+            'payment.amount',
+            'payment.date',
+        )
+            ->where('order_id', $id)
+            ->where('user_id', Auth::id())
+            // ->makeHidden(['created_at', 'updated_at'])
+            ->first();
+
+        $ret['order'] = $order;
         $ret['order_item'] = $order_detail;
+        $ret['payment'] = $payment;
+
         return $this->success($ret);
     }
 }
