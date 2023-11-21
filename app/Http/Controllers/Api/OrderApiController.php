@@ -184,4 +184,30 @@ class OrderApiController extends Controller
 
         return $this->success($ret);
     }
+
+    public function receipt(Request $request)
+    {
+        $id = $request->id;
+        $request->validate([
+            'id' => 'required|integer|exists:order,id',
+        ]);
+
+        $order_detail =
+            Order::leftjoin('order_detail', 'order_detail.order_id', 'order.id')
+            // ->leftjoin('order', 'order.id', 'order_detail.order_id')
+            ->leftjoin('plant', 'plant.id', 'order_detail.plant_id')
+            ->leftjoin('product', 'product.id', 'order_detail.product_id')
+            ->where('order.user_id', Auth::id())
+            ->where('order.id', $id)
+            ->select(
+                'order_detail.*',
+                'plant.name as plant_name',
+                'plant.price as plant_price',
+                'product.name as product_name',
+                'product.price as product_price',
+            )
+            ->get();
+        $ret['order_item'] = $order_detail;
+        return $this->success($ret);
+    }
 }
