@@ -224,9 +224,17 @@ class OrderApiController extends Controller
             // ->makeHidden(['created_at', 'updated_at'])
             ->first();
 
+        $sender = [
+            "Sender" => "Nursery Garden SDN Berhad",
+            "Address" => "Nursery Garden, Pontian Besar, 82000, Pontian, Johor"
+        ];
+
+
         $ret['order'] = $order;
         $ret['order_item'] = $order_detail;
         $ret['payment'] = $payment;
+        $ret['sender'] = $sender;
+        $ret['user'] = Auth::user();
 
         return $this->success($ret);
     }
