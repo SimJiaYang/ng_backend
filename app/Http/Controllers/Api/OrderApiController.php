@@ -24,11 +24,6 @@ class OrderApiController extends Controller
     {
         $query = Order::where('order.user_id', Auth::id());
 
-        // If there are no matching orders, return fail
-        // if ($query->count() == 0) {
-        //     return $this->fail('No orders yet.');
-        // }
-
         // pay/ship/partial/receive/completed/cancel
         if ($request->status != null) {
             $query = $query->where('order.status', $request->status);
@@ -116,17 +111,21 @@ class OrderApiController extends Controller
 
         // Validate either the cart exist or not
         foreach ($cartValidation as $item) {
-            $cartItem = Cart::where('id', $item['id'])
-                ->where('is_purchase', "false")
-                ->first();
-            if (!$cartItem) {
-                return $this->fail('Cart ID: ' .  $item['id'] . ' not found');
+            if ($item['id'] != 0) {
+                $cartItem = Cart::where('id', $item['id'])
+                    ->where('is_purchase', "false")
+                    ->first();
+                if (!$cartItem) {
+                    return $this->fail('Cart ID: ' .  $item['id'] . ' not found');
+                } else {
+                    $cartList[] = $cartItem;
+                }
             } else {
-                $cartList[] = $cartItem;
+                $data = $item;
             }
         }
 
-        $total_order_price = 0;
+        $total_order_price = 1;
 
         $address = $request->address;
 
@@ -139,28 +138,64 @@ class OrderApiController extends Controller
             'address' => $address
         ]);
 
-        // Create the order detail
-        foreach ($cartList as $item) {
+        if ($item['id'] != 0) {
+            // Create the order detail
+            foreach ($cartList as $item) {
+                OrderDetailModel::create([
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'amount' => $item['price'] * $item['quantity'],
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'] == null ? null : $item['product_id'],
+                    'plant_id' => $item['plant_id'] == null ? null : $item['plant_id'],
+                    'bidding_id' => $item['bidding_id'] == null ? null : $item['bidding_id'],
+                ]);
+
+                // Minus the inventory of the product
+                if (!is_null($item['plant_id'])) {
+                    $plant = Plant::where('id', $item['plant_id'])->first();
+                    $quantity = $item['quantity'];
+                    $plant->update([
+                        'sales_amount' => $plant->sales_amount + $quantity,
+                        'quantity' => $plant->quantity - $quantity
+                    ]);
+                } else if (!is_null($item['product_id'])) {
+                    $product = Product::where('id', $item['product_id'])->first();
+                    $quantity = $item['quantity'];
+                    $product->update([
+                        'sales_amount' => $product->sales_amount + $quantity,
+                        'quantity' => $product->quantity - $quantity
+                    ]);
+                }
+
+                // Get the order price
+                $total_order_price += $item['price'] * $item['quantity'];
+                // Update the cart item to false
+                $item->update([
+                    'is_purchase' => "true"
+                ]);
+            }
+        } else {
+            $data = $item;
             OrderDetailModel::create([
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
                 'amount' => $item['price'] * $item['quantity'],
                 'order_id' => $order->id,
-                'product_id' => $item['product_id'] == null ? null : $item['product_id'],
-                'plant_id' => $item['plant_id'] == null ? null : $item['plant_id'],
-                'bidding_id' => $item['bidding_id'] == null ? null : $item['bidding_id'],
+                'product_id' => $item['productID'] == "null" ? null : (int)$item['productID'],
+                'plant_id' => $item['plantID'] == "null" ? null : (int)$item['plantID'],
+                'bidding_id' => $item['bidding_id'] == "null" ? null : (int)$item['bidding_id'],
             ]);
 
-            // Minus the inventory of the product
-            if (!is_null($item['plant_id'])) {
-                $plant = Plant::where('id', $item['plant_id'])->first();
+            if (!is_null($item['plantID']) || $item['plantID'] != "null") {
+                $plant = Plant::where('id', (int)$item['plantID'])->first();
                 $quantity = $item['quantity'];
                 $plant->update([
                     'sales_amount' => $plant->sales_amount + $quantity,
                     'quantity' => $plant->quantity - $quantity
                 ]);
-            } else if (!is_null($item['product_id'])) {
-                $product = Product::where('id', $item['product_id'])->first();
+            } else if (!is_null($item['productID']) || $item['productID'] != "null") {
+                $product = Product::where('id', (int)$item['productID'])->first();
                 $quantity = $item['quantity'];
                 $product->update([
                     'sales_amount' => $product->sales_amount + $quantity,
@@ -168,12 +203,7 @@ class OrderApiController extends Controller
                 ]);
             }
 
-            // Get the order price
-            $total_order_price += $item['price'] * $item['quantity'];
-            // Update the cart item to false
-            $item->update([
-                'is_purchase' => "true"
-            ]);
+            $total_order_price = $item['price'] * $item['quantity'];
         }
 
         // Update order price
@@ -221,7 +251,6 @@ class OrderApiController extends Controller
         )
             ->where('order_id', $id)
             ->where('user_id', Auth::id())
-            // ->makeHidden(['created_at', 'updated_at'])
             ->first();
 
         $sender = [

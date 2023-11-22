@@ -17,10 +17,6 @@ class ProductApiController extends Controller
             ->select('product.*', 'category.name as category_name', 'product.image as image')
             ->get();
 
-        // if ($product->count() == 0) {
-        //     return $this->fail('No product data available');
-        // }
-
         $ret['products'] = $product;
         return $this->success($ret);
     }
@@ -32,11 +28,6 @@ class ProductApiController extends Controller
             ->where('product.status', '1')
             ->where('product.quantity', '>', '0')
             ->select('product.*', 'category.name as category_name', 'product.image as image');
-
-        // If result is impty, return fail
-        // if ($product_query->count() == 0) {
-        //     return $this->fail('Product no found');
-        // }
 
         // Pagination Limit
         if ($request->limit) {
@@ -90,7 +81,6 @@ class ProductApiController extends Controller
 
     public function searchProduct(Request $request)
     {
-        // If no keyword, return error message
         if (
             $request->keyword == null &&
             $request->category == null
@@ -117,11 +107,6 @@ class ProductApiController extends Controller
                 }
             );
         }
-
-        // If result is impty, return fail
-        // if ($product_query->count() == 0) {
-        //     return $this->fail('Product no found');
-        // }
 
         // Pagination Limit
         if ($request->limit) {
@@ -178,9 +163,6 @@ class ProductApiController extends Controller
     {
         $category =  Category::where('type', 'product')
             ->where('status', '1')->get();
-        // if ($category->count() == 0) {
-        //     return $this->fail('No category data available');
-        // }
         $ret['category'] = $category;
         return $this->success($ret);
     }
