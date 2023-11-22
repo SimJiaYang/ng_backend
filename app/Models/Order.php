@@ -19,6 +19,8 @@ class Order extends Model
         'total_amount',
         'address',
         'user_id',
+        'receiver_name',
+        'note',
         'created_at',
         'updated_at',
     ];

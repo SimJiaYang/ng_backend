@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('address');
+            $table->string('receiver_name')->nullable();
+            $table->longText('note')->nullable();
             $table->string('is_separate')->nullable();
             $table->timestamps();
         });

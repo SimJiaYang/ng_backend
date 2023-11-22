@@ -125,7 +125,7 @@ class OrderApiController extends Controller
             // }
         }
 
-        $total_order_price = 1;
+        $total_order_price = 0;
 
         $address = $request->address;
 
@@ -175,38 +175,6 @@ class OrderApiController extends Controller
                 'is_purchase' => "true"
             ]);
         }
-        // } 
-        // else {
-        //     $data = $item;
-        //     OrderDetailModel::create([
-        //         'quantity' => $item['quantity'],
-        //         'price' => $item['price'],
-        //         'amount' => $item['price'] * $item['quantity'],
-        //         'order_id' => $order->id,
-        //         'product_id' => $item['productID'] == "null" ? null : (int)$item['productID'],
-        //         'plant_id' => $item['plantID'] == "null" ? null : (int)$item['plantID'],
-        //         'bidding_id' => $item['bidding_id'] == "null" ? null : (int)$item['bidding_id'],
-        //     ]);
-
-        //     if (!is_null($item['plantID']) || $item['plantID'] != "null") {
-        //         $plant = Plant::where('id', (int)$item['plantID'])->first();
-        //         $quantity = $item['quantity'];
-        //         $plant->update([
-        //             'sales_amount' => $plant->sales_amount + $quantity,
-        //             'quantity' => $plant->quantity - $quantity
-        //         ]);
-        //     } else if (!is_null($item['productID']) || $item['productID'] != "null") {
-        //         $product = Product::where('id', (int)$item['productID'])->first();
-        //         $quantity = $item['quantity'];
-        //         $product->update([
-        //             'sales_amount' => $product->sales_amount + $quantity,
-        //             'quantity' => $product->quantity - $quantity
-        //         ]);
-        //     }
-
-        //     $total_order_price = $item['price'] * $item['quantity'];
-        // }
-
         // Update order price
         Order::where('id', $order->id)->update([
             'total_amount' => $total_order_price
