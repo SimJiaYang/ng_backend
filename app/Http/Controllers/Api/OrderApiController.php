@@ -111,18 +111,18 @@ class OrderApiController extends Controller
 
         // Validate either the cart exist or not
         foreach ($cartValidation as $item) {
-            if ($item['id'] != 0) {
-                $cartItem = Cart::where('id', $item['id'])
-                    ->where('is_purchase', "false")
-                    ->first();
-                if (!$cartItem) {
-                    return $this->fail('Cart ID: ' .  $item['id'] . ' not found');
-                } else {
-                    $cartList[] = $cartItem;
-                }
+            // if ($item['id'] != 0) {
+            $cartItem = Cart::where('id', $item['id'])
+                ->where('is_purchase', "false")
+                ->first();
+            if (!$cartItem) {
+                return $this->fail('Cart ID: ' .  $item['id'] . ' not found');
             } else {
-                $data = $item;
+                $cartList[] = $cartItem;
             }
+            // } else {
+            //     $data = $item;
+            // }
         }
 
         $total_order_price = 1;
@@ -138,64 +138,29 @@ class OrderApiController extends Controller
             'address' => $address
         ]);
 
-        if ($item['id'] != 0) {
-            // Create the order detail
-            foreach ($cartList as $item) {
-                OrderDetailModel::create([
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price'],
-                    'amount' => $item['price'] * $item['quantity'],
-                    'order_id' => $order->id,
-                    'product_id' => $item['product_id'] == null ? null : $item['product_id'],
-                    'plant_id' => $item['plant_id'] == null ? null : $item['plant_id'],
-                    'bidding_id' => $item['bidding_id'] == null ? null : $item['bidding_id'],
-                ]);
-
-                // Minus the inventory of the product
-                if (!is_null($item['plant_id'])) {
-                    $plant = Plant::where('id', $item['plant_id'])->first();
-                    $quantity = $item['quantity'];
-                    $plant->update([
-                        'sales_amount' => $plant->sales_amount + $quantity,
-                        'quantity' => $plant->quantity - $quantity
-                    ]);
-                } else if (!is_null($item['product_id'])) {
-                    $product = Product::where('id', $item['product_id'])->first();
-                    $quantity = $item['quantity'];
-                    $product->update([
-                        'sales_amount' => $product->sales_amount + $quantity,
-                        'quantity' => $product->quantity - $quantity
-                    ]);
-                }
-
-                // Get the order price
-                $total_order_price += $item['price'] * $item['quantity'];
-                // Update the cart item to false
-                $item->update([
-                    'is_purchase' => "true"
-                ]);
-            }
-        } else {
-            $data = $item;
+        // if ($item['id'] != 0) {
+        // Create the order detail
+        foreach ($cartList as $item) {
             OrderDetailModel::create([
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
                 'amount' => $item['price'] * $item['quantity'],
                 'order_id' => $order->id,
-                'product_id' => $item['productID'] == "null" ? null : (int)$item['productID'],
-                'plant_id' => $item['plantID'] == "null" ? null : (int)$item['plantID'],
-                'bidding_id' => $item['bidding_id'] == "null" ? null : (int)$item['bidding_id'],
+                'product_id' => $item['product_id'] == null ? null : $item['product_id'],
+                'plant_id' => $item['plant_id'] == null ? null : $item['plant_id'],
+                'bidding_id' => $item['bidding_id'] == null ? null : $item['bidding_id'],
             ]);
 
-            if (!is_null($item['plantID']) || $item['plantID'] != "null") {
-                $plant = Plant::where('id', (int)$item['plantID'])->first();
+            // Minus the inventory of the product
+            if (!is_null($item['plant_id'])) {
+                $plant = Plant::where('id', $item['plant_id'])->first();
                 $quantity = $item['quantity'];
                 $plant->update([
                     'sales_amount' => $plant->sales_amount + $quantity,
                     'quantity' => $plant->quantity - $quantity
                 ]);
-            } else if (!is_null($item['productID']) || $item['productID'] != "null") {
-                $product = Product::where('id', (int)$item['productID'])->first();
+            } else if (!is_null($item['product_id'])) {
+                $product = Product::where('id', $item['product_id'])->first();
                 $quantity = $item['quantity'];
                 $product->update([
                     'sales_amount' => $product->sales_amount + $quantity,
@@ -203,8 +168,44 @@ class OrderApiController extends Controller
                 ]);
             }
 
-            $total_order_price = $item['price'] * $item['quantity'];
+            // Get the order price
+            $total_order_price += $item['price'] * $item['quantity'];
+            // Update the cart item to false
+            $item->update([
+                'is_purchase' => "true"
+            ]);
         }
+        // } 
+        // else {
+        //     $data = $item;
+        //     OrderDetailModel::create([
+        //         'quantity' => $item['quantity'],
+        //         'price' => $item['price'],
+        //         'amount' => $item['price'] * $item['quantity'],
+        //         'order_id' => $order->id,
+        //         'product_id' => $item['productID'] == "null" ? null : (int)$item['productID'],
+        //         'plant_id' => $item['plantID'] == "null" ? null : (int)$item['plantID'],
+        //         'bidding_id' => $item['bidding_id'] == "null" ? null : (int)$item['bidding_id'],
+        //     ]);
+
+        //     if (!is_null($item['plantID']) || $item['plantID'] != "null") {
+        //         $plant = Plant::where('id', (int)$item['plantID'])->first();
+        //         $quantity = $item['quantity'];
+        //         $plant->update([
+        //             'sales_amount' => $plant->sales_amount + $quantity,
+        //             'quantity' => $plant->quantity - $quantity
+        //         ]);
+        //     } else if (!is_null($item['productID']) || $item['productID'] != "null") {
+        //         $product = Product::where('id', (int)$item['productID'])->first();
+        //         $quantity = $item['quantity'];
+        //         $product->update([
+        //             'sales_amount' => $product->sales_amount + $quantity,
+        //             'quantity' => $product->quantity - $quantity
+        //         ]);
+        //     }
+
+        //     $total_order_price = $item['price'] * $item['quantity'];
+        // }
 
         // Update order price
         Order::where('id', $order->id)->update([

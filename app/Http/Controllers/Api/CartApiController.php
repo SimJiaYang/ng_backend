@@ -98,6 +98,8 @@ class CartApiController extends Controller
     public function add(Request $request)
     {
         // If null, return
+        $ret = [];
+
         if (
             ($request->plantID == null &&
                 $request->productID == null)
@@ -116,7 +118,7 @@ class CartApiController extends Controller
                 'quantity' => 'required|numeric|min:1|max:' . $plant->quantity,
             ]);
             // Debug Print
-            $ret['plant'] = $plant;
+            // $ret['plant'] = $plant;
         }
 
         if ($request->productID != "null") {
@@ -129,62 +131,87 @@ class CartApiController extends Controller
                 'quantity' => 'required|numeric|min:1|max:' . $product->quantity,
             ]);
             // Debug Print
-            $ret['product'] = $product;
+            // $ret['product'] = $product;
         }
 
         // Add to the cart for plant
         if ($request->plantID != "null") {
-            $cartPlant = Cart::firstOrNew(['plant_id' => $request->plantID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
-            // If cart exists, update quantity
-            if ($cartPlant->exists) {
-                // Add quantity based on the old quantity
-                $cartPlant->quantity += $request->quantity;
-                $cartPlant->price = $plant->price;
-                $cartPlant->save();
-                // Debug Print
-                $ret['plant_cart_old'] = $cartPlant;
-            } else {
+            if ($request->is_cart) {
                 $newCart = Cart::create([
                     'quantity' => $request->quantity,
-                    'plant_id' => $request->plantID,
+                    'plant_id' => (int)$request->plantID,
                     'user_id' => Auth::id(),
                     'date_added' => Carbon::today(),
                     'is_purchase' => "false",
                     'price' => $plant->price,
                 ]);
                 // Debug Print
-                $ret['plant_cart_new'] = $newCart;
+                $ret['return_cart'][] = $newCart;
+            } else {
+                $cartPlant = Cart::firstOrNew(['plant_id' => $request->plantID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
+                // If cart exists, update quantity
+                if ($cartPlant->exists) {
+                    // Add quantity based on the old quantity
+                    $cartPlant->quantity += $request->quantity;
+                    $cartPlant->price = $plant->price;
+                    $cartPlant->save();
+                    // Debug Print
+                    $ret['return_cart'][] = $cartPlant;
+                } else {
+                    $newCart = Cart::create([
+                        'quantity' => $request->quantity,
+                        'plant_id' => (int)$request->plantID,
+                        'user_id' => Auth::id(),
+                        'date_added' => Carbon::today(),
+                        'is_purchase' => "false",
+                        'price' => $plant->price,
+                    ]);
+                    // Debug Print
+                    $ret['return_cart'][] = $newCart;
+                }
             }
         }
 
         // Add to the cart for product
         if ($request->productID != "null") {
-            $cart = Cart::firstOrNew(['product_id' => $request->productID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
-
-            // If cart exists, update quantity
-            if ($cart->exists) {
-                $cart->quantity += $request->quantity;
-                $cart->price = $product->price;
-                $cart->save();
-                // Debug Print
-                $ret['product_cart_old'] = $cart;
-            } else {
+            if ($request->is_cart) {
                 $newCart = Cart::create([
                     'quantity' => $request->quantity,
-                    'product_id' => $request->productID,
+                    'product_id' => (int)$request->productID,
                     'user_id' => Auth::id(),
                     'date_added' => Carbon::today(),
                     'is_purchase' => "false",
                     'price' => $product->price,
                 ]);
                 // Debug Print
-                $ret['product_cart_new'] = $newCart;
+                $ret['return_cart'][] = $newCart;
+            } else {
+                $cart = Cart::firstOrNew(['product_id' => $request->productID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
+
+                // If cart exists, update quantity
+                if ($cart->exists) {
+                    $cart->quantity += $request->quantity;
+                    $cart->price = $product->price;
+                    $cart->save();
+                    // Debug Print
+                    $ret['return_cart'][] = $cart;
+                } else {
+                    $newCart = Cart::create([
+                        'quantity' => $request->quantity,
+                        'product_id' => (int)$request->productID,
+                        'user_id' => Auth::id(),
+                        'date_added' => Carbon::today(),
+                        'is_purchase' => "false",
+                        'price' => $product->price,
+                    ]);
+                    // Debug Print
+                    $ret['return_cart'][] = $newCart;
+                }
             }
         }
 
-        return $this->success(
-            $ret
-        );
+
+        return $this->success($ret);
     }
 
     public function delete(Request $request)
