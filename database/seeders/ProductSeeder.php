@@ -26,7 +26,7 @@ class ProductSeeder extends Seeder
         $shovelCategoryId = DB::table('category')->where('type', 'Product')->where('name', 'Shovel')->value('id');
         $soilCategoryId = DB::table('category')->where('type', 'Product')->where('name', 'Soil')->value('id');
 
-        for ($i = 10; $i < 20; $i++) {
+        for ($i = 1; $i < 30; $i++) {
             $randomPot = fake()->numberBetween(1, 5);
             $randomSho = fake()->numberBetween(1, 3);
             $randomSoil = fake()->numberBetween(1, 2);

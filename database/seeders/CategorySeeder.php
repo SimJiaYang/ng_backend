@@ -25,7 +25,16 @@ class CategorySeeder extends Seeder
                 'status' => "1",
                 'type' => "Plant",
             ],
-
+            [
+                'name' => "Cactus",
+                'status' => "1",
+                'type' => "Plant",
+            ],
+            [
+                'name' => "Hydrangeas",
+                'status' => "1",
+                'type' => "Plant",
+            ],
             [
                 'name' => "Soil",
                 'status' => "1",
