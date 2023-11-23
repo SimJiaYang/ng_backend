@@ -38,6 +38,11 @@ class CategorySeeder extends Seeder
                 'type' => "Product",
             ],
 
+            [
+                'name' => "Shovel",
+                'status' => "1",
+                'type' => "Product",
+            ],
 
         ]);
     }
