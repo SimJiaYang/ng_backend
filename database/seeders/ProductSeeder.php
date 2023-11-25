@@ -35,6 +35,8 @@ class ProductSeeder extends Seeder
             $shovelFilename =  'shovel' . (string)$randomSho . '.png';
             $soilFilename =  'soil' . (string)$randomSoil . '.jpeg';
 
+            $randomName = fake()->regexify('[A-Za-z0-9]{5}');
+
             DB::table('product')->insertOrIgnore([
                 [
                     'name' => "pot" . $i,

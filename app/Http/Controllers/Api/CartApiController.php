@@ -136,7 +136,7 @@ class CartApiController extends Controller
 
         // Add to the cart for plant
         if ($request->plantID != "null") {
-            if ($request->is_cart) {
+            if ($request->is_cart == false) {
                 $newCart = Cart::create([
                     'quantity' => $request->quantity,
                     'plant_id' => (int)$request->plantID,
@@ -174,7 +174,7 @@ class CartApiController extends Controller
 
         // Add to the cart for product
         if ($request->productID != "null") {
-            if ($request->is_cart) {
+            if ($request->is_cart === false) {
                 $newCart = Cart::create([
                     'quantity' => $request->quantity,
                     'product_id' => (int)$request->productID,

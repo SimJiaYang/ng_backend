@@ -30,6 +30,8 @@ class PlantSeeder extends Seeder
             $hydranFilename =  'Hydran' . (string)$randomHydran . '.png';
             $dRoseFilename =  'DRose' . (string)$randomDRose . '.png';
 
+            $randomName = fake()->regexify('[A-Za-z0-9]{5}');
+
             DB::table('plant')->insertOrIgnore([
                 [
                     'name' => "Lotus" . $i,
