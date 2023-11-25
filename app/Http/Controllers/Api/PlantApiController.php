@@ -71,6 +71,16 @@ class PlantApiController extends Controller
             $sortOrder = 'asc';
         }
 
+        // Search by category
+        if ($request->category) {
+            $plants_query = $plants_query->whereHas(
+                'category',
+                function ($query) use ($request) {
+                    $query->where('category.name', $request->category);
+                }
+            );
+        }
+
         // Pagination
         $plants = $plants_query->orderBy(
             $sortBy,

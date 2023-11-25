@@ -59,6 +59,16 @@ class ProductApiController extends Controller
             $sortOrder = 'asc';
         }
 
+        // Search by category
+        if ($request->category) {
+            $product_query =  $product_query->whereHas(
+                'category',
+                function ($query) use ($request) {
+                    $query->where('category.name', $request->category);
+                }
+            );
+        }
+
         $products = $product_query->orderBy(
             $sortBy,
             $sortOrder
