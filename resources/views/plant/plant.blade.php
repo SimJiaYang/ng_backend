@@ -88,26 +88,31 @@
                                         <a class="navbar-brand" href="{{ route('plant.edit', $plants->id) }}">
                                             <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
                                         </a>
+                                        @if ($plants->status != 'custom')
+                                            <a class="navbar-brand"
+                                                onclick="return confirm('Are you sure you want to change the status?')"
+                                                href="{{ route('plant.delete', $plants->id) }}">
+                                                @if ($plants->status == 0)
+                                                    <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
+                                                @else
+                                                    <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
+                                                @endif
 
-                                        <a class="navbar-brand"
-                                            onclick="return confirm('Are you sure you want to change the status?')"
-                                            href="{{ route('plant.delete', $plants->id) }}">
-                                            @if ($plants->status == 0)
-                                                <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
-                                            @else
-                                                <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
-                                            @endif
-
-                                        </a>
+                                            </a>
+                                        @endif
                                     </td>
 
                                     @if ($plants->status == 0)
                                         <td>
                                             <span class="badge bg-label-danger rounded-pill">Disabled</span>
                                         </td>
-                                    @else
+                                    @elseif($plants->status == 1)
                                         <td>
                                             <span class="badge bg-label-success rounded-pill">Active</span>
+                                        </td>
+                                    @elseif($plants->status == 'custom')
+                                        <td>
+                                            <span class="badge bg-label-warning rounded-pill">Custom</span>
                                         </td>
                                     @endif
                                 </tr>

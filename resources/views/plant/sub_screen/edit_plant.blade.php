@@ -103,6 +103,18 @@
                     <label for="exampleFormControlSelect1">Water Need</label>
                 </div>
 
+                <div class="form-floating form-floating-outline col-md-12 mb-3">
+                    <select class="form-select" id="status" name="status">
+                        <option hidden value="{{ $plants->status }}">
+                            {{ $plants->status == 1 ? 'Show' : ($plants->status == 0 ? 'Hide' : 'Custom') }}
+                        </option>
+                        <option value="1">Show</option>
+                        <option value="0">Hide</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                    <label for="exampleFormControlSelect1">Plant Status</label>
+                </div>
+
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline col-md-12 mb-3">
                         <div class="form-floating form-floating-outline ">

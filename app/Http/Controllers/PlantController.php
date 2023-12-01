@@ -50,7 +50,7 @@ class PlantController extends Controller
             'water_need' => $request->water,
             'mature_height' => $request->height,
             'origin' => $request->origin,
-            'status' => "1",
+            'status' => $request->status,
             'image' => $imageName,
             'cat_id' => $request->category_id
         ]);
@@ -118,6 +118,7 @@ class PlantController extends Controller
         $plant->sunlight_need = $request->sunlight;
         $plant->water_need = $request->water;
         $plant->mature_height = $request->height;
+        $plant->status = $request->status;
         $plant->origin = $request->origin;
         $plant->image = $imageName;
         $plant->cat_id = $request->category_id;

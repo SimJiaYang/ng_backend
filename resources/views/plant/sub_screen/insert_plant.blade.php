@@ -86,6 +86,17 @@
                             <label for="exampleFormControlSelect1">Water Need</label>
                         </div>
 
+                        <div class="form-floating form-floating-outline col-md-12">
+                            <select class="form-select" id="status" name="status">
+                                {{-- <option hidden value="1">
+                                    {{ $plants->status }}</option> --}}
+                                <option value="1">Show</option>
+                                <option value="0">Hide</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <label for="exampleFormControlSelect1">Plant Status</label>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 <textarea class="form-control h-px-100" name="description" maxlength="500"

@@ -69,5 +69,8 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('delivery', 'DeliveryApiController@index');
         Route::get('delivery/detail', 'DeliveryApiController@show');
         Route::get('delivery/receipt', 'DeliveryApiController@receipt');
+
+        /* Custom */
+        Route::post('custom', 'CustomApiController@add');
     });
 });
