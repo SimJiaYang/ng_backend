@@ -51,6 +51,16 @@
                                 <label for="exampleFormControlSelect1">Category</label>
                             </div>
 
+                            <div class="form-floating form-floating-outline col-md-12 mb-3">
+                                <select class="form-select" id="status" name="status">
+                                    <option value="default" disabled selected>Choose option</option>
+                                    <option value="1">Show</option>
+                                    <option value="0">Hide</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                <label for="exampleFormControlSelect1">Plant Status</label>
+                            </div>
+
 
                             <div class="col-md-12 mb-3">
                                 <div class="form-floating form-floating-outline">
@@ -98,8 +108,10 @@
             // selectCategory
             var selectElement2 = document.getElementById("selectCategory");
             var selectedOptionValue2 = selectElement2.value;
+            var selectElement3 = document.getElementById("status");
+            var selectedOptionValue3 = selectElement3.value;
 
-            if (selectedOptionValue2 === "default") {
+            if (selectedOptionValue2 === "default" || selectedOptionValue3 === "default") {
                 alert("Please select an option");
                 return false; // Prevent form submission
             } else {

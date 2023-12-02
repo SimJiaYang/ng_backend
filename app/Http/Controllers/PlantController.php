@@ -108,7 +108,11 @@ class PlantController extends Controller
             $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('/plant_image'), $imageName);
         } else {
-            $imageName = 'no_plant.png';
+            if ($plant->image == null) {
+                $imageName = 'no_plant.png';
+            } else {
+                $imageName = $plant->image;
+            }
         }
 
         $plant->name = $request->name;

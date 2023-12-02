@@ -46,7 +46,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'description' => $request->description,
             'quantity' => $request->quantity,
-            'status' => "1",
+            'status' => $request->status,
             'image' => $imageName,
             'cat_id' => $request->category_id
         ]);
@@ -103,13 +103,18 @@ class ProductController extends Controller
             $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('/product_image'), $imageName);
         } else {
-            $imageName = 'no_product.png';
+            if ($product->image == null) {
+                $imageName = 'no_product.png';
+            } else {
+                $imageName = $product->image;
+            }
         }
 
         $product->name = $request->name;
         $product->price = $request->price;
         $product->description = $request->description;
         $product->quantity = $request->quantity;
+        $product->status = $request->status;
         $product->image = $imageName;
         $product->cat_id = $request->category_id;
         $product->save();

@@ -72,25 +72,30 @@
                                             <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
                                         </a>
 
-                                        <a class="navbar-brand"
-                                            onclick="return confirm('Are you sure you want to change the status?')"
-                                            href="{{ route('product.delete', $products->id) }}">
-                                            @if ($products->status == 0)
-                                                <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
-                                            @else
-                                                <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
-                                            @endif
-
-                                        </a>
+                                        @if ($products->status != 'custom')
+                                            <a class="navbar-brand"
+                                                onclick="return confirm('Are you sure you want to change the status?')"
+                                                href="{{ route('product.delete', $products->id) }}">
+                                                @if ($products->status == 0)
+                                                    <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
+                                                @else
+                                                    <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
+                                                @endif
+                                            </a>
+                                        @endif
                                     </td>
 
-                                    @if ($products->status == 0)
+                                    @if ($products->status == '0')
                                         <td>
                                             <span class="badge bg-label-danger rounded-pill">Disabled</span>
                                         </td>
-                                    @else
+                                    @elseif($products->status == '1')
                                         <td>
                                             <span class="badge bg-label-success rounded-pill">Active</span>
+                                        </td>
+                                    @elseif($products->status == 'custom')
+                                        <td>
+                                            <span class="badge bg-label-warning rounded-pill">Custom</span>
                                         </td>
                                     @endif
                                 </tr>

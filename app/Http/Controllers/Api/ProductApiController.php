@@ -24,8 +24,15 @@ class ProductApiController extends Controller
     // Product Pagination
     public function productList(Request $request)
     {
+        $status = $request->status;
+        if (is_null($status)) {
+            $status = "1";
+        } else {
+            $status = $request->status;
+        }
+
         $product_query = Product::leftjoin('category', 'category.id', 'product.cat_id')
-            ->where('product.status', '1')
+            ->where('product.status', $status)
             ->where('product.quantity', '>', '0')
             ->select('product.*', 'category.name as category_name', 'product.image as image');
 

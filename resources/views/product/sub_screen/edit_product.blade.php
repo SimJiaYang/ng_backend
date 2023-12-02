@@ -61,6 +61,18 @@
                                     <label for="exampleFormControlSelect1">Category</label>
                                 </div>
 
+                                <div class="form-floating form-floating-outline col-md-12 mb-3">
+                                    <select class="form-select" id="status" name="status">
+                                        <option hidden value="{{ $products->status }}">
+                                            {{ $products->status == 1 ? 'Show' : ($products->status == 0 ? 'Hide' : 'Custom') }}
+                                        </option>
+                                        <option value="1">Show</option>
+                                        <option value="0">Hide</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                    <label for="exampleFormControlSelect1">Product Status</label>
+                                </div>
+
                                 <div class="col-md-12 mb-3">
                                     <div class="form-floating form-floating-outline">
                                         <textarea class="form-control h-px-100" name="description" maxlength="500"

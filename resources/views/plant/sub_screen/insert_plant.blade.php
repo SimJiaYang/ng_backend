@@ -88,8 +88,7 @@
 
                         <div class="form-floating form-floating-outline col-md-12">
                             <select class="form-select" id="status" name="status">
-                                {{-- <option hidden value="1">
-                                    {{ $plants->status }}</option> --}}
+                                <option value="default" disabled selected>Choose option</option>
                                 <option value="1">Show</option>
                                 <option value="0">Hide</option>
                                 <option value="custom">Custom</option>
@@ -147,9 +146,11 @@
             var selectedOptionValue1 = selectElement1.value;
             var selectElement2 = document.getElementById("selectCategory");
             var selectedOptionValue2 = selectElement2.value;
+            var selectElement3 = document.getElementById("status");
+            var selectedOptionValue3 = selectElement3.value;
 
             if (selectedOptionValue === "default" || selectedOptionValue1 === "default" ||
-                selectedOptionValue2 === "default") {
+                selectedOptionValue2 === "default" || selectedOptionValue3 === "default") {
                 alert("Please select an option");
                 return false; // Prevent form submission
             } else {

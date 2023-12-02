@@ -31,8 +31,15 @@ class PlantApiController extends Controller
     // Pagination for plant
     public function plantList(Request $request)
     {
+        $status = $request->status;
+        if (is_null($status)) {
+            $status = "1";
+        } else {
+            $status = $request->status;
+        }
+
         $plants_query = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.status', '1')
+            ->where('plant.status', $status)
             ->where('plant.quantity', '>', '0')
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
 

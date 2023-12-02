@@ -37,9 +37,6 @@ class CustomApiController extends Controller
         return $this->success(
             $ret,
             200
-        )->header(
-            'Access-Control-Allow-Origin',
-            '*'
         );
     }
 }
