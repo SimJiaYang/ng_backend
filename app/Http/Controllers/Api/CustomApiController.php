@@ -28,9 +28,9 @@ class CustomApiController extends Controller
 
         $ret = [];
 
-        $filename =  'futuristic_hover_car.glb';
+        $filename =  'cdr1_demo.mp4';
 
-        $filePath = asset("/custom_image/$filename");
+        $filePath = asset("/custom_plant/$filename");
 
         $ret["URL"] = $filePath;
 

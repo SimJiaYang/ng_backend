@@ -87,6 +87,24 @@ class PlantSeeder extends Seeder
                 ]
             ]);
         }
-        // Plant::factory()->count(100)->create();
+
+        for ($i = 1; $i < 8; $i++) {
+            $lotusFile =  'cdr' . (string)$i . '.jpg';
+            DB::table('plant')->insertOrIgnore([
+                [
+                    'name' => "Desert Rose" . $i,
+                    'quantity' => fake()->numberBetween(1, 1000),
+                    'cat_id' => $dRoseCategoryId,
+                    'price' => fake()->randomFloat(2, 2, 100),
+                    'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                    'sunlight_need' =>  'Partial',
+                    'water_need' => 'Moderate',
+                    'mature_height' => fake()->randomFloat(2, 1, 10),
+                    'origin' => fake()->country(),
+                    'image' => $lotusFile,
+                    'status' => "custom",
+                ],
+            ]);
+        }
     }
 }

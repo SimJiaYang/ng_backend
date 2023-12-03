@@ -67,6 +67,36 @@ class ProductSeeder extends Seeder
                 ],
             ]);
         }
+
+        for ($i = 1; $i < 6; $i++) {
+            $potFile = 'cpot' . (string)$i . '.jpg';
+            DB::table('product')->insertOrIgnore([
+                [
+                    'name' => "cpot" . $i,
+                    'price' =>  fake()->randomFloat(2, 1, 100),
+                    'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                    'quantity' => fake()->numberBetween(1, 1000),
+                    'status' => "custom",
+                    'image' =>  $potFile,
+                    'cat_id' => $potCategoryId,
+                ],
+            ]);
+        }
+
+        for ($i = 1; $i < 3; $i++) {
+            $soilFile = 'soil' . (string)$i . '.jpeg';
+            DB::table('product')->insertOrIgnore([
+                [
+                    'name' => "soil" . $i,
+                    'price' =>  fake()->randomFloat(2, 1, 100),
+                    'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                    'quantity' => 1000,
+                    'status' => "custom",
+                    'image' =>  $soilFile,
+                    'cat_id' => $soilCategoryId,
+                ],
+            ]);
+        }
         // Product::Factory()->count(100)->create();
     }
 }
