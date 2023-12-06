@@ -135,7 +135,8 @@ class OrderApiController extends Controller
             'date' => Carbon::now(),
             'total_amount' => $total_order_price,
             'user_id' => Auth::id(),
-            'address' => $address
+            'address' => $address,
+            'note' => $request->note ? $request->note : null,
         ]);
 
         // if ($item['id'] != 0) {

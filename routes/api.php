@@ -72,5 +72,6 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
 
         /* Custom */
         Route::post('custom', 'CustomApiController@add');
+        Route::post('custom/order', 'CustomApiController@order');
     });
 });
