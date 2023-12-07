@@ -88,7 +88,7 @@
                                         <a class="navbar-brand" href="{{ route('plant.edit', $plants->id) }}">
                                             <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
                                         </a>
-                                        @if ($plants->status != 'custom')
+                                        @if ($plants->status != 'custom' && $plants->status != 'bid')
                                             <a class="navbar-brand"
                                                 onclick="return confirm('Are you sure you want to change the status?')"
                                                 href="{{ route('plant.delete', $plants->id) }}">
@@ -113,6 +113,10 @@
                                     @elseif($plants->status == 'custom')
                                         <td>
                                             <span class="badge bg-label-warning rounded-pill">Custom</span>
+                                        </td>
+                                    @elseif($plants->status == 'bid')
+                                        <td>
+                                            <span class="badge bg-label-info rounded-pill">Bidding</span>
                                         </td>
                                     @endif
                                 </tr>

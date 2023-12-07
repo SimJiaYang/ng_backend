@@ -91,6 +91,7 @@
                                 <option value="default" disabled selected>Choose option</option>
                                 <option value="1">Show</option>
                                 <option value="0">Hide</option>
+                                <option value="bid">Bidding</option>
                                 <option value="custom">Custom</option>
                             </select>
                             <label for="exampleFormControlSelect1">Plant Status</label>
