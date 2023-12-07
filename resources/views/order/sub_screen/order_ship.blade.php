@@ -194,11 +194,6 @@
                 }
 
                 function getSelectedOption() {
-
-                    var cboxes = document.getElementsByName('cid[]');
-                    var len = cboxes.length;
-                    print(len);
-
                     var selectedItem = document.getElementById('items[]').value;
                     console.log(selectedItem.length);
 
