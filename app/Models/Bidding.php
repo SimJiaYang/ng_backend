@@ -11,17 +11,16 @@ class Bidding extends Model
 
     public $primaryKey = 'id';
 
-    public $fk = 'winner';
+    public $fk = 'winner_id';
 
     public $fk1 = 'plant_id';
 
     protected $fillable = [
-        'history',
         'min_amount',
         'status',
-        'message',
-        'winner',
-        'win_amount',
+        'winner_id',
+        'highest_amount',
+        'final_amount',
         'start_time',
         'end_time',
         'plant_id',
