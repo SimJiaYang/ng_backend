@@ -13,10 +13,14 @@
                         <div class="card">
                             <div class="card-body">
                                 <blockquote class="blockquote mb-0">
+
                                     <p>
                                         @foreach ($orders as $order)
                                             Order ID: {{ $order->id }} <br>
                                             Order Date: {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }} <br>
+                                            @if ($order->note != null)
+                                                Order Note: {{ $order->note }} <br>
+                                            @endif
                                             Order Status:
                                             @if ($order->status == 'pay')
                                                 <span class="badge bg-label-secondary rounded-pill">To

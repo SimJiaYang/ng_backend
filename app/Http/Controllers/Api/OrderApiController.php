@@ -46,6 +46,25 @@ class OrderApiController extends Controller
         return $this->success($ret);
     }
 
+    public function cancel(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:order,id',
+        ]);
+
+        $order = Order::where('id', $request->id)->first();
+
+        if ($order->status == 'pay') {
+            $order->update([
+                'status' => 'cancel'
+            ]);
+        } else {
+            return $this->fail('Some error occured.');
+        }
+
+        return $this->success($order);
+    }
+
     public function order_detail(Request $request)
     {
         $query = OrderDetailModel::where('order_id', $request->id);

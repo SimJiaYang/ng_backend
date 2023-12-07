@@ -16,7 +16,11 @@
                                         <p>
                                             @foreach ($orders as $order)
                                                 <b>Order ID:</b> {{ $order->id }} <br>
-                                                <b>Order Date:</b> {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }}
+                                                <b>Order Date:</b>
+                                                {{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }}<br>
+                                                @if ($order->note != null)
+                                                    <b>Order Remark:</b> {{ $order->note }} <br>
+                                                @endif
                                                 <br>
                                                 <b>Order Address:</b><br> {{ $order->address }}<br><br>
                                                 <b>Order Status:</b>
@@ -48,6 +52,7 @@
                                     <table class="table">
                                         <thead class="table-light">
                                             <tr>
+
                                                 <th class="text-truncate col-1">Checkout</th>
 
                                                 <th class="text-truncate col-1">No</th>
@@ -176,6 +181,7 @@
                     var items = document.getElementsByName('items[]');
                     var cboxes = document.getElementsByName('cid[]');
                     console.log(items);
+                    console.log(cboxes.length);
                     var id = [];
                     var len = cboxes.length;
 
@@ -188,11 +194,17 @@
                 }
 
                 function getSelectedOption() {
+
+                    var cboxes = document.getElementsByName('cid[]');
+                    var len = cboxes.length;
+                    print(len);
+
                     var selectedItem = document.getElementById('items[]').value;
-                    console.log(selectedItem);
+                    console.log(selectedItem.length);
+
                     if (selectedItem === "" || selectedItem === null) {
-                        alert("Please tick the item you want to deliever at first");
-                        return false; // Prevent form submission
+                        alert("Please tick the item you want to deliver at first");
+                        return false; // Prevent form submissions
                     }
 
                     var selectElement = document.getElementById("selectOption");
