@@ -68,35 +68,92 @@ class ProductSeeder extends Seeder
             ]);
         }
 
-        for ($i = 1; $i < 6; $i++) {
-            $potFile = 'cpot' . (string)$i . '.jpg';
-            DB::table('product')->insertOrIgnore([
-                [
-                    'name' => "cpot" . $i,
-                    'price' =>  fake()->randomFloat(2, 1, 100),
-                    'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
-                    'quantity' => fake()->numberBetween(1, 1000),
-                    'status' => "custom",
-                    'image' =>  $potFile,
-                    'cat_id' => $potCategoryId,
-                ],
-            ]);
-        }
+        DB::table('product')->insertOrIgnore([
+            [
+                'name' => "Pot Brown",
+                'price' =>  20.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'quantity' => 10000,
+                'status' => "custom",
+                'image' =>  'pot_brown.png',
+                'cat_id' => $potCategoryId,
+            ],
+            [
+                'name' => "Pot Choco",
+                'price' =>  20.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'quantity' => 10000,
+                'status' => "custom",
+                'image' =>  'pot_choco.png',
+                'cat_id' => $potCategoryId,
+            ],
+            [
+                'name' => "Pot Red",
+                'price' =>  20.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'quantity' => 10000,
+                'status' => "custom",
+                'image' =>  'pot_red.png',
+                'cat_id' => $potCategoryId,
+            ],
+            [
+                'name' => "Pot Low",
+                'price' =>  40.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'quantity' => 10000,
+                'status' => "custom",
+                'image' =>  'pot4_low.jpeg',
+                'cat_id' => $potCategoryId,
+            ],
+            [
+                'name' => "Black Soil",
+                'price' =>  10.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'quantity' => 10000,
+                'status' => "custom",
+                'image' =>  'soil1.jpeg',
+                'cat_id' => $soilCategoryId,
+            ],
+            [
+                'name' => "Yellow Soil",
+                'price' =>  10.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'quantity' => 10000,
+                'status' => "custom",
+                'image' =>  'soil2.jpeg',
+                'cat_id' => $soilCategoryId,
+            ],
+        ]);
 
-        for ($i = 1; $i < 3; $i++) {
-            $soilFile = 'soil' . (string)$i . '.jpeg';
-            DB::table('product')->insertOrIgnore([
-                [
-                    'name' => "soil" . $i,
-                    'price' =>  fake()->randomFloat(2, 1, 100),
-                    'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
-                    'quantity' => 1000,
-                    'status' => "custom",
-                    'image' =>  $soilFile,
-                    'cat_id' => $soilCategoryId,
-                ],
-            ]);
-        }
+        // for ($i = 1; $i < 6; $i++) {
+        //     $potFile = 'cpot' . (string)$i . '.jpg';
+        //     DB::table('product')->insertOrIgnore([
+        //         [
+        //             'name' => "cpot" . $i,
+        //             'price' =>  fake()->randomFloat(2, 1, 100),
+        //             'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+        //             'quantity' => fake()->numberBetween(1, 1000),
+        //             'status' => "custom",
+        //             'image' =>  $potFile,
+        //             'cat_id' => $potCategoryId,
+        //         ],
+        //     ]);
+        // }
+
+        // for ($i = 1; $i < 3; $i++) {
+        //     $soilFile = 'soil' . (string)$i . '.jpeg';
+        //     DB::table('product')->insertOrIgnore([
+        //         [
+        //             'name' => "soil" . $i,
+        //             'price' =>  fake()->randomFloat(2, 1, 100),
+        //             'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+        //             'quantity' => 1000,
+        //             'status' => "custom",
+        //             'image' =>  $soilFile,
+        //             'cat_id' => $soilCategoryId,
+        //         ],
+        //     ]);
+        // }
         // Product::Factory()->count(100)->create();
     }
 }

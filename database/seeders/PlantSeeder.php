@@ -88,23 +88,46 @@ class PlantSeeder extends Seeder
             ]);
         }
 
-        for ($i = 1; $i < 8; $i++) {
-            $lotusFile =  'cdr' . (string)$i . '.jpg';
-            DB::table('plant')->insertOrIgnore([
-                [
-                    'name' => "Desert Rose" . $i,
-                    'quantity' => fake()->numberBetween(1, 1000),
-                    'cat_id' => $dRoseCategoryId,
-                    'price' => fake()->randomFloat(2, 2, 100),
-                    'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
-                    'sunlight_need' =>  'Partial',
-                    'water_need' => 'Moderate',
-                    'mature_height' => fake()->randomFloat(2, 1, 10),
-                    'origin' => fake()->country(),
-                    'image' => $lotusFile,
-                    'status' => "custom",
-                ],
-            ]);
-        }
+        DB::table('plant')->insertOrIgnore([
+            [
+                'name' => "Desert Rose Pink Red",
+                'quantity' => 10000,
+                'cat_id' => $dRoseCategoryId,
+                'price' => 20.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'sunlight_need' =>  'Partial',
+                'water_need' => 'Moderate',
+                'mature_height' => 1.2,
+                'origin' => 'Malaysia',
+                'image' => 'DesertRosePinkRed.jpg',
+                'status' => "custom",
+            ],
+            [
+                'name' => "Desert Rose Red",
+                'quantity' => 10000,
+                'cat_id' => $dRoseCategoryId,
+                'price' => 20.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'sunlight_need' =>  'Partial',
+                'water_need' => 'Moderate',
+                'mature_height' => 1.2,
+                'origin' => 'Malaysia',
+                'image' => 'DesertRoseRed.jpg',
+                'status' => "custom",
+            ],
+            [
+                'name' => "Desert Rose Pink White",
+                'quantity' => 10000,
+                'cat_id' => $dRoseCategoryId,
+                'price' => 50.00,
+                'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
+                'sunlight_need' =>  'Partial',
+                'water_need' => 'Moderate',
+                'mature_height' => 1.2,
+                'origin' => 'Malaysia',
+                'image' => 'DesertRosePinkWhite.jpg',
+                'status' => "custom",
+            ],
+        ]);
     }
 }

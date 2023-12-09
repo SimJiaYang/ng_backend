@@ -58,7 +58,7 @@
                                     <option value="0">Hide</option>
                                     <option value="custom">Custom</option>
                                 </select>
-                                <label for="exampleFormControlSelect1">Plant Status</label>
+                                <label for="exampleFormControlSelect1">Product Status</label>
                             </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Custom;
 use App\Models\Plant;
 use App\Models\Product;
 use App\Models\Order;
@@ -19,41 +20,50 @@ class CustomApiController extends Controller
         return $this->success();
     }
 
+    public function show()
+    {
+        $ret['custom'] = Custom::all();
+
+        return $this->success(
+            $ret,
+        );
+    }
+
     // Add and update
     public function add(Request $request)
     {
         // Validate the request input
-        $request->validate([
-            'cart_list' => ['required', 'array'],
-            'cart_list.*.quantity' => ['required', 'integer'],
-        ]);
+        // $request->validate([
+        //     'cart_list' => ['required', 'array'],
+        //     'cart_list.*.quantity' => ['required', 'integer'],
+        // ]);
 
-        $plants = $request->cart_list;
+        // $plants = $request->cart_list;
 
-        $filename = "";
+        $filename = "pinkredlotus_video.mp4";
 
-        foreach ($plants as $plant) {
-            if ($plant['plantID'] == 117) {
-                $filename =  'cdr1_demo.mp4';
-                break;
-            } else if ($plant['plantID'] == 118) {
-                $filename =  'cdr2_demo.mp4';
-                break;
-            } else if ($plant['plantID'] == 119) {
-                $filename =  'cdr3_demo.mp4';
-                break;
-            } else if ($plant['plantID'] == 120) {
-                $filename =  'cdr4_demo.mp4';
-                break;
-            } else {
-                $filename =  'cdr1_demo.mp4';
-                break;
-            }
-        }
+        // foreach ($plants as $plant) {
+        //     if ($plant['plantID'] == 117) {
+        //         $filename =  'cdr1_demo.mp4';
+        //         break;
+        //     } else if ($plant['plantID'] == 118) {
+        //         $filename =  'cdr2_demo.mp4';
+        //         break;
+        //     } else if ($plant['plantID'] == 119) {
+        //         $filename =  'cdr3_demo.mp4';
+        //         break;
+        //     } else if ($plant['plantID'] == 120) {
+        //         $filename =  'cdr4_demo.mp4';
+        //         break;
+        //     } else {
+        //         $filename =  'cdr1_demo.mp4';
+        //         break;
+        //     }
+        // }
 
         $ret = [];
 
-        $filePath = asset("/custom_plant/$filename");
+        $filePath = asset("/custom/$filename");
 
         $ret["URL"] = $filePath;
 

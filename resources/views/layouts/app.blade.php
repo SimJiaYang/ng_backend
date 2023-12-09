@@ -108,6 +108,24 @@
                     </li>
 
 
+                    {{-- Biddings --}}
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Biddings</span>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('bidding.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
+                            <div data-i18n="Dashboards">Biddings</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('bidding.insert') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
+                            <div data-i18n="Dashboards">Add Biddings</div>
+                        </a>
+                    </li>
+
+
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Category</span>
                     </li>
@@ -165,14 +183,20 @@
 
 
                     <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Biddings</span>
+                        <span class="menu-header-text">Custom Style</span>
                     </li>
 
-                    <!-- Order -->
+                    <!-- Product -->
                     <li class="menu-item">
-                        <a href="{{ route('bidding.index') }}" class="menu-link">
+                        <a href="{{ route('custom.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
-                            <div data-i18n="Dashboards">Biddings</div>
+                            <div data-i18n="Dashboards">Style</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('custom.insert') }}" class="menu-link">
+                            <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
+                            <div data-i18n="Dashboards">Add Style</div>
                         </a>
                     </li>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlantController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -80,6 +81,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/order/ship/{id}', [OrderController::class, 'showShipOrder'])->name('order.ship');
         Route::get('/order/partial/{id}', [OrderController::class, 'showPartialOrder'])->name('order.partial');
 
+        // Custom
+        Route::get('/custom/style', [CustomController::class, 'index'])->name('custom.index');
+        Route::get('/customs/style/insert', [CustomController::class, 'insert'])->name('custom.insert');
+        Route::post('/customs/style/store', [CustomController::class, 'store'])->name('custom.store');
+        Route::get('/customs/style/edit/{id}', [CustomController::class, 'edit'])->name('custom.edit');
+        Route::post('/customs/style/update', [CustomController::class, 'update'])->name('custom.update');
+        Route::any('/customs/style/search', [CustomController::class, 'search'])->name('custom.search');
+
         // Delivery
         Route::post('/order/delivery', [DeliveryController::class, 'updateDelivery'])->name('delivery.update');
         Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
@@ -88,6 +97,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Bidding
         Route::get('/bidding', [BiddingController::class, 'index'])->name('bidding.index');
+        Route::get('/bidding/insert', [BiddingController::class, 'insert'])->name('bidding.insert');
     });
 
     Route::group(['middleware' => 'isUser'], function () {
