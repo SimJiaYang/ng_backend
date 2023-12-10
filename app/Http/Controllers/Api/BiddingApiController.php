@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bidding;
 use DateTime;
+use Carbon\Carbon;
 
 class BiddingApiController extends Controller
 {
@@ -17,7 +18,7 @@ class BiddingApiController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$date = date('Y-m-d H:i:s');
+		$datetime = Carbon::now()->toDateTimeString();
 		$bidding_query = Bidding::leftjoin('plant', 'plant.id', 'bidding.plant_id')
 			->leftjoin('category', 'category.id', 'plant.cat_id')
 			->select(
@@ -27,9 +28,9 @@ class BiddingApiController extends Controller
 				'bidding.id as bidding_id',
 				'category.name as category_name'
 			)
-			->where('bidding.status', '1');
-		// ->where('start_time', '<=', $date)
-		// ->where('end_time', '>=', $date)
+			->where('bidding.status', '1')
+			// ->where('start_time', '<=', $date)
+			->where('end_time', '>=', $datetime);
 
 		// Pagination Limit
 		if ($request->limit) {
