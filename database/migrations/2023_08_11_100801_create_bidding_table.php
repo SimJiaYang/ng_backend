@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('bidding', function (Blueprint $table) {
             $table->id();
-            $table->double('min_amount', 8, 2);
+            $table->double('intial_amt', 8, 2);
+            $table->double('min_amt', 8, 2);
             $table->string('status');
             $table->foreignId('winner_id')->nullable();
             $table->foreign('winner_id')->references('id')->on('users');
-            $table->double('highest_amount', 8, 2)->nullable();
-            $table->double('final_amount', 8, 2)->nullable();
-            $table->timestamp('start_time', $precision = 0);
+            $table->double('highest_amt', 8, 2)->nullable();
+            $table->timestamp('start_time', $precision = 0)->nullable();
             $table->timestamp('end_time', $precision = 0)->nullable();
             $table->foreignId('plant_id');
             $table->foreign('plant_id')->references('id')->on('plant');

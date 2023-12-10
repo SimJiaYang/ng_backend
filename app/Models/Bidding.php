@@ -9,6 +9,8 @@ class Bidding extends Model
 {
     use HasFactory;
 
+    protected $table = 'bidding';
+
     public $primaryKey = 'id';
 
     public $fk = 'winner_id';
@@ -16,11 +18,11 @@ class Bidding extends Model
     public $fk1 = 'plant_id';
 
     protected $fillable = [
-        'min_amount',
+        'intial_amt',
+        'min_amt',
         'status',
         'winner_id',
-        'highest_amount',
-        'final_amount',
+        'highest_amt',
         'start_time',
         'end_time',
         'plant_id',

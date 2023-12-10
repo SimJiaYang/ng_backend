@@ -102,7 +102,7 @@ class ProductSeeder extends Seeder
                 'description' => fake()->paragraph() . fake()->paragraph() . fake()->paragraph(),
                 'quantity' => 10000,
                 'status' => "custom",
-                'image' =>  'pot4_low.jpeg',
+                'image' =>  'pot4_low.png',
                 'cat_id' => $potCategoryId,
             ],
             [

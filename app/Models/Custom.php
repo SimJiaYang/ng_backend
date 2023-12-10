@@ -31,8 +31,8 @@ class Custom extends Model
 
     public function getVideoUrlAttribute()
     {
-        return asset('/custom/' . $this->video);
-        // return json_encode(asset('/custom/' . $this->video));
+        // return asset('/custom/' . $this->video);
+        return json_encode(asset('/custom/' . $this->video));
     }
 
     public function order()
