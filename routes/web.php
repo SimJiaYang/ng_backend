@@ -88,6 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/customs/style/edit/{id}', [CustomController::class, 'edit'])->name('custom.edit');
         Route::post('/customs/style/update', [CustomController::class, 'update'])->name('custom.update');
         Route::any('/customs/style/search', [CustomController::class, 'search'])->name('custom.search');
+        Route::get('/customs/style/delete/{id}', [CustomController::class, 'delete'])->name('custom.delete');
 
         // Delivery
         Route::post('/order/delivery', [DeliveryController::class, 'updateDelivery'])->name('delivery.update');

@@ -11,7 +11,19 @@ class BiddingController extends Controller
 {
     public function index()
     {
-        return view('bidding.bidding');
+        $bidding = Bidding::leftjoin('plant', 'plant.id', 'bidding.plant_id')
+            ->leftjoin('category', 'category.id', 'plant.cat_id')
+            ->select(
+                'bidding.*',
+                'plant.*',
+                'plant.id as plant_id',
+                'bidding.id as bidding_id',
+                'bidding.status as bidding_status',
+                'category.name as category_name'
+            )
+            ->where('bidding.status', '1')
+            ->paginate(5);
+        return view('bidding.bidding')->with('bidding', $bidding);
     }
 
     public function insert()

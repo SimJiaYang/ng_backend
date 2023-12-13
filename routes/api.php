@@ -78,5 +78,8 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
 
         /* Bidding */
         Route::get('bidding', 'BiddingApiController@index');
+        Route::get('bidding/show', 'BiddingApiController@show');
+        Route::post('bidding/payment/intent', 'BiddingApiController@paymentIntent');
+        Route::post('bidding/payment', 'BiddingApiController@payment');
     });
 });

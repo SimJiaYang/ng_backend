@@ -117,4 +117,17 @@ class CustomController extends Controller
         return view('customs.custom')
             ->with('customs', $custom);;
     }
+
+    public function delete($id)
+    {
+        $custom = Custom::where('id', $id)->first();
+        if ($custom->status == "1") {
+            $custom->status = "0";
+        } else {
+            $custom->status = "1";
+        }
+
+        $custom->save();
+        return redirect()->route('custom.index');
+    }
 }

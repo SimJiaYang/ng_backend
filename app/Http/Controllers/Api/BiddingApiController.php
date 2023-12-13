@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bidding;
+use App\Models\Payment;
 use DateTime;
+use Stripe;
+use App\Models\BiddingDetailModel;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class BiddingApiController extends Controller
@@ -71,5 +75,117 @@ class BiddingApiController extends Controller
 
 		$ret['bidding'] = $bidding;
 		return $this->success($ret);
+	}
+
+	/*
+	 * @param Bidding ID
+	 * @return highest amount
+	 */
+	public function show(Request $request)
+	{
+		$request->validate([
+			'id' => 'required'
+		]);
+
+		$bidding_id = $request->id;
+
+		$bid = Bidding::where('id', $bidding_id)
+			->where('status', '1')
+			->first();
+
+		if (!$bid) {
+			return $this->fail('Bidding not found');
+		}
+
+		$ret['bid'] = $bid;
+		return $this->success($ret);
+	}
+
+
+	public function paymentIntent(Request $request)
+	{
+		$request->validate([
+			'bidding_id' => 'required',
+			'amount' => 'required'
+		]);
+
+		// Get Bidding Info
+		$bidding_id = $request->bidding_id;
+
+		$bid = Bidding::where('id', $bidding_id)
+			->where('status', '1')
+			->first();
+
+		if (!$bid) {
+			return $this->fail('Bidding not found');
+		}
+
+		// Validate the amount
+		$bid_amount = $request->amount;
+		if ($bid_amount < ($bid->highest_amt + $bid->min_amt)) {
+			return $this->fail('Amount must be greater than highest amount plus minimum amount');
+		}
+
+
+		// Create Bidding Detail
+		$amount = $request->amount;
+		$bid_detail = BiddingDetailModel::create([
+			'bidding_id' => $bidding_id,
+			'amount' => $amount,
+			'user_id' => Auth::id(),
+			'refund_status' => '0',
+			'payment_way' => 'Card'
+		]);
+
+		// Make payment
+		$stripeClient = new Stripe\StripeClient(
+			config('services.stripe.STRIPE_SECRET_KEY')
+		);
+
+		// Create a PaymentIntent with amount and currency
+		$paymentIntent = $stripeClient->paymentIntents->create([
+			'amount' => $amount * 100,
+			'currency' => 'myr',
+			'payment_method_types' => ['card'],
+		]);
+
+		Payment::create([
+			'status' => 'pending',
+			'bidding_id' => $bid->id,
+			'details' => $paymentIntent->client_secret,
+			'method' => 'Card',
+			'amount' =>  $amount,
+			'date' => Carbon::today(),
+			'user_id' => Auth::id()
+		]);
+
+		$ret['Client_Secret'] = $paymentIntent->client_secret;
+		$ret['bid_detail_id'] = $bid_detail->id;
+		$ret['response'] = $paymentIntent;
+
+		return $this->success($ret);
+	}
+
+	public function payment(Request $request)
+	{
+		$request->validate([
+			'client_secret' => ['required'],
+			'bid_detail_id' => ['required']
+		]);;
+
+		$payment = Payment::where('details', $request->client_secret)->first();
+		$payment->status = 'success';
+		$payment->save();
+
+		// If payment succees, update the bidding highest amount and bidding detail status
+		$bidding = Bidding::where('id', $payment->bidding_id)->first();
+		$bidding->highest_amt = $payment->amount;
+		$bidding->save();
+
+		$bid_detail = BiddingDetailModel::where('id', $request->bid_detail_id)->first();
+		$bid_detail->status = '1';
+		$bid_detail->save();
+
+		return $this->success("Payment Success");
 	}
 }

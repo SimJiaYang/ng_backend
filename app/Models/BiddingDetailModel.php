@@ -9,6 +9,8 @@ class BiddingDetailModel extends Model
 {
     use HasFactory;
 
+    protected $table = 'bidding_detail';
+
     public $primaryKey = 'id';
 
     public $fk = 'user_id';

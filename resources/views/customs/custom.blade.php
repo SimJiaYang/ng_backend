@@ -66,8 +66,15 @@
                                         <a class="navbar-brand" href="{{ route('custom.edit', $custom->id) }}">
                                             <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
                                         </a>
-                                        <a class="navbar-brand" onclick="" href="">
-                                            <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
+                                        <a class="navbar-brand"
+                                            onclick="return confirm('Are you sure you want to change the status?')"
+                                            href="{{ route('custom.delete', $custom->id) }}">
+                                            @if ($custom->status == 0)
+                                                <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
+                                            @else
+                                                <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>
+                                            @endif
+
                                         </a>
 
                                     </td>
