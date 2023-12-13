@@ -18,13 +18,13 @@
     <p class="display-5">Biddings</p>
 
     <!-- Search -->
-    <form action="" method="POST">
+    <form action="{{ route('bidding.search') }}" method="POST">
         @csrf
         <div class="navbar-nav align-items-left">
             <div class="nav-item d-flex align-items-left">
                 <i class="mdi mdi-magnify mdi-24px lh-0"></i>
                 <input type="search" class="form-control border-0 shadow-none bg-body" id="name" name="name"
-                    placeholder="Search..." aria-label="Search..." />
+                    placeholder="Search by Bidding ID" aria-label="Search..." />
             </div>
         </div>
     </form>
@@ -60,7 +60,7 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <p class="fw-bold mb-1">{{ $biddings->id }}</p>
+                                            <p class="fw-bold mb-1">{{ $biddings->bidding_id }}</p>
                                         </div>
                                     </td>
                                     <td>
@@ -106,5 +106,8 @@
             </div>
         </div>
     </div>
-
+    <!--/ Data Tables -->
+    <div class="m-4 d-flex justify-content-between">
+        {!! $bidding->render() !!}
+    </div>
 @endsection

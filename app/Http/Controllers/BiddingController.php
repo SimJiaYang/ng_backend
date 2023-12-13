@@ -21,8 +21,29 @@ class BiddingController extends Controller
                 'bidding.status as bidding_status',
                 'category.name as category_name'
             )
-            ->where('bidding.status', '1')
             ->paginate(5);
+        return view('bidding.bidding')->with('bidding', $bidding);
+    }
+
+    public function search(Request $request)
+    {
+        $bidding = Bidding::leftjoin('plant', 'plant.id', 'bidding.plant_id')
+            ->leftjoin('category', 'category.id', 'plant.cat_id')
+            ->select(
+                'bidding.*',
+                'plant.*',
+                'plant.id as plant_id',
+                'bidding.id as bidding_id',
+                'bidding.status as bidding_status',
+                'category.name as category_name'
+            )
+            ->where('bidding.id', '=', "$request->name")
+            ->paginate(5)
+            ->setPath('');
+
+        $bidding->appends(array(
+            'id' => $request->name
+        ));
         return view('bidding.bidding')->with('bidding', $bidding);
     }
 
