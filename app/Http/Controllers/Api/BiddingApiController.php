@@ -104,15 +104,19 @@ class BiddingApiController extends Controller
 
 	public function paymentIntent(Request $request)
 	{
+		// Validate
 		$request->validate([
 			'bidding_id' => 'required',
 			'amount' => 'required'
 		]);
 
+		// Validate Time
+
 		// Get Bidding Info
 		$bidding_id = $request->bidding_id;
 
 		$bid = Bidding::where('id', $bidding_id)
+			//Update Status when finished
 			->where('status', '1')
 			->first();
 
@@ -126,42 +130,93 @@ class BiddingApiController extends Controller
 			return $this->fail('Amount must be greater than highest amount plus minimum amount');
 		}
 
+		// Amount
+		$bid_amount = $request->amount;
 
-		// Create Bidding Detail
-		$amount = $request->amount;
-		$bid_detail = BiddingDetailModel::create([
-			'bidding_id' => $bidding_id,
-			'amount' => $amount,
-			'user_id' => Auth::id(),
-			'refund_status' => '0',
-			'payment_way' => 'Card'
-		]);
+		// Check last amount
+		$last_bid = BiddingDetailModel::where('bidding_id', $bidding_id)
+			->where('user_id', Auth::id())
+			->where('refund_status', 'pay')
+			->first();
 
-		// Make payment
-		$stripeClient = new Stripe\StripeClient(
-			config('services.stripe.STRIPE_SECRET_KEY')
-		);
+		// Get the Old amount
+		if ($last_bid) {
+			// Update Bidding Detail
+			$amount = $bid_amount - $last_bid->amount;
 
-		// Create a PaymentIntent with amount and currency
-		$paymentIntent = $stripeClient->paymentIntents->create([
-			'amount' => $amount * 100,
-			'currency' => 'myr',
-			'payment_method_types' => ['card'],
-		]);
+			if ($amount <= 0) {
+				return $this->fail('Some error occured');
+			}
 
-		Payment::create([
-			'status' => 'pending',
-			'bidding_id' => $bid->id,
-			'details' => $paymentIntent->client_secret,
-			'method' => 'Card',
-			'amount' =>  $amount,
-			'date' => Carbon::today(),
-			'user_id' => Auth::id()
-		]);
+			$bid_detail = BiddingDetailModel::where('id', $last_bid->id)->first();
+			// $bid_detail->amount = $bid_amount;
+			// $bid_detail->save();
 
-		$ret['Client_Secret'] = $paymentIntent->client_secret;
-		$ret['bid_detail_id'] = $bid_detail->id;
-		$ret['response'] = $paymentIntent;
+			// Make payment
+			$stripeClient = new Stripe\StripeClient(
+				config('services.stripe.STRIPE_SECRET_KEY')
+			);
+
+			// Create a PaymentIntent with amount and currency
+			$paymentIntent = $stripeClient->paymentIntents->create([
+				'amount' => $amount * 100,
+				'currency' => 'myr',
+				'payment_method_types' => ['card'],
+			]);
+
+			// Create Payment
+			Payment::create([
+				'status' => 'pending',
+				'bidding_id' => $bid->id,
+				'details' => $paymentIntent->client_secret,
+				'method' => 'Card',
+				'amount' =>  $amount,
+				'date' => Carbon::today(),
+				'user_id' => Auth::id()
+			]);
+
+			$ret['Client_Secret'] = $paymentIntent->client_secret;
+			$ret['bid_detail_id'] = $bid_detail->id;
+			$ret['response'] = $paymentIntent;
+		} else {
+			// Create Bidding Detail
+			$amount = $request->amount;
+			$bid_detail = BiddingDetailModel::create([
+				'bidding_id' => $bidding_id,
+				'amount' => $amount,
+				'user_id' => Auth::id(),
+				'refund_status' => 'await',
+				'payment_way' => 'Card'
+			]);
+
+			// Make payment
+			$stripeClient = new Stripe\StripeClient(
+				config('services.stripe.STRIPE_SECRET_KEY')
+			);
+
+			// Create a PaymentIntent with amount and currency
+			$paymentIntent = $stripeClient->paymentIntents->create([
+				'amount' => $amount * 100,
+				'currency' => 'myr',
+				'payment_method_types' => ['card'],
+			]);
+
+			Payment::create([
+				'status' => 'pending',
+				'bidding_id' => $bid->id,
+				'details' => $paymentIntent->client_secret,
+				'method' => 'Card',
+				'amount' =>  $amount,
+				'date' => Carbon::today(),
+				'user_id' => Auth::id()
+			]);
+
+
+			$ret['Client_Secret'] = $paymentIntent->client_secret;
+			$ret['bid_detail_id'] = $bid_detail->id;
+			$ret['response'] = $paymentIntent;
+		}
+
 
 		return $this->success($ret);
 	}
@@ -183,7 +238,11 @@ class BiddingApiController extends Controller
 		$bidding->save();
 
 		$bid_detail = BiddingDetailModel::where('id', $request->bid_detail_id)->first();
-		$bid_detail->status = '1';
+		if ($bid_detail->refund_status == 'pay') {
+			$bid_detail->amount += $payment->amount;
+		} else {
+			$bid_detail->refund_status = 'pay';
+		}
 		$bid_detail->save();
 
 		return $this->success("Payment Success");
