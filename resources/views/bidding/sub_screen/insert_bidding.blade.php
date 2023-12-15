@@ -80,6 +80,24 @@
     </div>
 
     <script>
+        window.addEventListener("load", function() {
+            // var now = new Date();
+            // var offset = now.getTimezoneOffset() * 60000;
+            // var adjustedDate = new Date(now.getTime() - offset);
+            // var formattedDate = adjustedDate.toISOString().substring(0, 16); // For minute precision
+            // var datetimeField = document.getElementById("start_time");
+            // datetimeField.value = formattedDate;
+        });
+
+        var today = new Date();
+
+        var minStartTime = today.toISOString().slice(0, 16);
+        var minEndTime = new Date(today.getTime() + 30 * 60 * 1000).toISOString().slice(0, 16);
+
+        document.getElementsByName("start_time")[0].setAttribute('min', minStartTime);
+        document.getElementsByName("end_time")[0].setAttribute('min', minEndTime);
+
+
         function validate() {
             var dateTimeInput = document.getElementById('start_time');
             var endTimeInput = document.getElementById('end_time');
@@ -91,7 +109,7 @@
             var currentDate = new Date();
 
             // Check if selected date is in the future
-            if (selectedDateTime <= currentDate) {
+            if (selectedDateTime < currentDate) {
                 datetimeError.innerHTML = 'Please select a future date and time.';
                 return false;
             }
@@ -102,16 +120,24 @@
                 return false;
             }
 
+            // The end time must bigger than start time atleast half hours
+            if (selectedEndTime <= selectedDateTime || selectedEndTime.getTime() - selectedDateTime.getTime() < 30 * 60 *
+                1000) {
+                datetimeError.innerHTML = 'Please select a time before end time.';
+                return false;
+            }
+
+
             // Check if selected time is after half an hour from now
-            var halfHourFromNow = new Date(currentDate.getTime() + (30 * 60 * 1000));
-            if (selectedDateTime <= halfHourFromNow) {
-                datetimeError.innerHTML = 'Please select a time after half an hour from now.';
-                return false;
-            }
-            if (selectedEndTime <= halfHourFromNow) {
-                datetimeError1.innerHTML = 'Please select a time after half an hour from now.';
-                return false;
-            }
+            // var halfHourFromNow = new Date(currentDate.getTime() + (30 * 60 * 1000));
+            // if (selectedDateTime <= halfHourFromNow) {
+            //     datetimeError.innerHTML = 'Please select a time after half an hour from now.';
+            //     return false;
+            // }
+            // if (selectedEndTime <= halfHourFromNow) {
+            //     datetimeError1.innerHTML = 'Please select a time after half an hour from now.';
+            //     return false;
+            // }
 
             // Check if selected time is between 8am and 8pm
             // var selectedTime = selectedDateTime.getHours();

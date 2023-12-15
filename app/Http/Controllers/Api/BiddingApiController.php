@@ -89,13 +89,30 @@ class BiddingApiController extends Controller
 
 		$bidding_id = $request->id;
 
+		// Check the validty and pass the bid
+		$datetime = Carbon::now()->toDateTimeString();
+
 		$bid = Bidding::where('id', $bidding_id)
 			->where('status', '1')
+			->where('end_time', '>=', $datetime)
 			->first();
 
 		if (!$bid) {
 			return $this->fail('Bidding not found');
 		}
+
+		if ($bid) {
+			$bid_detail = BiddingDetailModel::where('bidding_id', $bidding_id)
+				->where('refund_status', 'pay')
+				->where('user_id', Auth::id())
+				->first();
+			if ($bid_detail) {
+				$ret['user_bid'] = $bid_detail->amount;
+			} else {
+				$ret['user_bid'] = 0;
+			}
+		}
+
 
 		$ret['bid'] = $bid;
 		return $this->success($ret);
@@ -115,9 +132,13 @@ class BiddingApiController extends Controller
 		// Get Bidding Info
 		$bidding_id = $request->bidding_id;
 
+		// Check the validty and pass the bid
+		$datetime = Carbon::now()->toDateTimeString();
+
 		$bid = Bidding::where('id', $bidding_id)
-			//Update Status when finished
+			//Update the Bidding Status when finished
 			->where('status', '1')
+			->where('end_time', '>=', $datetime)
 			->first();
 
 		if (!$bid) {
@@ -129,9 +150,6 @@ class BiddingApiController extends Controller
 		if ($bid_amount < ($bid->highest_amt + $bid->min_amt)) {
 			return $this->fail('Amount must be greater than highest amount plus minimum amount');
 		}
-
-		// Amount
-		$bid_amount = $request->amount;
 
 		// Check last amount
 		$last_bid = BiddingDetailModel::where('bidding_id', $bidding_id)
@@ -145,7 +163,7 @@ class BiddingApiController extends Controller
 			$amount = $bid_amount - $last_bid->amount;
 
 			if ($amount <= 0) {
-				return $this->fail('Some error occured');
+				return $this->fail('Difference amount 0 is not allowed');
 			}
 
 			$bid_detail = BiddingDetailModel::where('id', $last_bid->id)->first();
@@ -175,9 +193,12 @@ class BiddingApiController extends Controller
 				'user_id' => Auth::id()
 			]);
 
-			$ret['Client_Secret'] = $paymentIntent->client_secret;
-			$ret['bid_detail_id'] = $bid_detail->id;
-			$ret['response'] = $paymentIntent;
+			$payment = [
+				'Client_Secret' => $paymentIntent->client_secret,
+				'amount' => $amount
+			];
+
+			$ret['payment'] = $payment;
 		} else {
 			// Create Bidding Detail
 			$amount = $request->amount;
@@ -211,13 +232,13 @@ class BiddingApiController extends Controller
 				'user_id' => Auth::id()
 			]);
 
+			$payment = [
+				'Client_Secret' => $paymentIntent->client_secret,
+				'amount' => $amount
+			];
 
-			$ret['Client_Secret'] = $paymentIntent->client_secret;
-			$ret['bid_detail_id'] = $bid_detail->id;
-			$ret['response'] = $paymentIntent;
+			$ret['payment'] = $payment;
 		}
-
-
 		return $this->success($ret);
 	}
 
@@ -225,7 +246,6 @@ class BiddingApiController extends Controller
 	{
 		$request->validate([
 			'client_secret' => ['required'],
-			'bid_detail_id' => ['required']
 		]);;
 
 		$payment = Payment::where('details', $request->client_secret)->first();
@@ -234,16 +254,21 @@ class BiddingApiController extends Controller
 
 		// If payment succees, update the bidding highest amount and bidding detail status
 		$bidding = Bidding::where('id', $payment->bidding_id)->first();
-		$bidding->highest_amt = $payment->amount;
-		$bidding->save();
 
-		$bid_detail = BiddingDetailModel::where('id', $request->bid_detail_id)->first();
+		$bid_detail = BiddingDetailModel::where('bidding_id', $bidding->id)
+			->where('user_id', Auth::id())
+			->first();
+
 		if ($bid_detail->refund_status == 'pay') {
 			$bid_detail->amount += $payment->amount;
 		} else {
 			$bid_detail->refund_status = 'pay';
 		}
 		$bid_detail->save();
+
+		// Amend the highest amounts
+		$bidding->highest_amt = $bid_detail->amount;
+		$bidding->save();
 
 		return $this->success("Payment Success");
 	}
