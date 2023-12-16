@@ -101,6 +101,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/bidding/insert', [BiddingController::class, 'insert'])->name('bidding.insert');
         Route::post('/bidding/store', [BiddingController::class, 'store'])->name('bidding.store');
         Route::any('/bidding/search', [BiddingController::class, 'search'])->name('bidding.search');
+        Route::get('/bidding/user/{id}', [BiddingController::class, 'userBidding'])->name('bidding.userBidding');
     });
 
     Route::group(['middleware' => 'isUser'], function () {

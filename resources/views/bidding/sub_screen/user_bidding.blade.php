@@ -1,33 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- Session Message --}}
-    @if (Session::has('error'))
-        <div class="alert alert-danger" role="alert">
-            {{ Session::get('error') }}
-        </div>
-        {{ session()->forget('error') }}
-    @endif
-    @if (Session::has('success'))
-        <div class="alert alert-success" role="alert">
-            {{ Session::get('success') }}
-        </div>
-        {{ session()->forget('success') }}
-    @endif
-
-    <p class="display-5">Biddings</p>
-
-    <!-- Search -->
-    <form action="{{ route('bidding.search') }}" method="POST">
-        @csrf
-        <div class="navbar-nav align-items-left">
-            <div class="nav-item d-flex align-items-left">
-                <i class="mdi mdi-magnify mdi-24px lh-0"></i>
-                <input type="search" class="form-control border-0 shadow-none bg-body" id="name" name="name"
-                    placeholder="Search by Bidding ID" aria-label="Search..." />
-            </div>
-        </div>
-    </form>
+    <p class="display-5">BiddingID {{ $bidding->id }}</p>
 
     <!-- Data Tables -->
     <div class="col-12 mt-3">

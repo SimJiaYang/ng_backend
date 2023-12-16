@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bidding;
+use App\Models\BiddingDetailModel;
 use Illuminate\Http\Request;
 use App\Models\Plant;
 use Illuminate\Support\Facades\Session;
@@ -85,5 +86,11 @@ class BiddingController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function userBidding($id)
+    {
+        $bidding = Bidding::where('id', $id)->first();
+        $bidding_detail = BiddingDetailModel::where('bidding_id', $bidding->id)->get();
     }
 }

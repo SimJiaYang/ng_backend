@@ -167,8 +167,6 @@ class BiddingApiController extends Controller
 			}
 
 			$bid_detail = BiddingDetailModel::where('id', $last_bid->id)->first();
-			// $bid_detail->amount = $bid_amount;
-			// $bid_detail->save();
 
 			// Make payment
 			$stripeClient = new Stripe\StripeClient(
@@ -202,13 +200,13 @@ class BiddingApiController extends Controller
 		} else {
 			// Create Bidding Detail
 			$amount = $request->amount;
-			$bid_detail = BiddingDetailModel::create([
-				'bidding_id' => $bidding_id,
-				'amount' => $amount,
-				'user_id' => Auth::id(),
-				'refund_status' => 'await',
-				'payment_way' => 'Card'
-			]);
+			// $bid_detail = BiddingDetailModel::create([
+			// 	'bidding_id' => $bidding_id,
+			// 	'amount' => $amount,
+			// 	'user_id' => Auth::id(),
+			// 	'refund_status' => 'await',
+			// 	'payment_way' => 'Card'
+			// ]);
 
 			// Make payment
 			$stripeClient = new Stripe\StripeClient(
@@ -259,15 +257,29 @@ class BiddingApiController extends Controller
 			->where('user_id', Auth::id())
 			->first();
 
-		if ($bid_detail->refund_status == 'pay') {
-			$bid_detail->amount += $payment->amount;
+		if (!$bid_detail) {
+			$bid_detail = BiddingDetailModel::create([
+				'bidding_id' => $bidding->id,
+				'amount' => $payment->amount,
+				'user_id' => Auth::id(),
+				'refund_status' => 'pay',
+				'payment_way' => 'Card'
+			]);
 		} else {
-			$bid_detail->refund_status = 'pay';
+			$bid_detail->amount += $payment->amount;
+			$bid_detail->save();
 		}
-		$bid_detail->save();
+
+		// if ($bid_detail->refund_status == 'pay') {
+		// 	$bid_detail->amount += $payment->amount;
+		// } else {
+		// 	$bid_detail->refund_status = 'pay';
+		// }
+		// $bid_detail->save();
 
 		// Amend the highest amounts
 		$bidding->highest_amt = $bid_detail->amount;
+		$bidding->winner_id = Auth::id();
 		$bidding->save();
 
 		return $this->success("Payment Success");
