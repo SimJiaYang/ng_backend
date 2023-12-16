@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bidding;
 use App\Models\BiddingDetailModel;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Plant;
 use Illuminate\Support\Facades\Session;
@@ -88,9 +89,39 @@ class BiddingController extends Controller
         return redirect()->back();
     }
 
-    public function userBidding($id)
+    public function paymentHistory($id)
     {
         $bidding = Bidding::where('id', $id)->first();
-        $bidding_detail = BiddingDetailModel::where('bidding_id', $bidding->id)->get();
+        $payment = Payment::where('bidding_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('bidding.sub_screen.user_bidding')
+            ->with('bidding', $bidding)
+            ->with('payment', $payment);
+    }
+
+    public function paymentHistorySearch(Request $request)
+    {
+        $user_id = $request->name;
+        $bidding_id = $request->bidding_id;
+
+        $payment = Payment::where('user_id', $user_id)
+            ->where('bidding_id', $bidding_id)
+            ->where('user_id', $user_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->setPath('');
+
+        $payment->appends(array(
+            'userID' => $user_id,
+            'id' => $bidding_id
+        ));
+
+        $bidding = Bidding::where('id', $bidding_id)->first();
+
+        return view('bidding.sub_screen.user_bidding')
+            ->with('bidding', $bidding)
+            ->with('payment', $payment);
     }
 }

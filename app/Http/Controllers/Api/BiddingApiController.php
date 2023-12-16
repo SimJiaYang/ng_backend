@@ -33,7 +33,7 @@ class BiddingApiController extends Controller
 				'category.name as category_name'
 			)
 			->where('bidding.status', '1')
-			// ->where('start_time', '<=', $date)
+			->where('start_time', '<=', $datetime)
 			->where('end_time', '>=', $datetime);
 
 		// Pagination Limit
@@ -95,6 +95,7 @@ class BiddingApiController extends Controller
 		$bid = Bidding::where('id', $bidding_id)
 			->where('status', '1')
 			->where('end_time', '>=', $datetime)
+			->where('start_time', '<=', $datetime)
 			->first();
 
 		if (!$bid) {
@@ -127,8 +128,6 @@ class BiddingApiController extends Controller
 			'amount' => 'required'
 		]);
 
-		// Validate Time
-
 		// Get Bidding Info
 		$bidding_id = $request->bidding_id;
 
@@ -139,6 +138,7 @@ class BiddingApiController extends Controller
 			//Update the Bidding Status when finished
 			->where('status', '1')
 			->where('end_time', '>=', $datetime)
+			->where('start_time', '<=', $datetime)
 			->first();
 
 		if (!$bid) {
@@ -200,13 +200,6 @@ class BiddingApiController extends Controller
 		} else {
 			// Create Bidding Detail
 			$amount = $request->amount;
-			// $bid_detail = BiddingDetailModel::create([
-			// 	'bidding_id' => $bidding_id,
-			// 	'amount' => $amount,
-			// 	'user_id' => Auth::id(),
-			// 	'refund_status' => 'await',
-			// 	'payment_way' => 'Card'
-			// ]);
 
 			// Make payment
 			$stripeClient = new Stripe\StripeClient(
@@ -250,8 +243,14 @@ class BiddingApiController extends Controller
 		$payment->status = 'success';
 		$payment->save();
 
+		// Check the validty and pass the bid
+		$datetime = Carbon::now()->toDateTimeString();
+
 		// If payment succees, update the bidding highest amount and bidding detail status
-		$bidding = Bidding::where('id', $payment->bidding_id)->first();
+		$bidding = Bidding::where('id', $payment->bidding_id)
+			->where('end_time', '>=', $datetime)
+			->where('start_time', '<=', $datetime)
+			->first();
 
 		$bid_detail = BiddingDetailModel::where('bidding_id', $bidding->id)
 			->where('user_id', Auth::id())
@@ -269,13 +268,6 @@ class BiddingApiController extends Controller
 			$bid_detail->amount += $payment->amount;
 			$bid_detail->save();
 		}
-
-		// if ($bid_detail->refund_status == 'pay') {
-		// 	$bid_detail->amount += $payment->amount;
-		// } else {
-		// 	$bid_detail->refund_status = 'pay';
-		// }
-		// $bid_detail->save();
 
 		// Amend the highest amounts
 		$bidding->highest_amt = $bid_detail->amount;

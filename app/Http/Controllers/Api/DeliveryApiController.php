@@ -38,8 +38,6 @@ class DeliveryApiController extends Controller
             );
         }
 
-
-
         // Sort By 
         if ($request->sortBy && in_array(
             $request->sortBy,

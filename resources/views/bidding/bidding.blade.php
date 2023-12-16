@@ -98,8 +98,7 @@
                                     </td>
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">
-                                            {{-- {{ route('bidding.payment_history', $biddings->bidding_id) }} --}}
-                                            <a href="{{ route('bidding.userBidding', $biddings->bidding_id) }}"
+                                            <a href="{{ route('bidding.paymentHistory', $biddings->bidding_id) }}"
                                                 class="link-secondary"> <i class="mdi mdi-eye mdi-24px lh-0"></i></a>
                                         </p>
                                     </td>
