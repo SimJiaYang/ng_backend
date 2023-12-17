@@ -276,4 +276,58 @@ class BiddingApiController extends Controller
 
 		return $this->success("Payment Success");
 	}
+
+	public function refundList(Request $request)
+	{
+		$datetime = Carbon::now()->toDateTimeString();
+		$bidding_query = Bidding::leftjoin('bidding_detail', 'bidding_detail.bidding_id', 'bidding.id')
+			->where('bidding.status', '2')
+			->where('bidding_detail.refund_status', 'pay')
+			->where('bidding_detail.user_id', Auth::id())
+			->where('end_time', '<=', $datetime)
+			->select(
+				'bidding_detail.*',
+				'bidding.id as bidding_id'
+			);
+
+		// Pagination Limit
+		if ($request->limit) {
+			$limit = $request->limit;
+		} else {
+			$limit = 8;
+		}
+
+		// Sort By 
+		if ($request->sortBy && in_array(
+			$request->sortBy,
+			[
+				'bidding.id', 'bidding.created_at'
+			]
+		)) {
+			$sortBy = $request->sortBy;
+		} else {
+			$sortBy = 'bidding.id';
+		}
+
+		if ($request->sortOrder && in_array(
+			$request->sortOrder,
+			[
+				'asc', 'desc'
+			]
+		)) {
+			$sortOrder = $request->sortOrder;
+		} else {
+			$sortOrder = 'asc';
+		}
+
+		// Pagination
+		$bidding = $bidding_query->orderBy(
+			$sortBy,
+			$sortOrder
+		)->paginate($limit);
+
+
+		$ret['refund_list'] = $bidding;
+		return $this->success($ret);
+	}
 }

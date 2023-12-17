@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Bidding;
 use App\Models\BiddingDetailModel;
 use App\Models\Payment;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Plant;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Models\OrderDetailModel;
 
 class BiddingController extends Controller
 {

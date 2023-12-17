@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Carbon\Carbon;
 use App\Models\Delivery;
+use DateTimeInterface;
 
 
 class DeliveryApiController extends Controller
@@ -82,14 +83,18 @@ class DeliveryApiController extends Controller
                 'order.created_at as order_date',
                 'order.address as order_address',
                 'order.total_amount as order_total_amount',
+                'delivery.created_at as created_at',
+                'delivery.updated_at as updated_at',
             )->first();
 
         if ($delivery == null) {
             return $this->fail('No delivery found.');
+        } else {
         }
 
         return $this->success($delivery);
     }
+
 
     public function receipt(Request $request)
     {
