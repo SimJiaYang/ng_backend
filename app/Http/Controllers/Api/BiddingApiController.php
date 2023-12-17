@@ -281,13 +281,17 @@ class BiddingApiController extends Controller
 	{
 		$datetime = Carbon::now()->toDateTimeString();
 		$bidding_query = Bidding::leftjoin('bidding_detail', 'bidding_detail.bidding_id', 'bidding.id')
+			->leftjoin('plant', 'plant.id', 'bidding.plant_id')
 			->where('bidding.status', '2')
 			->where('bidding_detail.refund_status', 'pay')
 			->where('bidding_detail.user_id', Auth::id())
 			->where('end_time', '<=', $datetime)
 			->select(
 				'bidding_detail.*',
-				'bidding.id as bidding_id'
+				'bidding.id as bidding_id',
+				'bidding.plant_id as plant_id',
+				'plant.image as plant_image',
+				'plant.name as plant_name',
 			);
 
 		// Pagination Limit
