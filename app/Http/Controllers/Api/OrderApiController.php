@@ -256,4 +256,28 @@ class OrderApiController extends Controller
 
         return $this->success($ret);
     }
+
+    public function updateOrderAddress(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:order,id',
+            'address' => 'required|string|max:255',
+        ]);
+
+        $order = Order::find($request->id);
+
+        if (!$order) {
+            return $this->fail('Order not found.');
+        }
+
+        if ($order->status !== 'ship') {
+            return $this->fail('Invalid order status.');
+        }
+
+        $order->update([
+            'address' => $request->address
+        ]);
+
+        return $this->success($order);
+    }
 }
