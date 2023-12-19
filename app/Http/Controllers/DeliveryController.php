@@ -8,10 +8,12 @@ use App\Models\Plant;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\OrderDetailModel;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
 use function PHPUnit\Framework\isNull;
 
 class DeliveryController extends Controller
@@ -140,6 +142,7 @@ class DeliveryController extends Controller
             $delivery->method = $request->method;
             $delivery->expected_date = $request->expected_date;
             $delivery->save();
+            Session::flash('success', "Delivery updated successfully!!");
             return redirect()->route('delivery.index');
         }
 
@@ -187,9 +190,10 @@ class DeliveryController extends Controller
                 $order->save();
             }
 
+            Session::flash('success', "Delivery updated successfully!!");
             return redirect()->route('delivery.index');
         }
-
+        Session::flash('success', "Delivery updated successfully!!");
         return redirect()->route('order.index');
     }
 }

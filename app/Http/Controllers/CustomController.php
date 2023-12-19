@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Custom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class CustomController extends Controller
 {
@@ -50,9 +51,11 @@ class CustomController extends Controller
             'name' => $request->name,
             'image' => $imageName,
             'video' => $videoName,
+            'status' => '1',
         ]);
 
-        return redirect()->route('custom.insert');
+        Session::flash('success', "Create style successfully!!");
+        return redirect()->route('custom.index');
     }
 
     public function update(Request $request)
@@ -100,6 +103,7 @@ class CustomController extends Controller
         $custom->video = $videoName;
         $custom->save();
 
+        Session::flash('success', "Update style successfully!!");
         return redirect()->route('custom.index');
     }
 
@@ -127,6 +131,7 @@ class CustomController extends Controller
             $custom->status = "1";
         }
 
+        Session::flash('success', "Update Style status successfully!!");
         $custom->save();
         return redirect()->route('custom.index');
     }

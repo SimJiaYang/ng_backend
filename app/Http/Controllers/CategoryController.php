@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Session;
 use function Ramsey\Uuid\v1;
 
 class CategoryController extends Controller
@@ -32,6 +32,7 @@ class CategoryController extends Controller
             'status' => "1",
         ]);
         if ($addCategory) {
+            Session::flash('success', "Category create successful!");
             return redirect()->route('category.index'); // step 5 back to last page
         }
         return null; // step 5 back to last page       
@@ -65,6 +66,7 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->type = $request->type;
         $category->save();
+        Session::flash('success', "Update successfully!!");
         return redirect()->route('category.index');
     }
 
@@ -77,6 +79,7 @@ class CategoryController extends Controller
             $category->status = "1";
         }
         $category->save();
+        Session::flash('success', "Update Category Status successfully!!");
         return redirect()->route('category.index');
     }
 }

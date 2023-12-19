@@ -18,6 +18,7 @@ class Custom extends Model
         'name',
         'image',
         'video',
+        'status',
     ];
 
     public $appends = [

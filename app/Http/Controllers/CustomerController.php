@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
@@ -48,6 +49,7 @@ class CustomerController extends Controller
             'type' => $type
         ]);
 
+        Session::flash('success', "Update successfully!");
         return redirect()->route('customer.index');
     }
 }

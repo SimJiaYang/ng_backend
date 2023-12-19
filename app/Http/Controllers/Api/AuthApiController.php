@@ -19,9 +19,14 @@ class AuthApiController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', Rules\Password::defaults()],
         ]);
+
+        // Validate email exist
+        if (User::where('email', $request->email)->exists()) {
+            return $this->fail('Email already exist');
+        }
 
         $user = User::create([
             'name' => $request->name,

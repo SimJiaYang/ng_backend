@@ -7,6 +7,7 @@ use App\Models\Plant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class PlantController extends Controller
 {
@@ -56,6 +57,7 @@ class PlantController extends Controller
         ]);
 
         if ($addProduct->exists) {
+            Session::flash('success', "Plant create successfully!!");
             return redirect()->route('plant.index');
         }
     }
@@ -128,6 +130,7 @@ class PlantController extends Controller
         $plant->cat_id = $request->category_id;
         $plant->save();
 
+        Session::flash('success', "Update Plant successfully!!");
         return redirect()->route('plant.index');
     }
 
@@ -141,6 +144,7 @@ class PlantController extends Controller
         }
 
         $plant->save();
+        Session::flash('success', "Update Plant Status successfully!!");
         return redirect()->route('plant.index');
     }
 }

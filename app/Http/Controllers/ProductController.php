@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -52,6 +53,7 @@ class ProductController extends Controller
         ]);
 
         if ($addProduct->exists) {
+            Session::flash('success', "Product create successfully!!");
             return redirect()->route('product.index');
         }
     }
@@ -119,6 +121,7 @@ class ProductController extends Controller
         $product->cat_id = $request->category_id;
         $product->save();
 
+        Session::flash('success', "Update Product successfully!!");
         return redirect()->route('product.index');
     }
 
@@ -131,6 +134,7 @@ class ProductController extends Controller
             $product->status = "1";
         }
         $product->save();
+        Session::flash('success', "Update Product Status successfully!!");
         return redirect()->route('product.index');
     }
 }

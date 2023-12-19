@@ -22,7 +22,7 @@ class CustomApiController extends Controller
 
     public function show()
     {
-        $ret['custom'] = Custom::all();
+        $ret['custom'] = Custom::where('status', '1')->get();
 
         return $this->success(
             $ret,

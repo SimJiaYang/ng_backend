@@ -12,7 +12,7 @@
                             <h4 class="card-title mb-1">Congratulations🎉</h4>
                             <p class="pb-0">The company has earn</p>
                             <h4 class="text-primary mb-4 pb-1">RM {{ $totalPayments }}</h4>
-                            <a href="javascript:;" class="btn btn-sm btn-primary">View Sales</a>
+                            {{-- <a href="javascript:;" class="btn btn-sm btn-primary">View Sales</a> --}}
                         </div>
                         <img src="../assets/img/icons/misc/triangle-light.png"
                             class="scaleX-n1-rtl position-absolute bottom-0 end-0" width="166" alt="triangle background"
