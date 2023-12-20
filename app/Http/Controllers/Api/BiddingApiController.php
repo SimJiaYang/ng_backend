@@ -128,6 +128,10 @@ class BiddingApiController extends Controller
 			'amount' => 'required'
 		]);
 
+		if ($request->amount >= 100000) {
+			return $this->fail('Amount must be less than 100000');
+		}
+
 		// Get Bidding Info
 		$bidding_id = $request->bidding_id;
 

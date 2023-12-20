@@ -89,6 +89,7 @@ class BidExpirationCheck extends Command
         // Get the address of the winner
         $address = Address::where('user_id', $bidding->winner_id)
             ->orderBy('updated_at', 'desc')
+            ->where('status', '1')
             ->first();
         if (!$address) {
             $this->info("No address found for user ID: {$bidding->winner_id}");

@@ -243,6 +243,23 @@ class CartApiController extends Controller
             ->where('is_purchase', "false")
             ->first();
 
+        if (!$updateCart) {
+            return $this->fail('Invalid request');
+        }
+
+        // Validate cart iem and their quantity
+        if ($updateCart->plant_id != null) {
+            $plant = Plant::find($updateCart->plant_id);
+            if ($plant->quantity < $request->quantity) {
+                return $this->fail('Plant exceed stock');
+            }
+        } else if ($updateCart->product_id != null) {
+            $product = Product::find($updateCart->product_id);
+            if ($product->quantity < $request->quantity) {
+                return $this->fail('Product exceed stock');
+            }
+        }
+
         if ($updateCart) {
             // Get related information
             if (!is_null($updateCart->plant_id)) {
