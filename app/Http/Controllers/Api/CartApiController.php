@@ -151,6 +151,13 @@ class CartApiController extends Controller
                 $cartPlant = Cart::firstOrNew(['plant_id' => $request->plantID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
                 // If cart exists, update quantity
                 if ($cartPlant->exists) {
+                    // Validate cart item and their quantity
+                    if ($cartPlant->plant_id != null) {
+                        $plant = Plant::find($cartPlant->plant_id);
+                        if (($cartPlant->quantity + $request->quantity) > $plant->quantity) {
+                            return $this->fail('Plant exceed stock');
+                        }
+                    }
                     // Add quantity based on the old quantity
                     $cartPlant->quantity += $request->quantity;
                     $cartPlant->price = $plant->price;
@@ -187,9 +194,15 @@ class CartApiController extends Controller
                 $ret['return_cart'][] = $newCart;
             } else {
                 $cart = Cart::firstOrNew(['product_id' => $request->productID, 'user_id' => Auth::id(), 'is_purchase' => "false"]);
-
                 // If cart exists, update quantity
                 if ($cart->exists) {
+                    // Validate cart item and their quantity
+                    if ($cart->product_id != null) {
+                        $product = Product::find($cart->product_id);
+                        if (($cart->quantity + $request->quantity) > $product->quantity) {
+                            return $this->fail('Product exceed stock');
+                        }
+                    }
                     $cart->quantity += $request->quantity;
                     $cart->price = $product->price;
                     $cart->save();

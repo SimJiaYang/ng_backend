@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('gender')->nullable();
+            $table->string('vip')->default('0');
             $table->string('contact_number')->nullable();
             $table->string('image')->nullable();
             $table->string('type')->default('user');
