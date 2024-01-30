@@ -5,26 +5,26 @@
         @if ($delivery->status == 'ship')
             <div class="card mb-4 p-4">
                 <div class="card-header d-flex justify-content-between align-items-center mb-3 px-0">
-                    <h5 class="mb-0">Edit Order Delivery Status</h5>
+                    <h5 class="mb-0">Edit Order Delivery Detail</h5>
                 </div>
 
                 <form method="POST"
                     action="{{ route('delivery.update', ['id' => $delivery->id, 'order_id' => $delivery->order_id]) }}"
-                    enctype="multipart/form-data" onsubmit="return validateCompleted()">
+                    {{-- enctype="multipart/form-data" 
+                    onsubmit="return validateCompleted()" --}}>
                     @csrf
-                    <div class="form-floating form-floating-outline mb-4">
+                    {{-- <div class="form-floating form-floating-outline mb-4">
                         <select class="form-select" id="selectOption" aria-label="Default select example" name="status">
                             <option hidden value="ship">Deliver in progress</option>
                             <option value="ship">Deliver in progress</option>
                             <option value="delivered">Delivered</option>
                         </select>
                         <label for="exampleFormControlSelect1">Delivery Status</label>
-                    </div>
+                    </div> --}}
 
                     <div class="form-floating form-floating-outline mb-4">
-                        <input type="text" id="method" name="method" class="form-control"
-                            value="{{ $delivery->method }}" id="basic-default-fullname" placeholder="Delivery Company"
-                            required />
+                        <input type="text" id="method" name="method" class="form-control" value="{{ $delivery->method }}"
+                            id="basic-default-fullname" placeholder="Delivery Company" required />
                         <label for="basic-default-fullname">Delivery Company</label>
                     </div>
 
@@ -41,9 +41,9 @@
                         <label for="html5-date-input">Expected Date</label>
                     </div>
 
-                    <div class="col-12">
+                    {{-- <div class="col-12">
                         <h6 class="mt-2">Proof of Delivery</h6>
-                    </div>
+                    </div> --}}
 
                     {{-- <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
@@ -53,19 +53,19 @@
                 </div>
             </div> --}}
 
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <div class="form-floating form-floating-outline">
                             <img id="frame" class="img-fluid m-1" style="height:200px; width:200px" />
                         </div>
-                    </div>
+                    </div> --}}
 
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <div class="form-floating form-floating-outline my-3">
                             <input class="form-control" type="file" id="formFile" name="image_proof"
                                 onchange="preview()">
                             <label for="formValidationFile">Proof of Delivery</label>
                         </div>
-                    </div>
+                    </div> --}}
                     <button type="submit" class="btn btn-primary">Save</button>
             </div>
         @elseif($delivery->status == 'delivered')
@@ -283,28 +283,28 @@
             }
         }
 
-        function validateCompleted() {
-            var selectElement = document.getElementById("selectOption");
-            var selectedOptionValue = selectElement.value;
+        // function validateCompleted() {
+        //     var selectElement = document.getElementById("selectOption");
+        //     var selectedOptionValue = selectElement.value;
 
-            if ((selectedOptionValue === "delivered" && frame.src === "") ||
-                (selectedOptionValue === "ship" && frame.src !== "")
-            ) {
-                alert("Please update the delivery status of the order and ensure the prove of delivery is updated");
-                return false; // Prevent form submission
-            } else {
-                // You can now use the selectedOptionValue in your further processing
-                return true; // Allow form submission
-            }
-        }
+        //     if ((selectedOptionValue === "delivered" && frame.src === "") ||
+        //         (selectedOptionValue === "ship" && frame.src !== "")
+        //     ) {
+        //         alert("Please update the delivery status of the order and ensure the prove of delivery is updated");
+        //         return false; // Prevent form submission
+        //     } else {
+        //         // You can now use the selectedOptionValue in your further processing
+        //         return true; // Allow form submission
+        //     }
+        // }
 
-        function preview() {
-            frame.src = URL.createObjectURL(event.target.files[0]);
-        }
+        // function preview() {
+        //     frame.src = URL.createObjectURL(event.target.files[0]);
+        // }
 
-        function clearImage() {
-            document.getElementById('formFile').value = null;
-            frame.src = "";
-        }
+        // function clearImage() {
+        //     document.getElementById('formFile').value = null;
+        //     frame.src = "";
+        // }
     </script>
 @endsection

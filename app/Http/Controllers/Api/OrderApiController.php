@@ -280,4 +280,48 @@ class OrderApiController extends Controller
 
         return $this->success($order);
     }
+
+
+    public function orderReceived(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:order,id',
+            'delivery_id' => 'required|integer|exists:delivery,id',
+        ]);
+
+        // Get Order
+        $order = Order::find($request->id);
+        if (!$order) {
+            return $this->fail('Order not found.');
+        }
+
+        // Get Delivery
+        $delivery = Delivery::where('id', $request->delivery_id)->first();
+        if (!$delivery) {
+            return $this->fail('Delivery not found.');
+        }
+
+        // Update Order Status 
+        $isfull = true;
+        $order_item = OrderDetailModel::where('order_id', $request->id)->get();
+
+        foreach ($order_item as $item) {
+            if ($item->remark != true) {
+                $isfull = false;
+                break;
+            }
+        }
+        if ($isfull == true) {
+            $order->status = 'completed';
+            $order->save();
+        }
+
+        // Update Delivery Status
+        $delivery->update([
+            'status' => 'delivered',
+            'prv_img' => "delivery_prove"
+        ]);
+
+        return $this->success($order);
+    }
 }

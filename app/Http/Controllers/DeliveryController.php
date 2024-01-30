@@ -10,11 +10,6 @@ use App\Models\Product;
 use App\Models\OrderDetailModel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Validator;
-use function PHPUnit\Framework\isNull;
 
 class DeliveryController extends Controller
 {
@@ -44,7 +39,6 @@ class DeliveryController extends Controller
         $order_item = OrderDetailModel::where('order_id', $orders->id)
             ->where('delivery_id', $delivery[0]->id)
             ->get();
-        // dd($order_item);
         $delivery_total_price = 0;
         foreach ($order_item as $item) {
             $delivery_total_price += $item->amount;
@@ -132,12 +126,13 @@ class DeliveryController extends Controller
                 $order->is_separate = true;
                 $order->save();
             }
+            Session::flash('success', "Delivery Create Succesfully");
+            return redirect()->route('delivery.index');
         }
 
         // Update the Shipping Detail but not set it to delivered
-        if ($request->status == 'ship' && $request->id != null) {
+        if ($items == null) {
             $delivery = Delivery::where('id', $request->id)->first();
-            $delivery->status = 'ship';
             $delivery->tracking_number = $request->track_num;
             $delivery->method = $request->method;
             $delivery->expected_date = $request->expected_date;
@@ -146,53 +141,6 @@ class DeliveryController extends Controller
             return redirect()->route('delivery.index');
         }
 
-        // Delivery arrived
-        if ($request->hasFile('image_proof')) {
-            // Get delivery
-            $delivery = Delivery::where('id', $request->id)->first();
-
-            // Get delivery image prove
-            $old_path = public_path('delivery_prove/' . $delivery->prv_img);
-            if (File::exists($old_path)) {
-                if ($delivery->prv_img != 'no_delivery.png') {
-                    File::delete($old_path);
-                }
-            }
-            $imageName = time() . '.' . $request->file('image_proof')->getClientOriginalExtension();
-            $request->file('image_proof')->move(public_path('/delivery_prove'), $imageName);
-
-            // Update delivery
-            $delivery->prv_img = $imageName;
-            $delivery->status = 'delivered';
-            $delivery->save();
-
-            // Update order
-            $deliveryList = Delivery::where('order_id', $delivery->order_id)->get();
-            foreach ($deliveryList as $deliverys) {
-                if ($deliverys->status != 'delivered') {
-                    return redirect()->route('delivery.index');
-                }
-            }
-
-            // Update Order Status 
-            $isfull = true;
-            $order_item = OrderDetailModel::where('order_id', $request->order_id)->get();
-
-            foreach ($order_item as $item) {
-                if ($item->remark != true) {
-                    $isfull = false;
-                    break;
-                }
-            }
-
-            if ($isfull == true) {
-                $order->status = 'completed';
-                $order->save();
-            }
-
-            Session::flash('success', "Delivery updated successfully!!");
-            return redirect()->route('delivery.index');
-        }
         Session::flash('success', "Delivery updated successfully!!");
         return redirect()->route('order.index');
     }

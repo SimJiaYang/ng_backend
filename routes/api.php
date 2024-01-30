@@ -56,6 +56,7 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('order/receipt', 'OrderApiController@receipt');
         Route::post('order/cancel', 'OrderApiController@cancel');
         Route::post('order/address/change', 'OrderApiController@updateOrderAddress');
+        Route::post('order/receive', 'OrderApiController@orderReceived');
 
         /* Payment */
         Route::post('order/payment/intent', 'PaymentApiController@paymentIntent');

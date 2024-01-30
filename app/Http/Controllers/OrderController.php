@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Delivery;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Plant;
 use App\Models\OrderDetailModel;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use SebastianBergmann\Type\TrueType;
 
 class OrderController extends Controller
 {
@@ -81,12 +77,6 @@ class OrderController extends Controller
                 $item_detail['product'][] = $product;
             }
         }
-
-        // dd($order);
-        // dd($order_item);
-        // dd($plant_list);
-        // dd($product_list);
-        // dd($item_detail);
 
         return view('order.sub_screen.order_detail')
             ->with('orders', $order)
@@ -168,31 +158,11 @@ class OrderController extends Controller
 
         $order = Order::where('id', $id)->get();
 
-        // Completed order item
-        // // Delivery List
-        // $delivery = Delivery::where('order_id', $id)->get();
-        // $delivery_detail = [];
-
-        // Get the order item accoding list
-        // foreach ($delivery as $item) {
-        //     $order_detail = OrderDetailModel::where('order_id', $id)
-        //         ->orderBy('created_at', 'desc')
-        //         ->where('delivery_id', $item->id)
-        //         ->where('remark', true)
-        //         ->get();
-        //     $delivery_detail['order_detail'][] = $order_detail;
-        // }
-
-        // dd($delivery_detail);
-
         return view('order.sub_screen.order_partial')
             ->with('orders', $order)
             ->with('order_item', $all_item)
             ->with('item_detail', $item_detail)
             ->with('isfull', $isfull)
-            // ->with('delivery_detail', $delivery_detail)
-            // ->with('deliver', $delivery)
-            // ->with('deliver', $delivery)
             ->with('user', $user);
     }
 }
