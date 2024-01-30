@@ -77,14 +77,14 @@
                     </li>
 
                     <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Customers</span>
+                        <span class="menu-header-text">Users</span>
                     </li>
 
                     <!-- Dashboards -->
                     <li class="menu-item">
                         <a href="{{ route('customer.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
-                            <div data-i18n="Dashboards">Customers</div>
+                            <i class="menu-icon tf-icons mdi mdi-account-outline"></i>
+                            <div data-i18n="Dashboards">Users</div>
                         </a>
                     </li>
 
@@ -182,12 +182,12 @@
                     </li>
 
 
-                    <li class="menu-header small text-uppercase">
+                    {{-- <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Custom Style</span>
-                    </li>
+                    </li> --}}
 
                     <!-- Product -->
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('custom.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
                             <div data-i18n="Dashboards">Style</div>
@@ -198,7 +198,7 @@
                             <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
                             <div data-i18n="Dashboards">Add Style</div>
                         </a>
-                    </li>
+                    </li> --}}
 
                 </ul>
             </aside>

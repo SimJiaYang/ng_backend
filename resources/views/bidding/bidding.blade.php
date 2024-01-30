@@ -103,7 +103,15 @@
                                         </p>
                                     </td>
                                     <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ $biddings->bidding_status }}</p>
+
+                                        @if ($biddings->bidding_status == '1')
+                                            <p class="fw-normal mb-1">Proceeding</p>
+                                        @elseif($biddings->bidding_status == '2')
+                                            <p class="fw-normal mb-1">End</p>
+                                        @else
+                                            <p class="fw-normal mb-1">Unsuccessful</p>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

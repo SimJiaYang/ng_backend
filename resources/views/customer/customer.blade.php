@@ -15,7 +15,7 @@
         {{ session()->forget('success') }}
     @endif
 
-    <p class="display-5">Customers</p>
+    <p class="display-5">Users</p>
 
     <!-- Search -->
     <form action="{{ route('customer.search') }}" method="POST">

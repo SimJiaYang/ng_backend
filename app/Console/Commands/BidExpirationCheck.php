@@ -43,6 +43,11 @@ class BidExpirationCheck extends Command
             ->where('end_time', '<=', $datetime)
             ->get();
 
+        if (!$biddings) {
+            $this->info('No bids to process.');
+            return;
+        }
+
         foreach ($biddings as $bidding) {
             $this->processBid($bidding);
         }
