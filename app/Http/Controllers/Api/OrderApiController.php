@@ -286,7 +286,6 @@ class OrderApiController extends Controller
     {
         $request->validate([
             'id' => 'required|integer|exists:order,id',
-            'delivery_id' => 'required|integer|exists:delivery,id',
         ]);
 
         // Get Order
@@ -296,7 +295,7 @@ class OrderApiController extends Controller
         }
 
         // Get Delivery
-        $delivery = Delivery::where('id', $request->delivery_id)->first();
+        $delivery = Delivery::where('order_id', $order->id)->get();
         if (!$delivery) {
             return $this->fail('Delivery not found.');
         }
@@ -317,10 +316,12 @@ class OrderApiController extends Controller
         }
 
         // Update Delivery Status
-        $delivery->update([
-            'status' => 'delivered',
-            'prv_img' => "delivery_prove"
-        ]);
+        for ($i = 0; $i < count($delivery); $i++) {
+            $delivery[$i]->update([
+                'status' => 'delivered',
+                'prv_img' => "delivery_prove.jpg"
+            ]);
+        }
 
         return $this->success($order);
     }
