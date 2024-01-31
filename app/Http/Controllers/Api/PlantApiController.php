@@ -194,14 +194,56 @@ class PlantApiController extends Controller
         return $this->success($ret);
     }
 
-    public function getCategory()
+    public function getCategory(Request $request)
     {
         $category =  Category::where('type', 'plant')
-            ->where('status', '1')->get();
+            ->where('status', '1');
+
         if ($category->count() == 0) {
             return $this->fail('No category data available');
         }
+
+        // Pagination Limit
+        if ($request->limit) {
+            $limit = $request->limit;
+        } else {
+            $limit = 8;
+        }
+
+        // Sort By 
+        if ($request->sortBy && in_array(
+            $request->sortBy,
+            [
+                'id', 'created_at', 'price', 'sales_amount'
+            ]
+        )) {
+            $sortBy = $request->sortBy;
+        } else {
+            $sortBy = 'id';
+        }
+
+        if ($request->sortOrder && in_array(
+            $request->sortOrder,
+            [
+                'asc', 'desc'
+            ]
+        )) {
+            $sortOrder = $request->sortOrder;
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        // Pagination
+        $category = $category->orderBy(
+            $sortBy,
+            $sortOrder
+        )->paginate($limit)->setPath('');
+        $category->appends(array(
+            'plant_cat' => $request->limit
+        ));
+
         $ret['category'] = $category;
+
         return $this->success($ret);
     }
 
