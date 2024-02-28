@@ -21,8 +21,6 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('product');
             $table->foreignId('plant_id')->nullable();
             $table->foreign('plant_id')->references('id')->on('plant');
-            $table->foreignId('bidding_id')->nullable();
-            $table->foreign('bidding_id')->references('id')->on('bidding');
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

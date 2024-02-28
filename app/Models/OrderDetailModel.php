@@ -22,7 +22,6 @@ class OrderDetailModel extends Model
         'remark',
         'product_id',
         'plant_id',
-        'bidding_id',
         'delivery_id'
     ];
 

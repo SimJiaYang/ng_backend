@@ -14,13 +14,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // $randomPot = fake()->numberBetween(1, 5);
-        // $randomSho = fake()->numberBetween(1, 3);
-        // $randomSoil = fake()->numberBetween(1, 2);
 
-        // $potFilename =  'pot' . (string)$randomPot . '.png';
-        // $shovelFilename =  'shovel' . (string)$randomSho . '.png';
-        // $soilFilename =  'soil' . (string)$randomSoil . '.jpeg';
 
         $potCategoryId = DB::table('category')->where('type', 'Product')->where('name', 'Pot')->value('id');
         $shovelCategoryId = DB::table('category')->where('type', 'Product')->where('name', 'Shovel')->value('id');

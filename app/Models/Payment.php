@@ -16,8 +16,6 @@ class Payment extends Model
 
     public $fk1 = 'order_id';
 
-    public $fk2 = 'bidding_id';
-
     protected $fillable = [
         'status',
         'amount',
@@ -26,7 +24,6 @@ class Payment extends Model
         'date',
         'order_id',
         'user_id',
-        'bidding_id'
     ];
 
     /**

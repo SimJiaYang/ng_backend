@@ -25,8 +25,6 @@ return new class extends Migration
             $table->foreign('plant_id')->references('id')->on('plant');
             $table->foreignId('delivery_id')->nullable();
             $table->foreign('delivery_id')->references('id')->on('delivery');
-            $table->foreignId('bidding_id')->nullable();
-            $table->foreign('bidding_id')->references('id')->on('bidding');
             $table->timestamps();
         });
     }

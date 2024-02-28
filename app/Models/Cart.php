@@ -20,8 +20,6 @@ class Cart extends Model
 
     public $fk2 = 'plant_id';
 
-    public $fk3 = 'bidding__id';
-
     public $fk4 = 'user_id';
 
     protected $fillable = [
@@ -31,7 +29,6 @@ class Cart extends Model
         'is_purchase',
         'product_id',
         'plant_id',
-        'bidding_id',
         'user_id'
     ];
 

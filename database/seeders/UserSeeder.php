@@ -47,6 +47,6 @@ class UserSeeder extends Seeder
                 'type' => "delivery",
             ]
         ]);
-        User::factory()->count(50)->create();
+        User::factory()->count(5)->create();
     }
 }
