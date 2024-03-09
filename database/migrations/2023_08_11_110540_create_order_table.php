@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
-            $table->date('date');
+            $table->String('status');
+            $table->double('merchandise_fee', 8, 2);
+            $table->double('shipping_fee', 8, 2);
             $table->double('total_amount', 8, 2);
-            $table->foreignId('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('address');
-            $table->string('receiver_name')->nullable();
+            $table->String('address');
+            $table->String('is_separate')->default(false);
             $table->longText('note')->nullable();
-            $table->string('is_separate')->nullable();
+            $table->String('name')->nullable();
+            $table->String('address')->nullable();
+            $table->String('contact_number')->nullable();
+            $table->foreignUuid('user_id')->constrained();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

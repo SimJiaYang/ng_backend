@@ -11,40 +11,64 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     * Include the table name, primary key, and foreign key in the model
+     * @var string
+     */
     protected $table = "product";
-
     public $primaryKey = 'id';
+    public $foreignKey = 'category_id';
 
-    public $fk = 'cat_id';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
-        'sales_amount',
         'price',
         'description',
         'quantity',
-        'status',
         'image',
-        'cat_id'
+        'sales_amount',
+        'material',
+        'length',
+        'size',
+        'weight',
+        'other',
+        'status',
+        'category_id',
+        'created_at',
+        'updated_at',
     ];
 
+    /**
+     * Append image_url to the model
+     *
+     * @var array<int, string>
+     */
     public $appends = [
         'image_url'
     ];
 
-    public const STATUS = [
-        '0' => 'Disable',
-        '1' => 'Enable',
-    ];
 
+    /**
+     * Get the image url attribute.
+     *
+     * @var array<int, string>
+     */
     public function getImageUrlAttribute()
     {
         return  json_encode(asset('/product_image/' . $this->image));
     }
 
+    /**
+     * Get the category that owns the product.
+     */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'cat_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**

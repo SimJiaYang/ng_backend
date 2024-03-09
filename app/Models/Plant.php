@@ -12,45 +12,72 @@ class Plant extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     * Include the table name, primary key, and foreign key in the model
+     * @var string
+     */
     protected $table = "plant";
-
     public $primaryKey = 'id';
+    public $foreignKey = 'category_id';
 
-    public $fk = 'cat_id';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
-        'sales_amount',
         'price',
         'description',
         'quantity',
-        'sunlight_need',
-        'water_need',
-        'mature_height',
-        'origin',
-        'status',
         'image',
-        'cat_id'
+        'sales_amount',
+        'placement',
+        'temperature',
+        'water_need',
+        'sunlight_need',
+        'height',
+        'size',
+        'weight',
+        'origin',
+        'other',
+        'pot_name',
+        'pot_size',
+        'experience',
+        'status',
+        'category_id',
+        'created_at',
+        'updated_at',
     ];
 
+    /**
+     * Append image_url to the model
+     *
+     * @var array<int, string>
+     */
     public $appends = [
         'image_url'
     ];
 
-    public const STATUS = [
-        '0' => 'Disable',
-        '1' => 'Enable',
-    ];
-
+    /**
+     * Get the plant's image url.
+     *
+     * @return string
+     */
     public function getImageUrlAttribute()
     {
-        // return asset('/plant_image/' . $this->image);
         return json_encode(asset('/plant_image/' . $this->image));
     }
 
+    /**
+     * Get the category that owns the plant.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'cat_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**

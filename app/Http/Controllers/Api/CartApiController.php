@@ -22,16 +22,11 @@ class CartApiController extends Controller
 
         $ret = [];
 
-        // If result is impty, return fail
-        // if ($cart->count() == 0) {
-        //     return $this->success($ret);
-        // }
-
         $ret['cart'] = [];
         $ret['plant'] = [];
         $ret['product'] = [];
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [

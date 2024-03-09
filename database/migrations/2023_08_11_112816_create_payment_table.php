@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->String('status');
             $table->double('amount', 8, 2);
-            $table->string('details');
-            $table->string('method');
-            $table->date('date');
+            $table->String('method');
+            $table->String('details');
             $table->foreignId('order_id')->nullable();
             $table->foreign('order_id')->references('id')->on('order');
-            $table->foreignId('user_id');
+            $table->foreignUuid('user_id')->constrained();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

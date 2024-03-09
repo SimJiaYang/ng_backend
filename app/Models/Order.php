@@ -10,22 +10,41 @@ class Order extends Model
 {
     use HasFactory;
 
-    public $primaryKey = 'id';
-
+    /**
+     * The table associated with the model.
+     * Include the table name, primary key, and foreign key in the model
+     * @var string
+     */
     public $table = 'order';
+    public $primaryKey = 'id';
+    public $foreignKey = 'user_id';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'status',
-        'date',
+        'merhandise_fee',
+        'shipping_fee',
         'total_amount',
         'address',
-        'user_id',
-        'receiver_name',
+        'is_separate',
         'note',
+        'name',
+        'address',
+        'contact_number',
+        'user_id',
         'created_at',
         'updated_at',
     ];
 
+    /**
+     * Order status
+     *
+     * @var array<int, string>
+     */
     public const STATUS = [
         '0' => "cancel",
         '1' => "To Pay",
@@ -34,16 +53,25 @@ class Order extends Model
         '4' => "Cancel"
     ];
 
+    /**
+     * Get the user that owns the order.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the order detail for the order.
+     */
     public function order_detail()
     {
         return $this->hasMany(OrderDetailModel::class, 'order_id');
     }
 
+    /**
+     * Get the delivery for the order.
+     */
     public function delivery()
     {
         return $this->hasOne(Delivery::class, 'order_id');

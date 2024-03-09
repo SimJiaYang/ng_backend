@@ -13,22 +13,27 @@ return new class extends Migration
     {
         Schema::create('product', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('sales_amount')->nullable();
+            $table->String('name');
             $table->double('price', 8, 2);
             $table->longText('description');
             $table->integer('quantity');
-            $table->string('status')->default('1');
-            $table->string('image');
-            $table->foreignId('cat_id');
-            $table->foreign('cat_id')->references('id')->on('category');
+            $table->String('image');
+            $table->integer('sales_amount')->nullable();
+            $table->String('material')->nullable();
+            $table->double('length', 8, 2)->nullable();
+            $table->String('size')->nullable();
+            $table->double('weight', 8, 2);
+            $table->longText('other')->nullable();
+            $table->String('status')->default(true);
+            $table->foreignId('category_id');
+            $table->foreign('category_id')->references('id')->on('category');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     * 
+     *
      */
     public function down(): void
     {

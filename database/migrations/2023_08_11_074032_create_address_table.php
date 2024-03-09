@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('address', function (Blueprint $table) {
             $table->id();
-            $table->longText('address');
-            $table->string('status')->default('1');
-            $table->foreignId('user_id');
+            $table->string('name');
+            $table->string('contact_number');
+            $table->string('state');
+            $table->string('area');
+            $table->string('postcode');
+            $table->string('detail');
+            $table->string('label')->nullable();
+            $table->string('is_default')->default(false);
+            $table->string('status')->default(true);
+            $table->foreignUuid('user_id')->constrained();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

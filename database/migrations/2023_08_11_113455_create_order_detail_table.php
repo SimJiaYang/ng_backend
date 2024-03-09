@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('order_detail', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity');
-            $table->double('price', 8, 2);
-            $table->double('amount', 8, 2);
+            $table->double('unit_price', 8, 2);
+            $table->double('total_amount', 8, 2);
+            $table->String('remark')->default('true');
             $table->foreignId('order_id');
             $table->foreign('order_id')->references('id')->on('order');
-            $table->String('remark')->nullable();
             $table->foreignId('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('product');
             $table->foreignId('plant_id')->nullable();

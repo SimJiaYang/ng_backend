@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -11,7 +11,7 @@ use DateTimeInterface;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -27,11 +27,34 @@ class User extends Authenticatable
         'gender',
         'contact_number',
         'image',
+        'type',
+        'status',
+        'created_at',
+        'updated_at',
     ];
 
+    /**
+     * Append image_url when get user data
+     *
+     * @var string
+     */
     public $appends = [
         'image_url'
     ];
+
+    /**
+     * Get the user's image url.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('/user_image/' . $this->image);
+        } else {
+            return null;
+        }
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,15 +75,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function getImageUrlAttribute()
-    {
-        if ($this->image) {
-            return asset('/user_image/' . $this->image);
-        } else {
-            return null;
-        }
-    }
 
     /**
      * Prepare a date for array / JSON serialization.

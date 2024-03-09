@@ -43,11 +43,6 @@ class PlantApiController extends Controller
             ->where('plant.quantity', '>', '0')
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
 
-        // If result is impty, return fail
-        // if ($plants_query->count() == 0) {
-        //     return $this->fail('Plant no found');
-        // }
-
         // Pagination Limit
         if ($request->limit) {
             $limit = $request->limit;
@@ -55,7 +50,7 @@ class PlantApiController extends Controller
             $limit = 8;
         }
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
@@ -138,11 +133,6 @@ class PlantApiController extends Controller
             );
         }
 
-        // If result is impty, return fail
-        // if ($plants_query->count() == 0) {
-        //     return $this->fail('Plant no found');
-        // }
-
         // Pagination Limit
         if ($request->limit) {
             $limit = $request->limit;
@@ -150,7 +140,7 @@ class PlantApiController extends Controller
             $limit = 8;
         }
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
@@ -210,7 +200,7 @@ class PlantApiController extends Controller
             $limit = 8;
         }
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use Illuminate\Support\Facades\File;
 
 class UserApiController extends Controller

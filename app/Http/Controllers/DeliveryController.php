@@ -107,7 +107,7 @@ class DeliveryController extends Controller
                 }
             }
 
-            // Update Order Status 
+            // Update Order Status
             $isfull = true;
             $order_item = OrderDetailModel::where('order_id', $request->order_id)->get();
 

@@ -10,33 +10,66 @@ class Delivery extends Model
 {
     use HasFactory;
 
-    public $primaryKey = 'id';
-
+    /**
+     * The table associated with the model.
+     * Include the table name, primary key, and foreign key in the model
+     * @var string
+     */
     protected $table = 'delivery';
+    public $primaryKey = 'id';
+    public $foreignKey1 = 'order_id';
+    public $foreignKey2 = 'user_id';
 
-    public $fk = 'order_id';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'tracking_number',
+        'courier',
         'method',
         'status',
-        'details',
+        'delivered_img',
         'expected_date',
         'order_id',
         'user_id',
-        'prv_img',
         'created_at',
         'updated_at',
     ];
 
-    public const STATUS = [
-        '0' => 'Disable',
-        '1' => 'Enable',
-    ];
-
+    /**
+     * Append the delivered image url to the model
+     */
     public $appends = [
         'image_url'
     ];
+
+    /**
+     * Get the image url attribute.
+     *
+     * @var array<int, string>
+     */
+    public function getImageUrlAttribute()
+    {
+        return json_encode(asset('/delivery_prove/' . $this->prv_img));
+    }
+
+    /**
+     * Get the order that owns the delivery.
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    /**
+     * Get the user that owns the delivery.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     /**
      * Prepare a date for array / JSON serialization.
@@ -47,15 +80,5 @@ class Delivery extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function getImageUrlAttribute()
-    {
-        return json_encode(asset('/delivery_prove/' . $this->prv_img));
-    }
-
-    public function order()
-    {
-        return $this->belongsTo(Order::class, 'order_id');
     }
 }

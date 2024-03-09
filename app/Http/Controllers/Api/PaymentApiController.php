@@ -4,15 +4,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Stripe;
-use Stripe\StripeClient;
-use Exception;
 use Carbon\Carbon;
 
 

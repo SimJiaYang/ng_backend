@@ -16,11 +16,6 @@ class AddressApiController extends Controller
             Auth::id()
         )->where('status', 1);
 
-        // If result is impty, return fail
-        // if ($address_list->count() == 0) {
-        //     return $this->fail('Address no found');
-        // }
-
         // Pagination Limit
         if ($request->limit) {
             $limit = $request->limit;
@@ -28,7 +23,7 @@ class AddressApiController extends Controller
             $limit = 8;
         }
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [

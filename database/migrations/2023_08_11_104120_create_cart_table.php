@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('cart', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity');
-            $table->double('price', 8, 2);
-            $table->date('date_added');
-            $table->string('is_purchase')->default('false');
+            $table->double('unit_price', 8, 2);
+            $table->String('is_purchase')->default(false);
             $table->foreignId('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('product');
             $table->foreignId('plant_id')->nullable();
             $table->foreign('plant_id')->references('id')->on('plant');
-            $table->foreignId('user_id');
+            $table->foreignUuid('user_id')->constrained();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

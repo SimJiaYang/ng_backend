@@ -10,12 +10,8 @@ use App\Models\Product;
 use App\Models\Delivery;
 use App\Models\OrderDetailModel;
 use Illuminate\Http\Request;
-use App\Models\Address;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules;
 use Carbon\Carbon;
 
 class OrderApiController extends Controller
@@ -31,7 +27,7 @@ class OrderApiController extends Controller
             return $this->fail('Some error occured.');
         }
 
-        // Sort By 
+        // Sort By
         $sortBy = in_array($request->sortBy, ['order.id', 'order.created_at', 'order.updated_at'])
             ? $request->sortBy : 'order.created_at';
         $sortOrder = in_array($request->sortOrder, ['asc', 'desc'])
@@ -77,7 +73,7 @@ class OrderApiController extends Controller
         // Array to store
         $ret = [];
 
-        // Sort By 
+        // Sort By
         $sortBy = in_array($request->sortBy, ['id', 'created_at', 'updated_at'])
             ? $request->sortBy : 'created_at';
         $sortOrder = in_array($request->sortOrder, ['asc', 'desc'])
@@ -300,7 +296,7 @@ class OrderApiController extends Controller
             return $this->fail('Delivery not found.');
         }
 
-        // Update Order Status 
+        // Update Order Status
         $isfull = true;
         $order_item = OrderDetailModel::where('order_id', $request->id)->get();
 
@@ -319,7 +315,7 @@ class OrderApiController extends Controller
         for ($i = 0; $i < count($delivery); $i++) {
             $delivery[$i]->update([
                 'status' => 'delivered',
-                'prv_img' => "delivery_prove.jpg"
+
             ]);
         }
 
