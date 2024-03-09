@@ -33,7 +33,6 @@ class Order extends Model
         'is_separate',
         'note',
         'name',
-        'address',
         'contact_number',
         'user_id',
         'created_at',
