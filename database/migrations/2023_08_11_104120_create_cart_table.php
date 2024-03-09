@@ -16,12 +16,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->double('unit_price', 8, 2);
             $table->String('is_purchase')->default(false);
-            $table->foreignId('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('product');
-            $table->foreignId('plant_id')->nullable();
-            $table->foreign('plant_id')->references('id')->on('plant');
-            $table->foreignUuid('user_id')->constrained();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('product_id')->nullable()->constrained('product');
+            $table->foreignId('plant_id')->nullable()->constrained('plant');
+            $table->foreignUuid('user_id')->constrained('users');
             $table->timestamps();
         });
     }

@@ -19,10 +19,8 @@ return new class extends Migration
             $table->String('status');
             $table->String('delivered_img')->nullable();
             $table->date('expected_date')->nullable();
-            $table->foreignUuid('user_id')->constrained();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreignId('order_id');
-            $table->foreign('order_id')->references('id')->on('order');
+            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignId('order_id')->constrained('order');
             $table->timestamps();
         });
     }

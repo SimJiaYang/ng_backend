@@ -17,14 +17,10 @@ return new class extends Migration
             $table->double('unit_price', 8, 2);
             $table->double('total_amount', 8, 2);
             $table->String('remark')->default('true');
-            $table->foreignId('order_id');
-            $table->foreign('order_id')->references('id')->on('order');
-            $table->foreignId('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('product');
-            $table->foreignId('plant_id')->nullable();
-            $table->foreign('plant_id')->references('id')->on('plant');
-            $table->foreignId('delivery_id')->nullable();
-            $table->foreign('delivery_id')->references('id')->on('delivery');
+            $table->foreignId('order_id')->constrained('order');
+            $table->foreignId('product_id')->nullable()->constrained('product');
+            $table->foreignId('plant_id')->nullable()->constrained('plant');
+            $table->foreignId('delivery_id')->nullable()->constrained('delivery');
             $table->timestamps();
         });
     }

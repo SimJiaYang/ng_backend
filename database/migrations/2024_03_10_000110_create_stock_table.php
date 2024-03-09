@@ -16,7 +16,6 @@ return new class extends Migration
             $table->String('reason');
             $table->integer('quantity');
             $table->double('unit_price', 8, 2);
-            $table->String('reason');
             $table->foreignId('product_id')->nullable()->constrained('product');
             $table->foreignId('plant_id')->nullable()->constrained('plant');
             $table->timestamps();

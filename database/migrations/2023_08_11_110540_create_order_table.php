@@ -18,13 +18,11 @@ return new class extends Migration
             $table->double('shipping_fee', 8, 2);
             $table->double('total_amount', 8, 2);
             $table->String('address');
+            $table->String('name');
+            $table->String('contact_number');
             $table->String('is_separate')->default(false);
             $table->longText('note')->nullable();
-            $table->String('name')->nullable();
-            $table->String('address')->nullable();
-            $table->String('contact_number')->nullable();
-            $table->foreignUuid('user_id')->constrained();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignUuid('user_id')->constrained('users');
             $table->timestamps();
         });
     }

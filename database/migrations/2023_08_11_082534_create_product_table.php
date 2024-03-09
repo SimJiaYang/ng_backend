@@ -25,8 +25,7 @@ return new class extends Migration
             $table->double('weight', 8, 2);
             $table->longText('other')->nullable();
             $table->String('status')->default(true);
-            $table->foreignId('category_id');
-            $table->foreign('category_id')->references('id')->on('category');
+            $table->foreignId('category_id')->constrained('category');
             $table->timestamps();
         });
     }

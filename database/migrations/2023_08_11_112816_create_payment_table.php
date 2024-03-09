@@ -17,10 +17,8 @@ return new class extends Migration
             $table->double('amount', 8, 2);
             $table->String('method');
             $table->String('details');
-            $table->foreignId('order_id')->nullable();
-            $table->foreign('order_id')->references('id')->on('order');
-            $table->foreignUuid('user_id')->constrained();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('order_id')->nullable()->constrained('order');
+            $table->foreignUuid('user_id')->constrained('users');
             $table->timestamps();
         });
     }

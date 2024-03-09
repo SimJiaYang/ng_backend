@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('label')->nullable();
             $table->string('is_default')->default(false);
             $table->string('status')->default(true);
-            $table->foreignUuid('user_id')->constrained();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignUuid('user_id')->constrained('users');
             $table->timestamps();
         });
     }

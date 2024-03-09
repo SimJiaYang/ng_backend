@@ -17,8 +17,7 @@ return new class extends Migration
             $table->String('slug');
             $table->String('type');
             $table->String('status')->default(true);
-            $table->foreignId('parent_id')->nullable();
-            $table->foreign('parent_id')->references('id')->on('category');
+            $table->foreignId('parent_id')->nullable()->constrained('category');
             $table->timestamps();
         });
     }
