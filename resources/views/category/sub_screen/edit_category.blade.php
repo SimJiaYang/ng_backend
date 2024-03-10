@@ -24,6 +24,13 @@
                                 <label for="basic-default-fullname">Name</label>
                             </div>
                             <div class="form-floating form-floating-outline mb-4">
+                                <input type="text" id="slug" name="slug" class="form-control"
+                                    id="basic-default-fullname" placeholder="Name" value="{{ $categories->slug }}"
+                                    required />
+                                <label for="basic-default-fullname">Slug</label>
+                            </div>
+
+                            <div class="form-floating form-floating-outline mb-4">
                                 <select class="form-select" id="selectOption" aria-label="Default select example"
                                     name="type">
                                     <option hidden value="{{ $categories->type }}">
@@ -32,6 +39,26 @@
                                     <option value="Product">Product</option>
                                 </select>
                                 <label for="exampleFormControlSelect1">Type</label>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                <select class="form-select" id="selectOption" aria-label="Default select example"
+                                    name="parent_id">
+                                    @if ($categories->parent_id == null)
+                                        <option hidden value={{ null }}>
+                                            -</option>
+                                    @else
+                                        <option hidden value="{{ $categories->parent_id }}">
+                                            {{ $categories->parent }}</option>
+                                    @endif
+                                    @if ($categories->parent_id != null)
+                                        <option value={{ null }}>
+                                            -</option>
+                                    @endif
+                                    @foreach ($all_category as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="exampleFormControlSelect1">Parent</label>
                             </div>
                             <button type="submit" class="btn btn-primary">Save</button>
                             <a href="{{ route('category.index') }}" class="btn btn-primary" value="Back">Back</a>

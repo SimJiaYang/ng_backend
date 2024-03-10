@@ -24,7 +24,7 @@
             <div class="nav-item d-flex align-items-left">
                 <i class="mdi mdi-magnify mdi-24px lh-0"></i>
                 <input type="search" class="form-control border-0 shadow-none bg-body" id="name" name="name"
-                    placeholder="Search..." aria-label="Search..." />
+                    placeholder="Search by Name ..." aria-label="Search..." />
             </div>
         </div>
     </form>
@@ -39,7 +39,9 @@
                         <tr>
                             <th class="text-truncate">ID</th>
                             <th class="text-truncate">Name</th>
+                            <th class="text-truncate">Slug</th>
                             <th class="text-truncate">Type</th>
+                            <th class="text-truncate">Parent</th>
                             <th class="text-truncate">Action</th>
                             <th class="text-truncate">Status</th>
                         </tr>
@@ -63,8 +65,20 @@
                                         <p class="fw-normal mb-1">{{ $categories->name }}</p>
                                     </td>
                                     <td class="text-truncate">
+                                        <p class="fw-normal mb-1">{{ $categories->slug }}</p>
+                                    </td>
+                                    <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ $categories->type }}</p>
                                     </td>
+                                    @if ($categories->parent_id == null)
+                                        <td class="text-truncate">
+                                            <p class="fw-normal mb-1">-</p>
+                                        </td>
+                                    @else
+                                        <td class="text-truncate">
+                                            <p class="fw-normal mb-1">{{ $categories->parent }}</p>
+                                        </td>
+                                    @endif
                                     <td class="text-truncate">
                                         <a class="navbar-brand" href="{{ route('category.edit', $categories->id) }}">
                                             <i class="mdi mdi-pencil-box-outline mdi-24px lh-0"></i>
@@ -72,8 +86,8 @@
 
                                         <a class="navbar-brand"
                                             onclick="return confirm('Are you sure you want to change the status?')"
-                                            href="{{ route('category.delete', $categories->id) }}">
-                                            @if ($categories->status == 0)
+                                            href="{{ route('category.destroy', $categories->id) }}">
+                                            @if ($categories->status == false)
                                                 <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
                                             @else
                                                 <i class="mdi mdi-checkbox-marked-outline mdi-24px lh-0"></i>

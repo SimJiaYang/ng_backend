@@ -21,37 +21,49 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Settings Login and Home Page
+/**
+ * Redirect to home
+ */
 Route::get('/', function () {
     return redirect()->route('home');
 });
+Route::get('/home', [HomeController::class, 'home'])->name('home');
 
+/**
+ * Authentication
+ */
 Auth::routes([
     'register' => false,
     'reset' => false,
 ]);
 
-Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::group(['middleware' => 'isAdmin'], function () {
-        // Customer
+        /**
+         * Customer CRUD Route
+         */
         Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
         Route::any('/customer/search', [CustomerController::class, 'search'])->name('customer.search');
 
+        /**
+         * Admin Route
+         */
         Route::group(['middleware' => 'isSadmin'], function () {
             Route::get('/customer/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
             Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
         });
 
-        // Category
+        /**
+         * Category CRUD Route
+         */
         Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
-        Route::get('/category/insert', [CategoryController::class, 'insert'])->name('category.insert');
+        Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
         Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
         Route::any('/category/search', [CategoryController::class, 'search'])->name('category.search');
         Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
         Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
-        Route::get('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+        Route::get('/category/destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
         // Plant
         Route::get('/plant', [PlantController::class, 'index'])->name('plant.index');

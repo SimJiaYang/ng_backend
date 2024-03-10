@@ -14,10 +14,11 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     /**
-     * The "booted" method of the model.
+     * The primary key associated with the table.
      *
-     * @return void
+     * @var string
      */
+    protected $keyType = 'string';
     public $incrementing = false;
 
     /**

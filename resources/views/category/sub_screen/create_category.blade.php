@@ -17,6 +17,11 @@
                             <label for="basic-default-fullname">Name</label>
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
+                            <input type="text" id="slug" name="slug" class="form-control"
+                                id="basic-default-fullname" placeholder="Slug" required />
+                            <label for="basic-default-fullname">Slug</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-4">
                             <select class="form-select" id="selectOption" aria-label="Default select example"
                                 name="type">
                                 <option value="" disabled selected>Choose option</option>
@@ -25,6 +30,18 @@
                             </select>
                             <label for="exampleFormControlSelect1">Type</label>
                         </div>
+                        @if ($category->count() > 0)
+                            <div class="form-floating form-floating-outline mb-4">
+                                <select class="form-select" id="parent_id" aria-label="Default select example"
+                                    name="parent_id">
+                                    <option value="" disabled selected>Choose option</option>
+                                    @foreach ($category as $categories)
+                                        <option value="{{ $categories->id }}">{{ $categories->name }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="exampleFormControlSelect1">Parent</label>
+                            </div>
+                        @endif
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="{{ route('category.index') }}" class="btn btn-primary" value="Back">Back</a>
                     </form>

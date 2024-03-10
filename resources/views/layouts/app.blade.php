@@ -119,7 +119,7 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('category.insert') }}" class="menu-link">
+                        <a href="{{ route('category.create') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
                             <div data-i18n="Dashboards">Add Category</div>
                         </a>
@@ -161,25 +161,6 @@
                             <div data-i18n="Dashboards">Add Product</div>
                         </a>
                     </li>
-
-
-                    {{-- <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Custom Style</span>
-                    </li> --}}
-
-                    <!-- Product -->
-                    {{-- <li class="menu-item">
-                        <a href="{{ route('custom.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-package-variant-closed"></i>
-                            <div data-i18n="Dashboards">Style</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{ route('custom.insert') }}" class="menu-link">
-                            <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
-                            <div data-i18n="Dashboards">Add Style</div>
-                        </a>
-                    </li> --}}
 
                 </ul>
             </aside>

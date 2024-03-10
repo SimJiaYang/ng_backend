@@ -17,7 +17,7 @@ class PlantController extends Controller
         $plant = Plant::select(
             "plant.*",
             "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'plant.cat_id')
+        )->leftjoin('category', 'category.id', 'plant.category_id')
             ->paginate(5);
         return view('plant.plant')
             ->with('plant', $plant);
