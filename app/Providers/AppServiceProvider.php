@@ -15,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (env(key: 'APP_ENV') != 'http://127.0.0.1:8000') {
-            URL::forceScheme(scheme: 'https');
-        }
+        // if (env(key: 'APP_ENV') != 'http://127.0.0.1:8000') {
+        //     URL::forceScheme(scheme: 'https');
+        // }
     }
 
     /**

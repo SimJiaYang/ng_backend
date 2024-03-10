@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Response;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
+    /**
+     * @param array $data
+     * @param string $error
+     * @param array $ext
+     * @param int $status
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function jsonResponse(
         $data = [],
         $error = '',
@@ -25,11 +30,23 @@ class Controller extends BaseController
         ] + $ext, $status,);
     }
 
+    /**
+     * @param array $data
+     * @param int $status
+     * @param array $err
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function success($data = [], $status = 200, $err = [])
     {
         return $this->jsonResponse($data, '', $err, $status);
     }
 
+    /**
+     * @param string $error
+     * @param int $status
+     * @param array $err
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function fail(string $error, $status = 200, $err = [])
     {
         return $this->jsonResponse([], $error, $err, $status);

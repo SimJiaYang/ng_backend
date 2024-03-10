@@ -23,7 +23,7 @@
             <div class="nav-item d-flex align-items-left">
                 <i class="mdi mdi-magnify mdi-24px lh-0"></i>
                 <input type="search" class="form-control border-0 shadow-none bg-body" id="name" name="name"
-                    placeholder="Search..." aria-label="Search..." />
+                    placeholder="Search by Plant Name..." aria-label="Search..." />
             </div>
         </div>
     </form>
@@ -39,12 +39,8 @@
                             <th class="text-truncate">Image</th>
                             <th class="text-truncate">Name</th>
                             <th class="text-truncate">Category</th>
-                            <th class="text-truncate">Quantity</th>
+                            <th class="text-truncate">Stock</th>
                             <th class="text-truncate">Price</th>
-                            <th class="text-truncate">Origin</th>
-                            <th class="text-truncate">Sunlight</th>
-                            <th class="text-truncate">Water</th>
-                            <th class="text-truncate">Height</th>
                             <th class="text-truncate">Action</th>
                             <th class="text-truncate">Status</th>
                         </tr>
@@ -83,19 +79,6 @@
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ $plants->price }}</p>
                                     </td>
-                                    <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ Str::limit($plants->origin, 10) }}</p>
-                                    </td>
-                                    <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ $plants->sunlight_need }}</p>
-                                    </td>
-                                    <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ $plants->water_need }}</p>
-                                    </td>
-                                    <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ $plants->mature_height }}</p>
-                                    </td>
-
 
                                     <td class="text-truncate">
                                         <a class="navbar-brand" href="{{ route('plant.edit', $plants->id) }}">

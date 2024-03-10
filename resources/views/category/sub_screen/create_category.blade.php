@@ -23,25 +23,35 @@
                         </div>
                         <div class="form-floating form-floating-outline mb-4">
                             <select class="form-select" id="selectOption" aria-label="Default select example"
-                                name="type">
+                                onchange="getCategory()" name="type">
                                 <option value="" disabled selected>Choose option</option>
                                 <option value="Plant">Plant</option>
                                 <option value="Product">Product</option>
                             </select>
                             <label for="exampleFormControlSelect1">Type</label>
                         </div>
+
                         @if ($category->count() > 0)
-                            <div class="form-floating form-floating-outline mb-4">
+                            <div class="form-floating form-floating-outline mb-4" id="parent_dom" hidden>
                                 <select class="form-select" id="parent_id" aria-label="Default select example"
                                     name="parent_id">
                                     <option value="" disabled selected>Choose option</option>
                                     @foreach ($category as $categories)
-                                        <option value="{{ $categories->id }}">{{ $categories->name }}</option>
+                                        @if ($categories->type == 'Plant')
+                                            @if (old('type') === 'Plant')
+                                                <option value="{{ $categories->id }}">{{ $categories->name }}</option>
+                                            @endif
+                                        @elseif ($categories->type == 'Product')
+                                            @if (old('type') === 'Product')
+                                                <option value="{{ $categories->id }}">{{ $categories->name }}</option>
+                                            @endif
+                                        @endif
                                     @endforeach
                                 </select>
-                                <label for="exampleFormControlSelect1">Parent</label>
+                                <label for="parent_id" id="parent_id_label">Parent</label>
                             </div>
                         @endif
+
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="{{ route('category.index') }}" class="btn btn-primary" value="Back">Back</a>
                     </form>
@@ -58,9 +68,38 @@
                     alert("Please select an option");
                     return false; // Prevent form submission
                 } else {
-                    // You can now use the selectedOptionValue in your further processing
                     return true; // Allow form submission
                 }
+            }
+
+            function getCategory() {
+                var selectedCategory = document.getElementById('selectOption').value;
+                var parentDropdown = document.getElementById('parent_id');
+
+                // Show parent dropdown if type is selected
+                document.getElementById('parent_dom').hidden = false;
+
+                // Clear existing options
+                parentDropdown.innerHTML = '<option value="" disabled selected>Choose option</option>';
+
+                // Filter and populate options based on selected category
+                @foreach ($category as $categories)
+                    @if ($categories->type == 'Plant')
+                        if (selectedCategory === "Plant") {
+                            var option = document.createElement('option');
+                            option.value = "{{ $categories->id }}";
+                            option.text = "{{ $categories->name }}";
+                            parentDropdown.appendChild(option);
+                        }
+                    @elseif ($categories->type == 'Product')
+                        if (selectedCategory === "Product") {
+                            var option = document.createElement('option');
+                            option.value = "{{ $categories->id }}";
+                            option.text = "{{ $categories->name }}";
+                            parentDropdown.appendChild(option);
+                        }
+                    @endif
+                @endforeach
             }
         </script>
     @endsection

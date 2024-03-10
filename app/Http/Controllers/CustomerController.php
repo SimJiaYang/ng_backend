@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
-    /**Customer List */
+    /**
+     * Display a list of the customer.
+     *
+     * @return Response
+     */
     public function index()
     {
         if (auth()->user()->type == 'admin') {
@@ -20,6 +24,12 @@ class CustomerController extends Controller
         return view('customer.customer')->with("customers", $customer);
     }
 
+    /**
+     * Search a customer.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Response
+     */
     public function search(Request $request)
     {
         $keyword = $request->name;
@@ -35,12 +45,24 @@ class CustomerController extends Controller
         return view('customer.customer')->with("customers", $customer);
     }
 
+    /**
+     * Show the form for editing the specified customer.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function edit($id)
     {
         $customer = User::where('id', $id)->get();
         return view('customer.sub_screen.customer_edit_screen')->with("customers", $customer);
     }
 
+    /**
+     * Update the specified customer in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Response
+     */
     public function update(Request $request)
     {
         $type = $request->type;

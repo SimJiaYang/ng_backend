@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Plant;
@@ -28,9 +26,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-
     public function home()
     {
+        // Get data
         $data = [];
         $data['totalUsers']         = User::where('type', '=', 'user')->count('id');
         $data['totalProducts']      = Product::count('id');
@@ -40,15 +38,17 @@ class HomeController extends Controller
         $data['totalOrder']         = Order::count('id');
         $data['totalPayments']      = Payment::where('status', 'success')->sum('amount');
 
+        // Check if user is not logged in
         if (!Auth::check()) {
             return redirect()->back();
         }
+
+        // Check if user is admin or super admin
         if (Auth::user()->type == "admin" || Auth::user()->type == "sadmin") {
             return view('home')->with($data, 'data');
         } else {
             return view('404');
         }
-
 
         return redirect()->back();
     }

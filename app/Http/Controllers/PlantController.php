@@ -6,12 +6,15 @@ use App\Models\Category;
 use App\Models\Plant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
 class PlantController extends Controller
 {
-    /**Plant List */
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $plant = Plant::select(
@@ -19,13 +22,18 @@ class PlantController extends Controller
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.category_id')
             ->paginate(5);
-        return view('plant.plant')
+        return view('plant.index')
             ->with('plant', $plant);
     }
 
-    public function insert()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $category = Category::where('status', '1')
+        $category = Category::where('status', true)
             ->where('type', 'plant')->get();
         return view('plant.sub_screen.insert_plant')
             ->with('category', $category);

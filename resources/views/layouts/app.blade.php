@@ -138,7 +138,7 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('plant.insert') }}" class="menu-link">
+                        <a href="{{ route('plant.create') }}" class="menu-link">
                             <i class="menu-icon tf-icons mdi mdi-plus-box-outline"></i>
                             <div data-i18n="Dashboards">Add Plant</div>
                         </a>
