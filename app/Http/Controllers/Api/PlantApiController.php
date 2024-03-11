@@ -19,9 +19,6 @@ class PlantApiController extends Controller
             ->select('plant.*', 'category.name as category_name', 'plant.image as image')
             ->get();
 
-        // if ($plants->count() == 0) {
-        //     return $this->fail('No plant data available');
-        // }
 
         $ret['plant'] = $plants;
         return $this->success($ret);

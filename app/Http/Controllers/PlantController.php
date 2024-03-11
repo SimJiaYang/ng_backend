@@ -7,6 +7,7 @@ use App\Models\Plant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use App\Models\Stock;
 
 class PlantController extends Controller
 {
@@ -34,37 +35,71 @@ class PlantController extends Controller
     public function create()
     {
         $category = Category::where('status', true)
+            // ->where('parent_id', "!=", null)
             ->where('type', 'plant')->get();
-        return view('plant.sub_screen.insert_plant')
+        return view('plant.sub_screen.create_plant')
             ->with('category', $category);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        //Handle Photo
+        // Handle and Store Image
+        $images = array();
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('/plant_image'), $imageName);
+            $files = $request->file('image');
+            foreach ($files as $file) {
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name . '.' . $ext;
+                $file->move(
+                    public_path('/plant_image'),
+                    $image_full_name
+                );
+                $images[] = $image_full_name;
+            }
         } else {
-            $imageName = 'no_plant.png';
+            $images[] = 'no_plant.png';
         }
 
-        // Create product
-        $addProduct = Plant::create([
+        // Encode Image
+        $imageName = $this->img_encode($images);
+
+        // Create Plant
+        $addPlant = Plant::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'quantity' => $request->quantity,
-            'sunlight_need' => $request->sunlight,
+            'placement' => $request->placement, // 'placement' => 'indoor' or 'outdoor
+            'temperature' => $request->temperature,
             'water_need' => $request->water,
-            'mature_height' => $request->height,
+            'sunlight_need' => $request->sunlight,
+            'height' => $request->height,
+            'size' => $request->size,
+            'weight' => $request->weight,
             'origin' => $request->origin,
-            'status' => $request->status,
+            'other' => $request->other,
+            'pot_name' => $request->pot_name,
+            'pot_size' => $request->pot_size,
+            'experience' => $request->experience,
             'image' => $imageName,
-            'cat_id' => $request->category_id
+            'category_id' => $request->category_id
         ]);
 
-        if ($addProduct->exists) {
+        // Create Stock Record
+        if ($addPlant->exists) {
+            $addStock = Stock::create([
+                'plant_id' => $addPlant->id,
+                'quantity' => $request->quantity,
+                'reason' => $request->reason,
+                'unit_price' => $request->price,
+            ]);
+        }
+
+        if ($addPlant->exists && $addStock) {
             Session::flash('success', "Plant create successfully!!");
             return redirect()->route('plant.index');
         }
