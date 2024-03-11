@@ -57,7 +57,8 @@ class Plant extends Model
      * @var array<int, string>
      */
     public $appends = [
-        'image_url'
+        'image_url',
+        'image_file_name'
     ];
 
     /**
@@ -70,6 +71,21 @@ class Plant extends Model
         return $this->img_decode($this->image);
         // return asset('/plant_image/' . $this->image);
     }
+
+    /**
+     * Get the plant's image file name.
+     *
+     * @return string
+     */
+    public function getImageFileNameAttribute()
+    {
+        $data =  $this->image;
+        if ($data) {
+            $data = explode("|", $data);
+        }
+        return $data;
+    }
+
 
     /**
      * Get the category that owns the plant.

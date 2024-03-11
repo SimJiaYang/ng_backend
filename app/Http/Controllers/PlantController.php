@@ -23,7 +23,6 @@ class PlantController extends Controller
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.category_id')
             ->paginate(5);
-
         return view('plant.index')
             ->with('plant', $plant);
     }
@@ -44,6 +43,9 @@ class PlantController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -106,31 +108,20 @@ class PlantController extends Controller
         }
     }
 
-    public function search(Request $request)
-    {
-        $query = $request->name;
-        $keyword = $request->name;
-        $plant = Plant::select(
-            "plant.*",
-            "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.name', 'like', "%$keyword%");
-        $plant = $plant->paginate(5)->setPath('');
-        $plant->appends(array(
-            'name' => $query
-        ));
-        return view('plant.plant')
-            ->with('plant', $plant);;
-    }
-
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $category = Category::where('status', '1')
+        $category = Category::where('status', true)
             ->where('type', 'plant')->get();
         $plant = Plant::select(
             "plant.*",
             "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'plant.cat_id')
+        )->leftjoin('category', 'category.id', 'plant.category_id')
             ->where('plant.id', $id)
             ->get();
         return view('plant.sub_screen.edit_plant')
@@ -138,57 +129,118 @@ class PlantController extends Controller
             ->with('category', $category);;
     }
 
-    //Update
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request)
     {
         $plant = Plant::where('id', $request->id)->first();
 
-        //Handle Photo
+        // Handle and Store Image
+        $images = array();
         if ($request->hasFile('image')) {
-            $old_path = public_path('plant_image/' . $plant->image);
-            if (File::exists($old_path)) {
-                if ($plant->image != 'no_plant.png') {
-                    File::delete($old_path);
+            $files = $request->file('image');
+            foreach ($files as $file) {
+                // Delete old image
+                $old_path = public_path('plant_image/' . $plant->image);
+                if (File::exists($old_path)) {
+                    if ($plant->image != 'no_plant.png') {
+                        File::delete($old_path);
+                    }
                 }
+                // Store new image
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name . '.' . $ext;
+                $file->move(
+                    public_path('/plant_image'),
+                    $image_full_name
+                );
+                $images[] = $image_full_name;
             }
-            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('/plant_image'), $imageName);
+            // Encode Image
+            $imageName = $this->img_encode($images);
         } else {
             if ($plant->image == null) {
-                $imageName = 'no_plant.png';
+                $images[] = 'no_plant.png';
+                // Encode Image
+                $imageName = $this->img_encode($images);
             } else {
+                // Save old image data
+                $images[] = $plant->image;
                 $imageName = $plant->image;
             }
         }
 
+        // Update Plant
         $plant->name = $request->name;
         $plant->price = $request->price;
         $plant->description = $request->description;
         $plant->quantity = $request->quantity;
-        $plant->sunlight_need = $request->sunlight;
+        $plant->placement = $request->placement;
+        $plant->temperature = $request->temperature;
         $plant->water_need = $request->water;
-        $plant->mature_height = $request->height;
-        $plant->status = $request->status;
+        $plant->sunlight_need = $request->sunlight;
+        $plant->height = $request->height;
+        $plant->size = $request->size;
+        $plant->weight = $request->weight;
         $plant->origin = $request->origin;
+        $plant->other = $request->other;
+        $plant->pot_name = $request->pot_name;
+        $plant->pot_size = $request->pot_size;
+        $plant->experience = $request->experience;
         $plant->image = $imageName;
-        $plant->cat_id = $request->category_id;
+        $plant->category_id = $request->category_id;
+        $plant->status = $request->status;
         $plant->save();
 
         Session::flash('success', "Update Plant successfully!!");
         return redirect()->route('plant.index');
     }
 
-    public function delete($id)
+    /**
+     * Delete Plant
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $plant = Plant::where('id', $id)->first();
-        if ($plant->status == "1") {
-            $plant->status = "0";
+        if ($plant->status == true) {
+            $plant->status = false;
         } else {
-            $plant->status = "1";
+            $plant->status = true;
         }
 
         $plant->save();
         Session::flash('success', "Update Plant Status successfully!!");
         return redirect()->route('plant.index');
+    }
+
+    /**
+     * Search plant
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $query = $request->name;
+        $keyword = $request->name;
+        $plant = Plant::select(
+            "plant.*",
+            "category.name as cat_name",
+        )->leftjoin('category', 'category.id', 'plant.category_id')
+            ->where('plant.name', 'like', "%$keyword%");
+        $plant = $plant->paginate(5)->setPath('');
+        $plant->appends(array(
+            'name' => $query
+        ));
+        return view('plant.index')
+            ->with('plant', $plant);;
     }
 }

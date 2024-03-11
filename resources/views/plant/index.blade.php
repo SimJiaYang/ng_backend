@@ -87,7 +87,7 @@
                                         @if ($plants->status != 'custom' && $plants->status != 'bid')
                                             <a class="navbar-brand"
                                                 onclick="return confirm('Are you sure you want to change the status?')"
-                                                href="{{ route('plant.delete', $plants->id) }}">
+                                                href="{{ route('plant.destroy', $plants->id) }}">
                                                 @if ($plants->status == 0)
                                                     <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
                                                 @else
@@ -98,21 +98,13 @@
                                         @endif
                                     </td>
 
-                                    @if ($plants->status == 0)
+                                    @if ($plants->status == false)
                                         <td>
                                             <span class="badge bg-label-danger rounded-pill">Disabled</span>
                                         </td>
-                                    @elseif($plants->status == 1)
+                                    @elseif($plants->status == true)
                                         <td>
                                             <span class="badge bg-label-success rounded-pill">Active</span>
-                                        </td>
-                                    @elseif($plants->status == 'custom')
-                                        <td>
-                                            <span class="badge bg-label-warning rounded-pill">Custom</span>
-                                        </td>
-                                    @elseif($plants->status == 'bid')
-                                        <td>
-                                            <span class="badge bg-label-info rounded-pill">Bidding</span>
                                         </td>
                                     @endif
                                 </tr>

@@ -72,7 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::any('/plant/search', [PlantController::class, 'search'])->name('plant.search');
         Route::get('/plant/edit/{id}', [PlantController::class, 'edit'])->name('plant.edit');
         Route::post('/plant/update', [PlantController::class, 'update'])->name('plant.update');
-        Route::get('/plant/delete/{id}', [PlantController::class, 'delete'])->name('plant.delete');
+        Route::get('/plant/destroy/{id}', [PlantController::class, 'destroy'])->name('plant.destroy');
 
         // Product
         Route::get('/product', [ProductController::class, 'index'])->name('product.index');
