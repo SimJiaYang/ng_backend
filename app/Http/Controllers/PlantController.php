@@ -23,6 +23,7 @@ class PlantController extends Controller
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'plant.category_id')
             ->paginate(5);
+
         return view('plant.index')
             ->with('plant', $plant);
     }

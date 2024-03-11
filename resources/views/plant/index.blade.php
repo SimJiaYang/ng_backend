@@ -62,7 +62,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('plant_image') }}/{{ $plants->image }}" class="img-fluid"
+                                            <img src={{ $plants->image_url[0] }} class="img-fluid"
                                                 style="height:100px; width:100px; object-fit: contain;">
                                         </div>
                                     </td>

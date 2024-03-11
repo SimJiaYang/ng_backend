@@ -66,41 +66,4 @@ class Controller extends BaseController
             return $data;
         }
     }
-
-    /**
-     * @param string $data
-     * @return array|string
-     */
-    function img_decode($data)
-    {
-        if ($data) {
-            $data = explode("|", $data);
-
-            if (count($data) > 1) {
-                foreach ($data as &$d) {
-                    $d = $this->image_parse($d);
-                }
-            } else {
-                $data = implode("|", $data);
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * @param string $url
-     * @return string
-     */
-    function image_parse($url)
-    {
-        $parse = parse_url($url);
-        if ($url) {
-            if (isset($parse["host"])) {
-                return $url;
-            } else {
-                return config("app.url") . "/" . $url;
-            }
-        }
-        return $url;
-    }
 }
