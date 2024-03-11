@@ -60,6 +60,7 @@
                                             <p class="fw-bold mb-1">{{ $plants->id }}</p>
                                         </div>
                                     </td>
+
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img src={{ $plants->image_url[0] }} class="img-fluid"
@@ -74,7 +75,10 @@
                                         <p class="fw-normal mb-1">{{ $plants->cat_name }}</p>
                                     </td>
                                     <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ $plants->quantity }}</p>
+                                        <a href="{{ route('plant.stock', $plants->id) }}">
+                                            <p class="fw-normal mb-1">{{ $plants->quantity }}
+                                            </p>
+                                        </a>
                                     </td>
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ $plants->price }}</p>

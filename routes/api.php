@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function () {
-    // Unauthorized
+    /* Auth */
     Route::post('login', 'AuthApiController@login');
     Route::post('register', 'AuthApiController@store');
 

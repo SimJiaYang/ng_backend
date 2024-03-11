@@ -213,28 +213,6 @@
                     </div>
                 </div>
 
-                {{-- <!-- Personal Info -->
-                    <div class="col-12">
-                        <h6 class="mt-2">2. Plant Image &amp; Preview</h6>
-                        <hr class="mt-0" />
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            <img id="frame" class="img-fluid m-1" style="height:200px; width:200px"
-                               src="{{ asset('plant_image') }}/{{ $plants->image }}" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <div class="form-floating form-floating-outline">
-                            <input class="form-control" type="file" id="formFile" name="image"
-                                onchange="preview()">
-                            <label for="formValidationFile">Plant Image</label>
-                        </div>
-                    </div> --}}
-
-
                 <!-- Pot Information -->
                 <div class="col-12 mt-3">
                     <h6 class="mt-2">2. Pot Information (Optional) </h6>

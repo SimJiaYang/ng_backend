@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlantController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,7 +66,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
         Route::get('/category/destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
-        // Plant
+        /**
+         * Plant CRUD Route
+         */
         Route::get('/plant', [PlantController::class, 'index'])->name('plant.index');
         Route::get('/plant/create', [PlantController::class, 'create'])->name('plant.create');
         Route::post('/plant/store', [PlantController::class, 'store'])->name('plant.store');
@@ -73,8 +76,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/plant/edit/{id}', [PlantController::class, 'edit'])->name('plant.edit');
         Route::post('/plant/update', [PlantController::class, 'update'])->name('plant.update');
         Route::get('/plant/destroy/{id}', [PlantController::class, 'destroy'])->name('plant.destroy');
+        Route::get('/plant/stock/{id}', [StockController::class, 'editPlant'])->name('plant.stock');
 
-        // Product
+        /**
+         * Product CRUD Route
+         */
         Route::get('/product', [ProductController::class, 'index'])->name('product.index');
         Route::get('/product/insert', [ProductController::class, 'insert'])->name('product.insert');
         Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
