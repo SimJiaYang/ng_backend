@@ -77,6 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/plant/update', [PlantController::class, 'update'])->name('plant.update');
         Route::get('/plant/destroy/{id}', [PlantController::class, 'destroy'])->name('plant.destroy');
         Route::get('/plant/stock/{id}', [StockController::class, 'editPlant'])->name('plant.stock');
+        Route::post('/plant/stock/update', [StockController::class, 'updatePlant'])->name('plant.stock.update');
 
         /**
          * Product CRUD Route

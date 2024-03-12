@@ -216,7 +216,7 @@
                             </div>
                         </div>
 
-                        {{-- Pot Name --}}
+                        {{-- Reason --}}
                         <div class="col-md-6 mt-md-1 mt-sm-3">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" class="form-control" placeholder="..." name="reason" required />
