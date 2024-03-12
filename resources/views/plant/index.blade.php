@@ -75,6 +75,9 @@
                                         <p class="fw-normal mb-1">{{ $plants->cat_name }}</p>
                                     </td>
                                     <td class="text-truncate">
+                                        <a href="{{ route('plant.stock.show', $plants->id) }}">
+                                            <i class="menu-icon tf-icons mdi mdi-history"></i>
+                                        </a>
                                         <a href="{{ route('plant.stock', $plants->id) }}">
                                             <p class="fw-normal mb-1">{{ $plants->quantity }}
                                             </p>

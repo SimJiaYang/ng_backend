@@ -9,10 +9,25 @@ use App\Models\Stock;
 class StockController extends Controller
 {
     /**
+     * Show the particular plant stock history.
+     * @return \Illuminate\Http\Response
+     */
+    public function showPlantStock($id)
+    {
+        $plant = Plant::where('id', $id)->get();
+        $stock = Stock::where('plant_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
+        if ($plant) {
+            return view('plant.sub_screen.show_stock')->with('plant', $plant)->with('stock', $stock);
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      * @return \Illuminate\Http\Response
      */
-    public function editPlant($id)
+    public function editPlantStock($id)
     {
         $plant = Plant::where('id', $id)->get();
         if ($plant) {
@@ -26,7 +41,7 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updatePlant(Request $request)
+    public function updatePlantStock(Request $request)
     {
         $plant = Plant::where('id', $request->id)->first();
         $bool = $request->operation == "Add" ? true : false;
