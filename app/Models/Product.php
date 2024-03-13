@@ -111,6 +111,7 @@ class Product extends Model
                 }
             } else {
                 $data = implode("|", $data);
+                $d = $this->image_parse($data);
             }
         }
         return $data;
@@ -127,7 +128,7 @@ class Product extends Model
             if (isset($parse["host"])) {
                 return $url;
             } else {
-                return config("app.url") . "/plant_image/" . $url;
+                return config("app.url") . "/product_image/" . $url;
             }
         }
         return $url;

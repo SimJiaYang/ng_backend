@@ -23,6 +23,7 @@ class ProductController extends Controller
             "category.name as cat_name",
         )->leftjoin('category', 'category.id', 'product.category_id')
             ->paginate(5);
+        // dd($product->toArray());
         return view('product.index')
             ->with('product', $product);
     }
@@ -57,7 +58,7 @@ class ProductController extends Controller
                 $ext = strtolower($file->getClientOriginalExtension());
                 $image_full_name = $image_name . '.' . $ext;
                 $file->move(
-                    public_path('/plant_image'),
+                    public_path('/product_image'),
                     $image_full_name
                 );
                 $images[] = $image_full_name;
@@ -99,6 +100,12 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $category = Category::where('status', true)
@@ -106,7 +113,7 @@ class ProductController extends Controller
         $product = Product::select(
             "product.*",
             "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'product.cat_id')
+        )->leftjoin('category', 'category.id', 'product.category_id')
             ->where('product.id', $id)
             ->get();
         return view('product.sub_screen.edit_product')
@@ -114,24 +121,48 @@ class ProductController extends Controller
             ->with('category', $category);;
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request)
     {
         $product = Product::where('id', $request->id)->first();
 
-        //Handle Photo
+        // Handle and Store Image
+        $images = array();
         if ($request->hasFile('image')) {
-            $old_path = public_path('product_image/' . $product->image);
-            if (File::exists($old_path)) {
-                if ($product->image != 'no_product.png') {
-                    File::delete($old_path);
+            $files = $request->file('image');
+            foreach ($files as $file) {
+                // Delete old image
+                $old_path = public_path('product_image/' . $product->image);
+                if (File::exists($old_path)) {
+                    if ($product->image != 'no_plant.png') {
+                        File::delete($old_path);
+                    }
                 }
+                // Store new image
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name . '.' . $ext;
+                $file->move(
+                    public_path('/product_image'),
+                    $image_full_name
+                );
+                $images[] = $image_full_name;
             }
-            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('/product_image'), $imageName);
+            // Encode Image
+            $imageName = $this->img_encode($images);
         } else {
             if ($product->image == null) {
-                $imageName = 'no_product.png';
+                $images[] = 'no_plant.png';
+                // Encode Image
+                $imageName = $this->img_encode($images);
             } else {
+                // Save old image data
+                $images[] = $product->image;
                 $imageName = $product->image;
             }
         }
@@ -139,29 +170,46 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->description = $request->description;
-        $product->quantity = $request->quantity;
+        $product->other = $request->other;
+        $product->weight = $request->weight;
+        $product->size = $request->size;
+        $product->material = $request->material;
+        $product->length = $request->length;
         $product->status = $request->status;
+        $product->quantity = $request->quantity;
         $product->image = $imageName;
-        $product->cat_id = $request->category_id;
+        $product->category_id = $request->category_id;
         $product->save();
 
         Session::flash('success', "Update Product successfully!!");
         return redirect()->route('product.index');
     }
 
-    public function delete($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $product = Product::where('id', $id)->first();
-        if ($product->status == "1") {
-            $product->status = "0";
+        if ($product->status == true) {
+            $product->status = false;
         } else {
-            $product->status = "1";
+            $product->status = true;
         }
         $product->save();
         Session::flash('success', "Update Product Status successfully!!");
         return redirect()->route('product.index');
     }
 
+    /**
+     * Search product
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $query = $request->name;
@@ -169,7 +217,7 @@ class ProductController extends Controller
         $product = Product::select(
             "product.*",
             "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'product.cat_id')
+        )->leftjoin('category', 'category.id', 'product.category_id')
             ->where('product.name', 'like', "%$keyword%")
             ->paginate(5)->setPath('');
         $product->appends(array(

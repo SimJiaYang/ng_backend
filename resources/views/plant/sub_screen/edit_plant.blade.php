@@ -123,7 +123,7 @@
                                         <input type="number" class="form-control" placeholder="5 KG" name="weight"
                                             onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
                                     event.charCode == 46 || event.charCode == 0 "
-                                            min="0" step="0.01" value="{{ $plants->weight }}" required />
+                                            min="0" step="0.01" value="{{ $plants->weight }}" />
                                         <label for="price">Weight</label>
                                     </div>
                                 </div>

@@ -60,6 +60,7 @@
                                             <p class="fw-bold mb-1">{{ $products->id }}</p>
                                         </div>
                                     </td>
+
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img src="{{ $products->image_url[0] }}" class="img-fluid"
@@ -70,12 +71,15 @@
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ Str::limit($products->name, 10) }}</p>
                                     </td>
+
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ $products->cat_name }}</p>
                                     </td>
+
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ $products->quantity }}</p>
                                     </td>
+
                                     <td class="text-truncate">
                                         <p class="fw-normal mb-1">{{ $products->price }}</p>
                                     </td>
@@ -88,7 +92,7 @@
                                         @if ($products->status != 'custom')
                                             <a class="navbar-brand"
                                                 onclick="return confirm('Are you sure you want to change the status?')"
-                                                href="{{ route('product.delete', $products->id) }}">
+                                                href="{{ route('product.destroy', $products->id) }}">
                                                 @if ($products->status == 0)
                                                     <i class="mdi mdi-checkbox-blank-outline mdi-24px lh-0"></i>
                                                 @else
