@@ -5,79 +5,103 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use App\Models\Stock;
 
 class ProductController extends Controller
 {
-    /**Product List */
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $product = Product::select(
             "product.*",
             "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'product.cat_id')
+        )->leftjoin('category', 'category.id', 'product.category_id')
             ->paginate(5);
-        return view('product.product')
+        return view('product.index')
             ->with('product', $product);
     }
 
-    public function insert()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $category = Category::where('status', '1')
+        $category = Category::where('status', true)
             ->where('type', 'product')->get();
-        return view('product.sub_screen.insert_product')
+        return view('product.sub_screen.create_product')
             ->with('category', $category);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        //Handle Photo
+        // Handle and Store Image
+        $images = array();
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('/product_image'), $imageName);
+            $files = $request->file('image');
+            foreach ($files as $file) {
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name . '.' . $ext;
+                $file->move(
+                    public_path('/plant_image'),
+                    $image_full_name
+                );
+                $images[] = $image_full_name;
+            }
         } else {
-            $imageName = 'no_product.png';
+            $images[] = 'no_plant.png';
         }
+
+        // Encode Image
+        $imageName = $this->img_encode($images);
 
         // Create product
         $addProduct = Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
+            'other' => $request->other,
+            'weight' => $request->weight,
+            'size' => $request->size,
+            'material' => $request->material,
+            'length' => $request->length,
             'quantity' => $request->quantity,
-            'status' => $request->status,
             'image' => $imageName,
-            'cat_id' => $request->category_id
+            'category_id' => $request->category_id
         ]);
 
         if ($addProduct->exists) {
+            $addStock = Stock::create([
+                'product_id' => $addProduct->id,
+                'quantity' => $request->quantity,
+                'reason' => $request->reason,
+                'unit_price' => $request->price,
+            ]);
+        }
+
+        if ($addProduct->exists  && $addStock->exists) {
             Session::flash('success', "Product create successfully!!");
             return redirect()->route('product.index');
         }
     }
 
-    public function search(Request $request)
-    {
-        $query = $request->name;
-        $keyword = $request->name;
-        $product = Product::select(
-            "product.*",
-            "category.name as cat_name",
-        )->leftjoin('category', 'category.id', 'product.cat_id')
-            ->where('product.name', 'like', "%$keyword%")
-            ->paginate(5)->setPath('');
-        $product->appends(array(
-            'name' => $query
-        ));
-        return view('product.product')
-            ->with('product', $product);;
-    }
-
     public function edit($id)
     {
-        $category = Category::where('status', '1')
+        $category = Category::where('status', true)
             ->where('type', 'product')->get();
         $product = Product::select(
             "product.*",
@@ -136,5 +160,22 @@ class ProductController extends Controller
         $product->save();
         Session::flash('success', "Update Product Status successfully!!");
         return redirect()->route('product.index');
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->name;
+        $keyword = $request->name;
+        $product = Product::select(
+            "product.*",
+            "category.name as cat_name",
+        )->leftjoin('category', 'category.id', 'product.cat_id')
+            ->where('product.name', 'like', "%$keyword%")
+            ->paginate(5)->setPath('');
+        $product->appends(array(
+            'name' => $query
+        ));
+        return view('product.index')
+            ->with('product', $product);;
     }
 }

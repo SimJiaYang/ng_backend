@@ -145,7 +145,6 @@
                             <label for="exampleFormControlSelect1">Experience Level</label>
                         </div>
 
-
                         {{-- Description --}}
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">

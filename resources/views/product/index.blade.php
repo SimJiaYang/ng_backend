@@ -22,7 +22,7 @@
             <div class="nav-item d-flex align-items-left">
                 <i class="mdi mdi-magnify mdi-24px lh-0"></i>
                 <input type="search" class="form-control border-0 shadow-none bg-body" id="name" name="name"
-                    placeholder="Search..." aria-label="Search..." />
+                    placeholder="Product Name" aria-label="Search..." />
             </div>
         </div>
     </form>
@@ -38,7 +38,7 @@
                             <th class="text-truncate">Image</th>
                             <th class="text-truncate">Name</th>
                             <th class="text-truncate">Category</th>
-                            <th class="text-truncate">Quantity</th>
+                            <th class="text-truncate">Stock</th>
                             <th class="text-truncate">Price</th>
                             <th class="text-truncate">Action</th>
                             <th class="text-truncate">Status</th>
@@ -62,7 +62,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('product_image') }}/{{ $products->image }}" class="img-fluid"
+                                            <img src="{{ $products->image_url[0] }}" class="img-fluid"
                                                 style="height:100px; width:100px; object-fit: contain;">
                                         </div>
                                     </td>
@@ -105,10 +105,6 @@
                                     @elseif($products->status == '1')
                                         <td>
                                             <span class="badge bg-label-success rounded-pill">Active</span>
-                                        </td>
-                                    @elseif($products->status == 'custom')
-                                        <td>
-                                            <span class="badge bg-label-warning rounded-pill">Custom</span>
                                         </td>
                                     @endif
                                 </tr>

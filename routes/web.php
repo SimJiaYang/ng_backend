@@ -88,7 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
          * Product CRUD Route
          */
         Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-        Route::get('/product/insert', [ProductController::class, 'insert'])->name('product.insert');
+        Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
         Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
         Route::any('/product/search', [ProductController::class, 'search'])->name('product.search');
         Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
