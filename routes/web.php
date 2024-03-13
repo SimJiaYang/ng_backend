@@ -95,6 +95,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
         Route::get('/product/destroy/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 
+
+        /**
+         * Product Stock Management Route
+         */
+        Route::get('/product/stock/show/{id}', [StockController::class, 'showProductStock'])->name('product.stock.show');
+        Route::get('/product/stock/{id}', [StockController::class, 'editProductStock'])->name('product.stock');
+        Route::post('/product/stock/update', [StockController::class, 'updateProductStock'])->name('product.stock.update');
+
         // Order
         Route::get('/order', [OrderController::class, 'index'])->name('order.index');
         Route::get('/order/detail/{id}', [OrderController::class, 'order_detail'])->name('order.detail');

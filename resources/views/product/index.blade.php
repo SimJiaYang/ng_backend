@@ -77,7 +77,13 @@
                                     </td>
 
                                     <td class="text-truncate">
-                                        <p class="fw-normal mb-1">{{ $products->quantity }}</p>
+                                        <a href="{{ route('product.stock.show', $products->id) }}">
+                                            <i class="menu-icon tf-icons mdi mdi-history"></i>
+                                        </a>
+                                        <a href="{{ route('product.stock', $products->id) }}">
+                                            <p class="fw-normal mb-1">{{ $products->quantity }}
+                                            </p>
+                                        </a>
                                     </td>
 
                                     <td class="text-truncate">
