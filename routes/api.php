@@ -31,16 +31,18 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::post('profile/password/update', 'UserApiController@updatePassword');
         Route::post('profile/avatar/update', 'UserApiController@handleUploadUserImage');
 
-        /* Plant*/
-        Route::get('plant', 'PlantApiController@plant');
+        /**
+         * Plant Route
+         */
         Route::get('plantlist', 'PlantApiController@plantList');
         Route::get('plant/search/keyword', 'PlantApiController@searchKeyword');
         Route::any('plant/search', 'PlantApiController@searchPlant');
         Route::get('plant/category', 'PlantApiController@getCategory');
         Route::get('plant/detail', 'PlantApiController@show');
 
-        /* Product */
-        Route::get('product', 'ProductApiController@product');
+        /**
+         *Product
+         */
         Route::get('productlist', 'ProductApiController@productList');
         Route::get('product/search/keyword', 'ProductApiController@searchKeyword');
         Route::any('product/search', 'ProductApiController@searchProduct');

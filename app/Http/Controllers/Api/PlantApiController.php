@@ -6,36 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\Plant;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 
 class PlantApiController extends Controller
 {
-    public function plant()
-    {
-        $plants = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.status', '1')
-            ->where('plant.quantity', '>', '0')
-            ->select('plant.*', 'category.name as category_name', 'plant.image as image')
-            ->get();
-
-
-        $ret['plant'] = $plants;
-        return $this->success($ret);
-    }
-
-
-    // Pagination for plant
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function plantList(Request $request)
     {
         $status = $request->status;
         if (is_null($status)) {
-            $status = "1";
+            $status = true;
         } else {
             $status = $request->status;
         }
 
-        $plants_query = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
+        $plants_query = Plant::leftjoin('category', 'category.id', 'plant.category_id')
             ->where('plant.status', $status)
             ->where('plant.quantity', '>', '0')
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
@@ -91,15 +80,27 @@ class PlantApiController extends Controller
         return $this->success($ret);
     }
 
+    /**
+     * Show the plant name list
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function searchKeyword()
     {
-        $plants_query = Plant::where('plant.status', '1')
+        $plants_query = Plant::where('plant.status', true)
             ->where('plant.quantity', '>', '0')
-            ->get(['name']);
+            ->select('name')
+            ->get();
         $ret['plant_name'] = $plants_query;
         return $this->success($ret);
     }
 
+    /**
+     * Search plant by keyword
+     *
+     * @param  keyword
+     * @return \Illuminate\Http\Response
+     */
     public function searchPlant(Request $request)
     {
         // If no keyword, return error message
@@ -110,8 +111,8 @@ class PlantApiController extends Controller
             return $this->fail('Invalid request');
         }
 
-        $plants_query = Plant::leftjoin('category', 'category.id', 'plant.cat_id')
-            ->where('plant.status', '1')
+        $plants_query = Plant::leftjoin('category', 'category.id', 'plant.category_id')
+            ->where('plant.status', true)
             ->where('plant.quantity', '>', '0')
             ->select('plant.*', 'category.name as category_name', 'plant.image as image');
 
@@ -181,10 +182,15 @@ class PlantApiController extends Controller
         return $this->success($ret);
     }
 
+    /**
+     * Get plant category
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getCategory(Request $request)
     {
         $category =  Category::where('type', 'plant')
-            ->where('status', '1');
+            ->where('status', true);
 
         if ($category->count() == 0) {
             return $this->fail('No category data available');
@@ -234,10 +240,15 @@ class PlantApiController extends Controller
         return $this->success($ret);
     }
 
+    /**
+     * Show a particular plant detail
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function show(Request $request)
     {
         $plants = Plant::where('plant.id', $request->id)
-            ->where('plant.status', '1')
+            ->where('plant.status', true)
             ->where('plant.quantity', '>', '0')
             ->select('plant.*')
             ->first();

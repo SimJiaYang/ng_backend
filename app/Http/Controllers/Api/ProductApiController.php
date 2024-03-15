@@ -9,29 +9,21 @@ use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
 {
-    public function product()
-    {
-        $product = Product::leftjoin('category', 'category.id', 'product.cat_id')
-            ->where('product.status', '1')
-            ->where('product.quantity', '>', '0')
-            ->select('product.*', 'category.name as category_name', 'product.image as image')
-            ->get();
-
-        $ret['products'] = $product;
-        return $this->success($ret);
-    }
-
-    // Product Pagination
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function productList(Request $request)
     {
         $status = $request->status;
         if (is_null($status)) {
-            $status = "1";
+            $status = true;
         } else {
             $status = $request->status;
         }
 
-        $product_query = Product::leftjoin('category', 'category.id', 'product.cat_id')
+        $product_query = Product::leftjoin('category', 'category.id', 'product.category_id')
             ->where('product.status', $status)
             ->where('product.quantity', '>', '0')
             ->select('product.*', 'category.name as category_name', 'product.image as image');
@@ -43,7 +35,7 @@ class ProductApiController extends Controller
             $limit = 8;
         }
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
@@ -86,16 +78,25 @@ class ProductApiController extends Controller
         return $this->success($ret);
     }
 
+    /**
+     * Show the product name list
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function searchKeyword()
     {
-        $products_query = Product::where('product.status', '1')
+        $products_query = Product::where('product.status', true)
             ->where('product.quantity', '>', '0')
             ->get(['name']);
         $ret['product_name'] = $products_query;
         return $this->success($ret);
     }
 
-
+    /**
+     * Search product
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function searchProduct(Request $request)
     {
         if (
@@ -105,8 +106,8 @@ class ProductApiController extends Controller
             return $this->fail('Invalid request');
         }
 
-        $product_query = Product::leftjoin('category', 'category.id', 'product.cat_id')
-            ->where('product.status', '1')
+        $product_query = Product::leftjoin('category', 'category.id', 'product.category_id')
+            ->where('product.status', true)
             ->where('product.quantity', '>', '0')
             ->select('product.*', 'category.name as category_name', 'product.image as image');
 
@@ -132,7 +133,7 @@ class ProductApiController extends Controller
             $limit = 8;
         }
 
-        // Sort By 
+        // Sort By
         if ($request->sortBy && in_array(
             $request->sortBy,
             [
@@ -176,24 +177,34 @@ class ProductApiController extends Controller
         return $this->success($ret);
     }
 
+    /**
+     * Get product category
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getCategory()
     {
         $category =  Category::where('type', 'product')
-            ->where('status', '1')->get();
+            ->where('status', true)->get();
         $ret['category'] = $category;
         return $this->success($ret);
     }
 
+    /**
+     * Show the product detail
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function show(Request $request)
     {
         $products = Product::where('product.id', $request->id)
-            ->where('product.status', '1')
+            ->where('product.status', true)
             ->where('product.quantity', '>', '0')
             ->select('product.*')
             ->first();
 
         if ($products != null) {
-            $ret['productt'] = $products;
+            $ret['product'] = $products;
             return $this->success($ret);
         } else {
             return $this->fail('Product not found');
