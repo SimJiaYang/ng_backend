@@ -15,12 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function () {
-    /* Auth */
+    /**
+     * Auth Route
+     */
     Route::post('login', 'AuthApiController@login');
     Route::post('register', 'AuthApiController@store');
 
     Route::middleware('auth:sanctum')->group(function () {
-        /* User*/
+        /**
+         * User Route
+         */
         Route::get('logout', 'AuthApiController@destroy');
         Route::get('profile', 'UserApiController@show');
         Route::post('profile/update', 'UserApiController@update');
@@ -72,10 +76,5 @@ Route::prefix('v1')->namespace('App\\Http\\Controllers\\Api')->group(function ()
         Route::get('delivery', 'DeliveryApiController@index');
         Route::get('delivery/detail', 'DeliveryApiController@show');
         Route::get('delivery/receipt', 'DeliveryApiController@receipt');
-
-        /* Custom */
-        Route::post('custom', 'CustomApiController@add');
-        Route::post('custom/order', 'CustomApiController@order');
-        Route::get('custom/show', 'CustomApiController@show');
     });
 });

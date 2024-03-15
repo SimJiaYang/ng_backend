@@ -7,21 +7,46 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UserApiController extends Controller
 {
+    /**
+     * Show the user profile
+     * @method GET api/v1/profile
+     *
+     * User Information
+     * @return $name
+     * @return $email
+     * @return $address
+     * @return $gender
+     * @return $contact_number
+     * @return $birth_date
+     * @return $image
+     */
     public function show(Request $request)
     {
         $user = $request->user();
         return $this->success($user);
     }
 
-    // Upddate profile
+    /**
+     * Update the user profile
+     * @method POST api/v1/profile/update
+     *
+     * POST
+     * @param name string
+     * @param email string
+     * @param address string
+     */
     public function update(Request $request)
     {
+        $user = $request->user();
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', Rule::unique('users')->ignore($user->id)],
             'address' => ['nullable', 'string', 'max:255'],
             'gender' => ['nullable', 'string', 'max:255'],
             'contact_number' => ['nullable', 'numeric'],
@@ -29,8 +54,6 @@ class UserApiController extends Controller
             'birth_date' => ['nullable', 'date', 'before:today'],
             'image_name' => ['nullable', 'string', 'max:255'],
         ]);
-
-        $user = $request->user();
 
         //Handle Photo
         if ($request->hasFile('image')) {
@@ -75,7 +98,17 @@ class UserApiController extends Controller
         return $this->success();
     }
 
-    // Temp
+    /**
+     * Upload the user image
+     * @method POST api/v1/profile/avatar/update
+     *
+     * POST
+     * @param image file
+     *
+     * User Information
+     * @return $image_link
+     * @return $image_name
+     */
     public function handleUploadUserImage(Request $request)
     {
         $request->validate([
@@ -98,6 +131,14 @@ class UserApiController extends Controller
         return $this->success($ret);
     }
 
+    /**
+     * Update the user password
+     * @method POST api/v1/profile/password/update
+     *
+     * POST
+     * @param old_password string
+     * @param new_password string
+     */
     public function updatePassword(Request $request)
     {
         $request->validate([

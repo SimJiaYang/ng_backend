@@ -13,7 +13,18 @@ use Illuminate\Support\Facades\Auth;
 class AuthApiController extends Controller
 {
     /**
-     * Register
+     * Register a new user
+     * @method POST api/v1/register
+     *
+     * POST
+     * @param name string
+     * @param email string
+     * @param password string
+     *
+     * User Information
+     * @return $name
+     * @return $email
+     * @return $token
      */
     public function store(Request $request)
     {
@@ -38,9 +49,28 @@ class AuthApiController extends Controller
 
         $token = $user->createToken("auth_token")->plainTextToken;
 
-        return $this->success($token);
+        $ret = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'token' => $token,
+        ];
+
+        return $this->success($ret);
     }
 
+    /**
+     * Login user
+     * @method POST api/v1/login
+     *
+     * POST
+     * @param email string
+     * @param password string
+     *
+     * User Information
+     * @return $name
+     * @return $email
+     * @return $token
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -59,7 +89,6 @@ class AuthApiController extends Controller
             $token = $user->createToken("auth_token")->plainTextToken;
 
             $ret = [
-                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'token' => $token,
@@ -71,7 +100,13 @@ class AuthApiController extends Controller
         }
     }
 
-    // logout
+    /**
+     * Logout user
+     * @method GET api/v1/logout
+     *
+     * User Information
+     * @return $message
+     */
     public function destroy(Request $request)
     {
         $user = $request->user();

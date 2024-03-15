@@ -111,7 +111,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/order/ship/{id}', [OrderController::class, 'showShipOrder'])->name('order.ship');
         Route::get('/order/partial/{id}', [OrderController::class, 'showPartialOrder'])->name('order.partial');
 
-
         // Delivery
         Route::post('/order/delivery', [DeliveryController::class, 'updateDelivery'])->name('delivery.update');
         Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
